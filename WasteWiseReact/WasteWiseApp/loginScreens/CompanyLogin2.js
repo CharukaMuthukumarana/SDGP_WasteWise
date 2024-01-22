@@ -1,10 +1,10 @@
-// CompanyLogin.js
+// CompanyLogin2.js
 
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-const CompanyLogin = () => {
+const CompanyLogin2 = () => {
   const navigation = useNavigation();
 
   return (
@@ -12,28 +12,19 @@ const CompanyLogin = () => {
       <View style={styles.header}>
         <Text style={styles.title1}>Waste Wise</Text>
       </View>
-      <Text style={[styles.subtitle, styles.boldText]}>Company</Text>
-      <Text style={[styles.subtitle, styles.boldText]}>Registration</Text>
-      <Text style={styles.smallText}>Already have an account? 
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('CompanyLogin2')}>
-        <Text style={styles.ButtonText}>Sign in</Text>
+      <Text style={[styles.subtitle, styles.boldText]}>Company Login</Text>
+
+      <Text style={styles.smallText}>Don't have an account? 
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('CompanyLogin')}>
+        <Text style={styles.ButtonText}>Sign up</Text>
       </TouchableOpacity>
       </Text>
       
 
-      <Text style={styles.label}>Name</Text>
+      <Text style={styles.label}>Username</Text>
       <TextInput style={styles.input} placeholder="John Doe" />
-      <Text style={styles.label}>Email</Text>
-      <TextInput style={styles.input} placeholder="Johndoe@mail.com" />
-
-      <Text style={styles.label}>Mobile Number</Text>
-      {/* Add a TextInput for Mobile Number */}
-
       <Text style={styles.label}>Password</Text>
       <TextInput style={styles.input} placeholder="*********" />
-      <Text style={styles.label}>Confirm Password</Text>
-      <TextInput style={styles.input} placeholder="*********" />
-      
 
     </View>
   );
@@ -87,11 +78,11 @@ const styles = StyleSheet.create({
   ButtonText: {
     color: 'blue',
     fontSize: 13,
-    marginTop: 19,
-    marginLeft: 4,
+    marginTop: 17,
+    marginLeft: 3,
     textAlign: 'left',
     textDecorationLine: 'underline',
   },
 });
 
-export default CompanyLogin;
+export default CompanyLogin2;

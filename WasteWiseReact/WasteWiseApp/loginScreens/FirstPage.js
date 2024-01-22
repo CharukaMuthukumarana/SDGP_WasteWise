@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 
 import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { createStackNavigator } from '@react-navigation/stack';
 
 const Separator = () => <View style={styles.separator} />;
 
@@ -22,7 +22,7 @@ const CustomButton = ({ title, onPress }) => (
   </TouchableOpacity>
 );
 
-const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator();
 
 const App = ({navigation}) => (
   <SafeAreaView style={styles.container}>
