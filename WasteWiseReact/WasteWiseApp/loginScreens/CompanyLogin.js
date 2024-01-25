@@ -3,6 +3,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import RNPickerSelect from 'react-native-picker-select';
 
 const CompanyLogin = () => {
   const navigation = useNavigation();
@@ -27,14 +28,39 @@ const CompanyLogin = () => {
       <TextInput style={styles.input} placeholder="Johndoe@mail.com" />
 
       <Text style={styles.label}>Mobile Number</Text>
-      {/* Add a TextInput for Mobile Number */}
+      <View style={styles.phoneContainer}>
+        <RNPickerSelect
+          placeholder={{ label: 'Select Country Code', value: null }}
+          onValueChange={(value) => console.log(value)}
+          items={[
+            { label: '+1', value: '+1' },
+            { label: '+44', value: '+44' },
+            { label: '+44', value: '+44' },
+            { label: '+44', value: '+44' },
+            { label: '+44', value: '+44' },
+            { label: '+44', value: '+44' },
+            { label: '+44', value: '+44' },
+            { label: '+44', value: '+44' },
+            { label: '+44', value: '+44' },
+            { label: '+44', value: '+44' },
+            { label: '+44', value: '+44' },
+
+            // Add more country codes as needed
+          ]}
+          style={{
+            inputIOS: styles.input,
+            inputAndroid: styles.input,
+          }}
+          
+        />
+        <TextInput style={styles.input} placeholder="Enter your mobile number" keyboardType="phone-pad" />
+      </View>
 
       <Text style={styles.label}>Password</Text>
       <TextInput style={styles.input} placeholder="*********" />
       <Text style={styles.label}>Confirm Password</Text>
       <TextInput style={styles.input} placeholder="*********" />
       
-
     </View>
   );
 };
@@ -70,6 +96,7 @@ const styles = StyleSheet.create({
   label: {
     marginTop: 15,
     fontSize: 16,
+
   },
   input: {
     borderWidth: 1,
@@ -91,6 +118,10 @@ const styles = StyleSheet.create({
     marginLeft: 4,
     textAlign: 'left',
     textDecorationLine: 'underline',
+  },
+  phoneContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
 
