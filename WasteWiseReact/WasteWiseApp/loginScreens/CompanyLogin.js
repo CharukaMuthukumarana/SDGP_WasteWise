@@ -1,15 +1,29 @@
-// CompanyLogin.js
+// Company Registration Page
 
 import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, TextInput } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, TextInput, ScrollView, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import RNPickerSelect from 'react-native-picker-select';
 
 const CompanyLogin = () => {
   const navigation = useNavigation();
+  const CustomButton = ({ title, onPress }) => (
+    <TouchableOpacity
+      style={styles.button}
+      onPress={onPress}
+    >
+      <Text style={styles.buttonText}>{title}</Text>
+    </TouchableOpacity>
+  );
+  const handleRegister = () => {
+    // Perform registration logic here
+    // For now, just show an alert
+    Alert.alert('User Registered');
+  };
 
   return (
-    <View style={styles.container}>
+    <ScrollView>
+      <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title1}>Waste Wise</Text>
       </View>
@@ -33,7 +47,7 @@ const CompanyLogin = () => {
           placeholder={{ label: 'Select Country Code', value: null }}
           onValueChange={(value) => console.log(value)}
           items={[
-            { label: '+1', value: '+1' },
+            { label: 'USA +1', value: '+1' },
             { label: '+44', value: '+44' },
             { label: '+44', value: '+44' },
             { label: '+44', value: '+44' },
@@ -60,8 +74,14 @@ const CompanyLogin = () => {
       <TextInput style={styles.input} placeholder="*********" />
       <Text style={styles.label}>Confirm Password</Text>
       <TextInput style={styles.input} placeholder="*********" />
+      <CustomButton
+        title="Register"
+        onPress={handleRegister}
+      />
+      </View>
       
-    </View>
+    </ScrollView>
+    
   );
 };
 
@@ -69,6 +89,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    
   },
   header: {
     marginTop: 20,
@@ -122,6 +143,18 @@ const styles = StyleSheet.create({
   phoneContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  button:{
+    backgroundColor: 'grey',
+    padding: 12,
+    borderRadius: 5,
+    marginTop: 30,
+  },
+  buttonText: {
+    color: 'white',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 15,
   },
 });
 

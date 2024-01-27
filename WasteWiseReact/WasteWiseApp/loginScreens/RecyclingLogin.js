@@ -1,0 +1,130 @@
+// Recycling Registration Page
+
+import React from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, TextInput, ScrollView } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import RNPickerSelect from 'react-native-picker-select';
+
+const RecyclingLogin = () => {
+  const navigation = useNavigation();
+
+  return (
+    <ScrollView>
+      <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.title1}>Waste Wise</Text>
+      </View>
+      <Text style={[styles.subtitle, styles.boldText]}>Recycling</Text>
+      <Text style={[styles.subtitle, styles.boldText]}>Registration</Text>
+      <Text style={styles.smallText}>Already have an account? 
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('RecyclingLogin2')}>
+        <Text style={styles.ButtonText}>Sign in</Text>
+      </TouchableOpacity>
+      </Text>
+      
+
+      <Text style={styles.label}>Name</Text>
+      <TextInput style={styles.input} placeholder="John Doe" />
+      <Text style={styles.label}>Email</Text>
+      <TextInput style={styles.input} placeholder="Johndoe@mail.com" />
+
+      <Text style={styles.label}>Mobile Number</Text>
+      <View style={styles.phoneContainer}>
+        <RNPickerSelect
+          placeholder={{ label: 'Select Country Code', value: null }}
+          onValueChange={(value) => console.log(value)}
+          items={[
+            { label: 'USA +1', value: '+1' },
+            { label: '+44', value: '+44' },
+            { label: '+44', value: '+44' },
+            { label: '+44', value: '+44' },
+            { label: '+44', value: '+44' },
+            { label: '+44', value: '+44' },
+            { label: '+44', value: '+44' },
+            { label: '+44', value: '+44' },
+            { label: '+44', value: '+44' },
+            { label: '+44', value: '+44' },
+            { label: '+44', value: '+44' },
+
+            // Add more country codes as needed
+          ]}
+          style={{
+            inputIOS: styles.input,
+            inputAndroid: styles.input,
+          }}
+          
+        />
+        <TextInput style={styles.input} placeholder="Enter your mobile number" keyboardType="phone-pad" />
+      </View>
+
+      <Text style={styles.label}>Password</Text>
+      <TextInput style={styles.input} placeholder="*********" />
+      <Text style={styles.label}>Confirm Password</Text>
+      <TextInput style={styles.input} placeholder="*********" />
+      </View>
+    </ScrollView>
+    
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+  },
+  header: {
+    marginTop: 20,
+    justifyContent:'center',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  title1: {
+    fontSize: 40,
+    fontWeight: 'bold',
+  },
+  subtitle: {
+    color: 'purple',
+    fontSize: 35,
+    textAlign: 'center'
+  },
+  boldText: {
+    fontWeight: 'bold',
+  },
+  smallText: {
+    fontSize: 13,
+    marginTop: 5,
+    textAlign: 'center',
+  },
+  label: {
+    marginTop: 15,
+    fontSize: 16,
+
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: 'black',
+    borderRadius: 5,
+    padding: 10,
+    marginTop: 5,
+  },
+  countryContainer: {
+    marginTop: 15,
+  },
+  backButton: {
+    marginTop: 20,
+  },
+  ButtonText: {
+    color: 'blue',
+    fontSize: 13,
+    marginTop: 19,
+    marginLeft: 4,
+    textAlign: 'left',
+    textDecorationLine: 'underline',
+  },
+  phoneContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+});
+
+export default RecyclingLogin;

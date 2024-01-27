@@ -4,15 +4,13 @@
 import React from 'react';
 import {
   StyleSheet,
-  Button,
   View,
   SafeAreaView,
   Text,
   TouchableOpacity,
 } from 'react-native';
 
-import {NavigationContainer} from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+
 
 const Separator = () => <View style={styles.separator} />;
 
@@ -25,40 +23,33 @@ const CustomButton = ({ title, onPress }) => (
   </TouchableOpacity>
 );
 
-const Stack = createStackNavigator();
 
-const App = ({navigation}) => (
+
+const CompanyHome = ({navigation}) => (
   <SafeAreaView style={styles.container}>
     <View style={styles.center}>
       <Text style={[styles.title2, styles.boldText]}>
         Waste Wise
       </Text>
-      <Text style={styles.title}>
-        Which of the following are you
-      </Text>
+
     </View>
     <Separator />
     <CustomButton
-      title="Company"
+      title="Button1"
       onPress={() => navigation.navigate('CompanyLogin')}
     />
 
     <CustomButton
-      title="Recycling"
-      onPress={() => navigation.navigate('RecyclingLogin')}
+      title="Button2"
+      onPress={() => navigation.navigate('CompanyLogin')}
     />
 
-    <CustomButton
-      title="Driver"
-      onPress={() => navigation.navigate('DriverLogin')}
-    />
   </SafeAreaView>
 );
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     marginHorizontal: 16,
   },
   center: {
@@ -88,7 +79,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   title2: {
-    fontSize: 60, // Adjust the font size as needed
+    fontSize: 20, // Adjust the font size as needed
     textAlign: 'center',
     marginVertical: 8,
   },
@@ -106,5 +97,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default CompanyHome;
 
