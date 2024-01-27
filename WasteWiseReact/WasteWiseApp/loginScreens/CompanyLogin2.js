@@ -19,7 +19,7 @@ const CompanyLogin2 = () => {
     // Perform registration logic here
     // For now, just show an alert
     navigation.navigate('CompanyHome')
-    Alert.alert('User Logged-in');
+    Alert.alert('Logging Successful');
   };
 
   return (

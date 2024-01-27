@@ -1,4 +1,4 @@
-// Home Page
+// Recycling Home Page
 
 
 import React from 'react';
@@ -7,7 +7,6 @@ import {
   View,
   SafeAreaView,
   Text,
-  TouchableOpacity,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { AntDesign } from '@expo/vector-icons';
@@ -30,11 +29,11 @@ const CustomButton = ({ title, title2 ,onPress, color1 }) => (
   );
 
 
-const CompanyHome = ({navigation}) => (
+const RecyclingHome = ({navigation}) => (
   <SafeAreaView style={styles.container}>
     <View style={styles.center}>
       <Text style={[styles.title2, styles.boldText]}>
-        Company_Name
+        Recycling_Name
       </Text>
 
     </View>
@@ -51,6 +50,13 @@ const CompanyHome = ({navigation}) => (
       title2="Schedules"
       onPress={() => navigation.navigate('CompanyLogin')}
       color1='#0E73F6'
+    />
+
+    <CustomButton
+      title="View Map"
+      title2=""
+      onPress={() => navigation.navigate('CompanyLogin')}
+      color1='#129850'
     />
   </SafeAreaView>
 );
@@ -104,5 +110,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CompanyHome;
+export default RecyclingHome;
 
