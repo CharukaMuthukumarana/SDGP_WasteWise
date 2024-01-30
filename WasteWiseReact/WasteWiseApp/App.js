@@ -13,6 +13,8 @@ import DriverLoginScreen2 from './loginScreens/DriverLogin2';
 import CompanyHomeScreen from './companyScreens/CompanyHome';
 import RecyclingHomeScreen from './recyclingScreens/RecyclingHome';
 import DriverHomeScreen from './driverScreens/DriverHome';
+
+import CompanyMonitorScreen from './companyScreens/CompanyMonitorTrash';
 // import CompanyLogin from './loginScreens/CompanyLogin';
 
 const Stack = createStackNavigator();
@@ -32,6 +34,8 @@ function App() {
         <Stack.Screen name="CompanyHome" component={CompanyHomeScreen} />
         <Stack.Screen name="RecyclingHome" component={RecyclingHomeScreen} />
         <Stack.Screen name="DriverHome" component={DriverHomeScreen} />
+
+        <Stack.Screen name="CompanyMonitorTrash" component={CompanyMonitorScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -16,17 +16,20 @@ import { AntDesign } from '@expo/vector-icons';
 
 
 const CustomButton = ({ title, title2 ,onPress, color1 }) => (
-    <LinearGradient
-      colors={[color1,'white']} // Adjust the gradient colors as needed
-      style={styles.button}
-      start={{ x: -3, y: -3 }}
-      end={{x:1.1, y: 2}}
-    >
-      <View style={styles.buttonContent}>
-        <Text style={styles.buttonText}>{title}{"\n"}{title2}</Text>
-        <AntDesign name="arrowright" size={45} color="black" />
-      </View>
-    </LinearGradient>
+    <TouchableOpacity onPress={onPress}>
+      <LinearGradient
+        colors={[color1,'white']} // Adjust the gradient colors as needed
+        style={styles.button}
+        start={{ x: -3, y: -3 }}
+        end={{x:1.1, y: 2}}
+      >
+        <View style={styles.buttonContent}>
+          <Text style={styles.buttonText}>{title}{"\n"}{title2}</Text>
+          <AntDesign name="arrowright" size={45} color="black" />
+        </View>
+      </LinearGradient>
+    </TouchableOpacity>
+    
   );
 
 
@@ -42,7 +45,7 @@ const CompanyHome = ({navigation}) => (
     <CustomButton
       title="Monitor"
       title2="Trash Cans"
-      onPress={() => navigation.navigate('CompanyLogin')}
+      onPress={() => navigation.navigate('CompanyMonitorTrash')}
       color1='#E87200'
     />
 
