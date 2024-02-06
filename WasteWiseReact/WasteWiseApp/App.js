@@ -9,12 +9,14 @@ import CompanyLoginScreen from './loginScreens/CompanyLogin';
 import CompanyLoginScreen2 from './loginScreens/CompanyLogin2';
 import DriverLoginScreen from './loginScreens/DriverLogin';
 import DriverLoginScreen2 from './loginScreens/DriverLogin2';
-
+ 
 import CompanyHomeScreen from './companyScreens/CompanyHome';
 import RecyclingHomeScreen from './recyclingScreens/RecyclingHome';
 import DriverHomeScreen from './driverScreens/DriverHome';
 
 import CompanyMonitorScreen from './companyScreens/CompanyMonitorTrash';
+import RecyclingMonitorScreen from './recyclingScreens/RecyclingMonitorTrash';
+import DriverMonitorScreen from './driverScreens/DriverMonitorTrash';
 // import CompanyLogin from './loginScreens/CompanyLogin';
 
 const Stack = createStackNavigator();
@@ -36,6 +38,8 @@ function App() {
         <Stack.Screen name="DriverHome" component={DriverHomeScreen} />
 
         <Stack.Screen name="CompanyMonitorTrash" component={CompanyMonitorScreen} />
+        <Stack.Screen name="RecyclingMonitorTrash" component={RecyclingMonitorScreen} />
+        <Stack.Screen name="DriverMonitorTrash" component={DriverMonitorScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

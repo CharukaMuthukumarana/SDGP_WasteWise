@@ -29,11 +29,14 @@ const DriverLogin = () => {
       </View>
       <Text style={[styles.subtitle, styles.boldText]}>Driver</Text>
       <Text style={[styles.subtitle, styles.boldText]}>Registration</Text>
-      <Text style={styles.smallText}>Already have an account? 
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('DriverLogin2')}>
-        <Text style={styles.ButtonText}>Sign in</Text>
-      </TouchableOpacity>
-      </Text>
+      <View style={[{marginVertical: 20 },{justifyContent: 'center'},{ flexDirection: 'row' }]}>
+        <Text style={styles.smallText}>Already have an account? </Text>
+        <View>
+          <TouchableOpacity onPress={() => navigation.navigate('DriverLogin2')}>
+            <Text style={styles.ButtonText}>Sign in</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
       
 
       <Text style={styles.label}>Name</Text>
@@ -111,7 +114,7 @@ const styles = StyleSheet.create({
   },
   smallText: {
     fontSize: 13,
-    marginTop: 5,
+    marginTop: 0,
     textAlign: 'center',
   },
   label: {
@@ -135,7 +138,6 @@ const styles = StyleSheet.create({
   ButtonText: {
     color: 'blue',
     fontSize: 13,
-    marginTop: 19,
     marginLeft: 4,
     textAlign: 'left',
     textDecorationLine: 'underline',

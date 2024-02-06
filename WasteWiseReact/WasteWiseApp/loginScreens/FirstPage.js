@@ -4,14 +4,12 @@
 import React from 'react';
 import {
   StyleSheet,
-  Button,
   View,
   SafeAreaView,
   Text,
   TouchableOpacity,
 } from 'react-native';
 
-import {NavigationContainer} from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 const Separator = () => <View style={styles.separator} />;

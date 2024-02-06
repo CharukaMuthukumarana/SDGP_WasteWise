@@ -12,8 +12,7 @@ import {
 import RNPickerSelect from 'react-native-picker-select';
 import { SimpleLineIcons } from '@expo/vector-icons';
 
-
-const CompanyMonitorTrash = ({ navigation }) => {
+const DriverMonitorTrash = ({ navigation }) => {
   const [selectedType, setSelectedType] = useState('All'); // Initial selected type
   const Separator = () => <View style={styles.separator} />;
 
@@ -32,6 +31,7 @@ const CompanyMonitorTrash = ({ navigation }) => {
           style={[styles.button, { borderColor: borderColor, backgroundColor:'white',borderWidth:borderWidth}]}
           onPress={onPress}
         >
+          
           <View style={styles.buttonContent}>
             <Text style={styles.buttonText}>
               {title}
@@ -49,7 +49,7 @@ const CompanyMonitorTrash = ({ navigation }) => {
             </View>
             
           </View>
-          <View style={{ marginLeft: 10, flexDirection: 'row'}}>
+          <View style={{ marginLeft: 10 , flexDirection: 'row'}}>
             <Text style={styles.buttonText2}>
               {percentage}{"%"}
             </Text>
@@ -63,19 +63,13 @@ const CompanyMonitorTrash = ({ navigation }) => {
               )}
             </View>
           </View>
+
           <View style={[styles.barBorder,{borderColor: barColor, backgroundColor: opacityColor}]}>
             <View style={[
               { backgroundColor: barColor },
               styles.progressBar,
               { width: `${percentage}%` },
             ]}></View>
-          </View>
-          <View>
-            {percentage > 80 && (
-              <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('CompanyLogin')}>
-              <Text style={styles.ButtonText}>Request to Collect !</Text>
-            </TouchableOpacity>
-            )}
           </View>
         </TouchableOpacity>
       )
@@ -108,7 +102,7 @@ const CompanyMonitorTrash = ({ navigation }) => {
         <Text style={[styles.title, styles.boldText]}>Waste Wise</Text>
       </View>
       <View style={styles.buttonContent}>
-        <Text style={[styles.title2, styles.boldText]}>Company_name</Text>
+        <Text style={[styles.title2, styles.boldText]}>Recycling_name</Text>
         <RNPickerSelect
           style={{
             inputAndroid: {
@@ -132,8 +126,7 @@ const CompanyMonitorTrash = ({ navigation }) => {
         />
       </View>
 
-      <Separator/>
-
+      <Separator />
       {data.map((item, index) => (
         <CustomButton
           key={index}
@@ -222,6 +215,7 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     fontWeight: 'bold',
     marginBottom: 5,
+    marginLeft:5,
   },
   icon:{
     marginLeft: 10,
@@ -234,4 +228,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CompanyMonitorTrash;
+export default DriverMonitorTrash;

@@ -30,11 +30,14 @@ const RecyclingLogin2 = () => {
         </View>
         <Text style={[styles.subtitle, styles.boldText]}>Recycling Login</Text>
 
-        <Text style={styles.smallText}>Don't have an account? 
-        <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('RecyclingLogin')}>
-          <Text style={styles.ButtonText}>Sign up</Text>
-        </TouchableOpacity>
-        </Text>
+        <View style={[{marginVertical: 20 },{justifyContent: 'center'},{ flexDirection: 'row' }]}>
+          <Text style={styles.smallText}>Don't have an account? </Text>
+          <View>
+            <TouchableOpacity onPress={() => navigation.navigate('CompanyLogin2')}>
+              <Text style={styles.ButtonText}>Sign in</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
         
 
         <Text style={styles.label}>Username</Text>
@@ -43,10 +46,12 @@ const RecyclingLogin2 = () => {
         <TextInput style={styles.input} placeholder="*********" />
         
       </View>
-      <CustomButton
+      <View style={[{padding:20, marginTop:180}]}>
+        <CustomButton
           title="Log In"
           onPress={handleRegister}
         />
+      </View>
     </ScrollView>
     
   );
@@ -80,7 +85,7 @@ const styles = StyleSheet.create({
   },
   smallText: {
     fontSize: 13,
-    marginTop: 5,
+    marginTop: 0,
     textAlign: 'center',
   },
   label: {
@@ -97,14 +102,10 @@ const styles = StyleSheet.create({
   countryContainer: {
     marginTop: 15,
   },
-  backButton: {
-    marginTop: 20,
-  },
   ButtonText: {
     color: 'blue',
     fontSize: 13,
-    marginTop: 17,
-    marginLeft: 3,
+    marginLeft: 4,
     textAlign: 'left',
     textDecorationLine: 'underline',
   },
