@@ -1,4 +1,4 @@
-// Recycling Monitor Trash Cans
+// Company Monitor Trash Cans
 
 
 import React, { useState } from 'react';

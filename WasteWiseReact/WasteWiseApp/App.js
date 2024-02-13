@@ -43,7 +43,7 @@ function App() {
         <Stack.Screen name="RecyclingMonitorTrash" component={RecyclingMonitorScreen} />
         <Stack.Screen name="DriverMonitorTrash" component={DriverMonitorScreen} />
 
-        <Stack.Screen name="CompanyCollectionSchedule" component={CompanyCollectionSchedule} />
+        <Stack.Screen name="Company Collection Schedule" component={CompanyCollectionSchedule} />
       </Stack.Navigator>
     </NavigationContainer>
   );

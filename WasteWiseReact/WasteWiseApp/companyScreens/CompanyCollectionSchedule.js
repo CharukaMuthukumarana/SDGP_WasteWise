@@ -7,74 +7,44 @@ import {
   View,
   SafeAreaView,
   Text,
-  TouchableOpacity,
+  ScrollView,
 } from 'react-native';
-import RNPickerSelect from 'react-native-picker-select';
-import { SimpleLineIcons } from '@expo/vector-icons';
-
 
 const CompanyMonitorTrash = ({ navigation }) => {
   const [selectedType, setSelectedType] = useState('All'); // Initial selected type
   const Separator = () => <View style={styles.separator} />;
 
-  const CustomButton = ({ title, title2, onPress, color1, date, type, percentage }) => {
-    const barColor = percentage > 80 ? 'red' : 'orange';
-    const borderColor = percentage > 80 ? 'red' : '#d3d3d3';
-    const borderWidth = percentage > 80 ? 3 : 2;
-    const opacityColor = percentage > 80 ? '#ffb5b7' : '#fbd9b5';
+  const CustomButton = ({ title, date, type,}) => {
 
     // Check if the selected type is 'All' or matches the current type
     const isVisible = selectedType === 'All' || selectedType === type;
 
     return (
       isVisible && (
-        <ScrollView style={[{flexDirection: 'row', justifyContent: 'space-between',}]}>
+        <ScrollView>
+          <View style={[{flexDirection: 'row', justifyContent:'space-between',}]}>
             <View>
-                <Text>
-                    {date}
-                </Text>
-            </View>
-          <View style={styles.buttonContent}>
-            <Text style={styles.buttonText}>
-              {title}
-              <Text style={styles.buttonText2}>{"\n"}{title2}{date}</Text>
-            </Text>
-
-            <View style={[{borderColor: getColorForType(type), borderWidth:2, borderRadius:3}]}>
-              <Text style={[
-                { backgroundColor: getColorForType(type), borderColor: getColorForType(type),},
-                styles.typeIndicator,
-                {opacity: 0.4}
-              ]}>
-                {type}
+                  <Text>
+                      {date}
+                  </Text>
+              </View>
+            <View style={styles.buttonContent}>
+              <Text style={styles.buttonText}>
+                {title}
+                
               </Text>
+
+              <View style={[{borderColor: getColorForType(type), borderWidth:2, borderRadius:3}]}>
+                <Text style={[
+                  { backgroundColor: getColorForType(type), borderColor: getColorForType(type),},
+                  styles.typeIndicator,
+                  {opacity: 0.4}
+                ]}>
+                  {type}
+                </Text>
+              </View>
             </View>
-            
-          </View>
-          <View style={{ marginLeft: 10, flexDirection: 'row'}}>
-            <Text style={styles.buttonText2}>
-              {percentage}{"%"}
-            </Text>
-            <View>
-              {percentage > 80 && (
-                <View style={styles.icon}>
-                  <SimpleLineIcons name="exclamation" size={15} color="red" />
-                </View>
-              )}
-            </View>
-          </View>
-          <View style={[styles.barBorder,{borderColor: barColor, backgroundColor: opacityColor}]}>
-            <View style={[
-              { backgroundColor: barColor },
-              styles.progressBar,
-              { width: `${percentage}%` },
-            ]}></View>
-          </View>
-          <View>
-            {percentage > 80 && ( 
-              <Text style={styles.ButtonText}>Request to Collect !</Text>
-            )}
-          </View>
+          </View> 
         </ScrollView>
       )
     );
@@ -94,9 +64,16 @@ const CompanyMonitorTrash = ({ navigation }) => {
   };
 
   const data = [
-    { title: 'TrashCanID1', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'PAPER', percentage: 81 },
-    { title: 'TrashCanID2', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'PLASTIC', percentage: 60 },
-    { title: 'TrashCanID3', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 45 },
+    { title: 'TrashCanID1', date: 'DD/MM/YYYY', type: 'PAPER' },
+    { title: 'TrashCanID2', date: 'DD/MM/YYYY', type: 'PLASTIC'},
+    { title: 'TrashCanID3', date: 'DD/MM/YYYY', type: 'GLASS/METAL'},
+    { title: 'TrashCanID3', date: 'DD/MM/YYYY', type: 'GLASS/METAL'},
+    { title: 'TrashCanID3', date: 'DD/MM/YYYY', type: 'GLASS/METAL'},
+    { title: 'TrashCanID3', date: 'DD/MM/YYYY', type: 'GLASS/METAL'},
+    { title: 'TrashCanID3', date: 'DD/MM/YYYY', type: 'GLASS/METAL'},
+    { title: 'TrashCanID3', date: 'DD/MM/YYYY', type: 'GLASS/METAL'},
+    { title: 'TrashCanID3', date: 'DD/MM/YYYY', type: 'GLASS/METAL'},
+    { title: 'TrashCanID3', date: 'DD/MM/YYYY', type: 'GLASS/METAL'},
     // Add more data objects as needed
   ];
 
@@ -105,30 +82,6 @@ const CompanyMonitorTrash = ({ navigation }) => {
       <View style={styles.center}>
         <Text style={[styles.title, styles.boldText]}>Waste Wise</Text>
       </View>
-      <View style={styles.buttonContent}>
-        <Text style={[styles.title2, styles.boldText]}>Company_name</Text>
-        <RNPickerSelect
-          style={{
-            inputAndroid: {
-              height: 50,
-              width: 120,
-              fontSize: 20,
-              fontWeight: '500',
-              backgroundColor: 'white',
-              color: '#344953',
-              paddingLeft: 20,// Add paddingLeft to make the labels visible
-            },
-          }}
-          onValueChange={(value) => setSelectedType(value)}
-          items={[
-            { label: "All", value: 'All' },
-            { label: 'Paper', value: 'PAPER' },
-            { label: 'Plastic', value: 'PLASTIC' },
-            { label: 'Glass/Metal', value: 'GLASS/METAL' },
-          ]}
-          value={selectedType}
-        />
-      </View>
 
       <Separator/>
 
@@ -136,11 +89,8 @@ const CompanyMonitorTrash = ({ navigation }) => {
         <CustomButton
           key={index}
           title={item.title}
-          title2={item.title2}
           date={item.date}
-          onPress={() => navigation.navigate('CompanyLogin')}
           type={item.type}
-          percentage={item.percentage}
         />
       ))}
     </SafeAreaView>
@@ -164,36 +114,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 25,
   },
-  button: {
-    borderRadius: 5,
-    overflow: 'hidden',
-    marginTop: 40,
-    borderColor: 'black',
-    borderWidth: 1.6,
-  },
   buttonContent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 10,
   },
-  progressBar: {
-    height: 7,
-    borderRadius: 5,
-  },
-  typeIndicator: {
-    padding: 5,
-    fontWeight: 'bold'
-  },
-  barBorder: {
-    borderWidth: 1.5,
-    borderRadius: 5,
-    marginHorizontal: 8,
-    marginBottom: 10,
-    marginTop: 5,
-    height: 10,
-    position: 'relative',
-  },
+
   buttonText: {
     color: 'black',
     fontWeight: 'bold',
