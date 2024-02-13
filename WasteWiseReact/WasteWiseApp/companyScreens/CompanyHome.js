@@ -52,7 +52,7 @@ const CompanyHome = ({navigation}) => (
     <CustomButton
       title="Trash Collecting"
       title2="Schedules"
-      onPress={() => navigation.navigate('CompanyLogin')}
+      onPress={() => navigation.navigate('CompanyCollectionSchedule')}
       color1='#0E73F6'
     />
   </SafeAreaView>
