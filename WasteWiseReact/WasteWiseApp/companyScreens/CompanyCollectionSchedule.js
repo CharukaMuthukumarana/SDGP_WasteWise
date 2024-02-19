@@ -1,5 +1,4 @@
-// Recycling Monitor Trash Cans
-
+//Company Collection Schedule
 
 import React, { useState } from 'react';
 import {
@@ -67,13 +66,13 @@ const CompanyMonitorTrash = ({ navigation }) => {
     { title: 'TrashCanID1', date: 'DD/MM/YYYY', type: 'PAPER' },
     { title: 'TrashCanID2', date: 'DD/MM/YYYY', type: 'PLASTIC'},
     { title: 'TrashCanID3', date: 'DD/MM/YYYY', type: 'GLASS/METAL'},
-    { title: 'TrashCanID3', date: 'DD/MM/YYYY', type: 'GLASS/METAL'},
-    { title: 'TrashCanID3', date: 'DD/MM/YYYY', type: 'GLASS/METAL'},
-    { title: 'TrashCanID3', date: 'DD/MM/YYYY', type: 'GLASS/METAL'},
-    { title: 'TrashCanID3', date: 'DD/MM/YYYY', type: 'GLASS/METAL'},
-    { title: 'TrashCanID3', date: 'DD/MM/YYYY', type: 'GLASS/METAL'},
-    { title: 'TrashCanID3', date: 'DD/MM/YYYY', type: 'GLASS/METAL'},
-    { title: 'TrashCanID3', date: 'DD/MM/YYYY', type: 'GLASS/METAL'},
+    { title: 'TrashCanID4', date: 'DD/MM/YYYY', type: 'PAPER'},
+    { title: 'TrashCanID5', date: 'DD/MM/YYYY', type: 'GLASS/METAL'},
+    { title: 'TrashCanID6', date: 'DD/MM/YYYY', type: 'PLASTIC'},
+    { title: 'TrashCanID7', date: 'DD/MM/YYYY', type: 'PAPER'},
+    { title: 'TrashCanID8', date: 'DD/MM/YYYY', type: 'GLASS/METAL'},
+    { title: 'TrashCanID9', date: 'DD/MM/YYYY', type: 'PLASTIC'},
+    { title: 'TrashCanID10', date: 'DD/MM/YYYY', type: 'GLASS/METAL'},
     // Add more data objects as needed
   ];
 
