@@ -12,39 +12,39 @@ import {
 const CompanyMonitorTrash = ({ navigation }) => {
   const [selectedType, setSelectedType] = useState('All'); // Initial selected type
   const Separator = () => <View style={styles.separator} />;
+  
 
-  const CustomButton = ({ title, date, type,}) => {
+  const CustomButton = ({ title, date, type, collectionType}) => {
 
     // Check if the selected type is 'All' or matches the current type
     const isVisible = selectedType === 'All' || selectedType === type;
 
     return (
       isVisible && (
-        <ScrollView>
-          <View style={[{flexDirection: 'row', justifyContent:'space-between',}]}>
-            <View>
-                  <Text>
-                      {date}
-                  </Text>
-              </View>
+        <View style={[{flexDirection: 'row', justifyContent:'space-between'}]}>
+          <View>
+            <Text>
+              {date}
+            </Text>
+          </View>
+          <View style={[{borderColor: collectionColor(collectionType),  borderWidth:2, borderRadius:3, width: '70%', backgroundColor: collectionColor(collectionType)}]}>
             <View style={styles.buttonContent}>
               <Text style={styles.buttonText}>
                 {title}
-                
               </Text>
 
               <View style={[{borderColor: getColorForType(type), borderWidth:2, borderRadius:3}]}>
                 <Text style={[
                   { backgroundColor: getColorForType(type), borderColor: getColorForType(type),},
                   styles.typeIndicator,
-                  {opacity: 0.4}
+                  {opacity: 0.6}
                 ]}>
                   {type}
                 </Text>
               </View>
             </View>
-          </View> 
-        </ScrollView>
+          </View>  
+        </View>
       )
     );
   };
@@ -61,19 +61,30 @@ const CompanyMonitorTrash = ({ navigation }) => {
     // Return the color based on the type, default to a fallback color if not found
     return typeColors[type] || 'grey';
   };
-
+  
+  const collectionColor = (collectionType) => {
+    // Define colors for different types
+    const typeColors = {
+      Collected: '#12B76A',
+      Predicted: '#0E73F6',
+    };
+    // Return the color based on  the type, default to a fallback color if not found
+    return typeColors[collectionType] || 'grey';
+  };
   const data = [
-    { title: 'TrashCanID1', date: 'DD/MM/YYYY', type: 'PAPER' },
-    { title: 'TrashCanID2', date: 'DD/MM/YYYY', type: 'PLASTIC'},
-    { title: 'TrashCanID3', date: 'DD/MM/YYYY', type: 'GLASS/METAL'},
-    { title: 'TrashCanID3', date: 'DD/MM/YYYY', type: 'GLASS/METAL'},
-    { title: 'TrashCanID3', date: 'DD/MM/YYYY', type: 'GLASS/METAL'},
-    { title: 'TrashCanID3', date: 'DD/MM/YYYY', type: 'GLASS/METAL'},
-    { title: 'TrashCanID3', date: 'DD/MM/YYYY', type: 'GLASS/METAL'},
-    { title: 'TrashCanID3', date: 'DD/MM/YYYY', type: 'GLASS/METAL'},
-    { title: 'TrashCanID3', date: 'DD/MM/YYYY', type: 'GLASS/METAL'},
-    { title: 'TrashCanID3', date: 'DD/MM/YYYY', type: 'GLASS/METAL'},
-    // Add more data objects as needed
+    { title: 'TrashCanID_1', date: 'DD/MM/YYYY', type: 'PAPER', collectionType:'Collected'},
+    { title: 'TrashCanID_2', date: 'DD/MM/YYYY', type: 'PLASTIC', collectionType:'Collected'},
+    { title: 'TrashCanID_3', date: 'DD/MM/YYYY', type: 'GLASS/METAL', collectionType:'Collected'},
+    { title: 'TrashCanID_4', date: 'DD/MM/YYYY', type: 'GLASS/METAL', collectionType:'Collected'},
+    { title: 'TrashCanID_5', date: 'DD/MM/YYYY', type: 'GLASS/METAL', collectionType:'Collected'},
+    { title: 'TrashCanID_6', date: 'DD/MM/YYYY', type: 'GLASS/METAL', collectionType:'Predicted'},
+    { title: 'TrashCanID_7', date: 'DD/MM/YYYY', type: 'GLASS/METAL', collectionType:'Predicted'},
+    { title: 'TrashCanID_8', date: 'DD/MM/YYYY', type: 'GLASS/METAL', collectionType:'Predicted'},
+    { title: 'TrashCanID_9', date: 'DD/MM/YYYY', type: 'GLASS/METAL', collectionType:'Collected'},
+    { title: 'TrashCanID_10', date: 'DD/MM/YYYY', type: 'GLASS/METAL', collectionType:'Collected'},
+    { title: 'TrashCanID_11', date: 'DD/MM/YYYY', type: 'GLASS/METAL', collectionType:'Predicted'},
+    { title: 'TrashCanID_12', date: 'DD/MM/YYYY', type: 'GLASS/METAL', collectionType:'Predicted'},
+    { title: 'TrashCanID_13', date: 'DD/MM/YYYY', type: 'GLASS/METAL', collectionType:'Predicted'},
   ];
 
   return (
@@ -84,78 +95,78 @@ const CompanyMonitorTrash = ({ navigation }) => {
 
       <Separator/>
 
-      {data.map((item, index) => (
-        <CustomButton
-          key={index}
-          title={item.title}
-          date={item.date}
-          type={item.type}
-        />
-      ))}
+      <ScrollView>
+        {data.map((item, index) => (
+          <CustomButton
+            key={index}
+            title={item.title}
+            date={item.date}
+            type={item.type}
+            collectionType={item.collectionType}
+          />
+        ))}
+      </ScrollView>
     </SafeAreaView>
   );
 };
 
+const CustomButton = ({ title, date, type, collectionType}) => {
+
+  // Check if the selected type is 'All' or matches the current type
+  const isVisible = selectedType === 'All' || selectedType === type;
+
+  return (
+    isVisible && (
+      <View style={styles.buttonContainer}>
+        <Text style={styles.dateText}>{date}</Text>
+        <View style={[styles.buttonContent, {borderColor: collectionColor(collectionType), backgroundColor: collectionColor(collectionType)}]}>
+          <Text style={styles.buttonText}>{title}</Text>
+          <View style={[styles.typeIndicator, {backgroundColor: getColorForType(type), borderColor: getColorForType(type)}]}>
+            <Text style={styles.typeText}>{type}</Text>
+          </View>
+        </View>
+      </View>
+    )
+  );
+};
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginHorizontal: 16,
-  },
-  center: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 40,
-  },
-  title: {
-    textAlign: 'center',
-    marginVertical: 8,
-    color: 'black',
-    fontWeight: 'bold',
-    fontSize: 25,
+  buttonContainer: {
+    marginBottom: 10, // Adjust spacing between TrashCanIDs
   },
   buttonContent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 10,
+    borderWidth: 1,
+    borderRadius: 3,
+    padding: 15,
   },
-
+  dateText: {
+    fontSize: 16,
+  },
   buttonText: {
-    color: 'black',
     fontWeight: 'bold',
     fontSize: 20,
     textAlign: 'left',
   },
-  buttonText2: {
-    color: 'grey',
+  typeIndicator: {
+    paddingHorizontal: 2,
+    paddingVertical: 5,
+    borderRadius: 3,
+  },
+  typeText: {
+    color: 'white',
     fontWeight: 'bold',
-    fontSize: 15,
-    textAlign: 'left',
-  },
-  title2: {
-    fontSize: 20, // Adjust the font size as needed
-    textAlign: 'left',
-    marginBottom: 0,
-  },
-  boldText: {
-    fontWeight: 'bold',
-  },
-  ButtonText: {
-    color: 'red',
-    textAlign: 'center',
-    textDecorationLine: 'underline',
-    fontWeight: 'bold',
-    marginBottom: 5,
-  },
-  icon:{
-    marginLeft: 10,
-    marginTop:2
   },
   separator: {
     marginTop: 8,
     borderBottomColor: '#737373',
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
+  // Add other styles as needed
 });
 
+
 export default CompanyMonitorTrash;
+
