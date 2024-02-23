@@ -21,6 +21,9 @@ import DriverMonitorScreen from './driverScreens/DriverMonitorTrash';
 import CompanyCollectionSchedule from './companyScreens/CompanyCollectionSchedule';
 // import CompanyLogin from './loginScreens/CompanyLogin';
 
+import RecyclingViewMap from './recyclingScreens/RecyclingViewMap'
+import DriverViewMap from './driverScreens/DriverViewMap'
+
 import TestBackend from './testing/TestBackend';
 
 const Stack = createStackNavigator();
@@ -47,6 +50,8 @@ function App() {
 
         <Stack.Screen name="Company Collection Schedule" component={CompanyCollectionSchedule} />
 
+        <Stack.Screen name="RecyclingViewMap" component={RecyclingViewMap} />
+        <Stack.Screen name="DriverViewMap" component={DriverViewMap} />
         <Stack.Screen name="TestBackend" component={TestBackend} />
       </Stack.Navigator>
     </NavigationContainer>
