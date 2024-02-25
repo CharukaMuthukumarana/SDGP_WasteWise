@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Modal, Button } from 'react-n
 import { MaterialCommunityIcons } from '@expo/vector-icons'; // Import appropriate icons
 import CalendarPicker from 'react-native-calendar-picker'; // Import Calendar Picker component
 
-const CompanyTrashCanDetails = ({ route }) => {
+const TrashCanDetailsScreen = ({ route }) => {
   const { trashCan } = route.params;
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showCalendar, setShowCalendar] = useState(false);
@@ -112,4 +112,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CompanyTrashCanDetails;
+export default TrashCanDetailsScreen;
