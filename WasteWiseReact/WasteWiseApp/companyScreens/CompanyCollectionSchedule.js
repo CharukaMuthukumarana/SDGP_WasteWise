@@ -21,13 +21,13 @@ const CompanyMonitorTrash = ({ navigation }) => {
 
     return (
       isVisible && (
-        <View style={[{flexDirection: 'row', justifyContent:'space-between'}]}>
+        <View style={[{flexDirection: 'row', justifyContent:'space-between', marginVertical:10, marginHorizontal:10}]}>
           <View>
             <Text>
               {date}
             </Text>
           </View>
-          <View style={[{borderColor: collectionColor(collectionType),  borderWidth:2, borderRadius:3, width: '70%', backgroundColor: collectionColor(collectionType)}]}>
+          <View style={[{borderColor: 'black',  borderWidth:1, borderRadius:5, width: '70%', backgroundColor: collectionColor(collectionType)}]}>
             <View style={styles.buttonContent}>
               <Text style={styles.buttonText}>
                 {title}
@@ -65,8 +65,8 @@ const CompanyMonitorTrash = ({ navigation }) => {
   const collectionColor = (collectionType) => {
     // Define colors for different types
     const typeColors = {
-      Collected: '#12B76A',
-      Predicted: '#0E73F6',
+      Collected: '#AEEA6F',
+      Predicted: '#6FC5EA',
     };
     // Return the color based on  the type, default to a fallback color if not found
     return typeColors[collectionType] || 'grey';
@@ -138,8 +138,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderWidth: 1,
-    borderRadius: 3,
     padding: 15,
   },
   dateText: {
