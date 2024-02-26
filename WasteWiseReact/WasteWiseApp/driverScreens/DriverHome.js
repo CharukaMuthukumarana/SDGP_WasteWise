@@ -58,7 +58,7 @@ const DriverHome = ({navigation}) => (
     <CustomButton
       title="View Map"
       title2=""
-      onPress={() => navigation.navigate('TestBackend')}
+      onPress={() => navigation.navigate('DriverViewMap')}
       color1='#0E73F6'
     />
   </SafeAreaView>

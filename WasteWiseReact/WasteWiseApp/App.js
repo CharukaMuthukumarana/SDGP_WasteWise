@@ -21,7 +21,12 @@ import DriverMonitorScreen from './driverScreens/DriverMonitorTrash';
 import CompanyCollectionSchedule from './companyScreens/CompanyCollectionSchedule';
 // import CompanyLogin from './loginScreens/CompanyLogin';
 
+
+import RecyclingViewMap from './recyclingScreens/RecyclingViewMap'
+import DriverViewMap from './driverScreens/DriverViewMap'
+
 import CompanyTrashCanDetails from './companyScreens/CompanyTrashCanDetails';
+
 
 
 import TestBackend from './testing/TestBackend';
@@ -50,7 +55,12 @@ function App() {
 
         <Stack.Screen name="Company Collection Schedule" component={CompanyCollectionSchedule} />
 
+
+        <Stack.Screen name="RecyclingViewMap" component={RecyclingViewMap} />
+        <Stack.Screen name="DriverViewMap" component={DriverViewMap} />
+
         <Stack.Screen name="CompanyTrashCanDetails" component={CompanyTrashCanDetails} />
+
         <Stack.Screen name="TestBackend" component={TestBackend} />
       </Stack.Navigator>
     </NavigationContainer>
