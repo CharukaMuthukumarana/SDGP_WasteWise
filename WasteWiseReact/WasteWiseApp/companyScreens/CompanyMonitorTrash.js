@@ -140,7 +140,7 @@ const CompanyMonitorTrash = ({ navigation }) => {
           title={item.title}
           title2={item.title2}
           date={item.date}
-          onPress={() => navigation.navigate('CompanyLogin')}
+          onPress={() => navigation.navigate('CompanyTrashCanDetails')}
           type={item.type}
           percentage={item.percentage}
         />
