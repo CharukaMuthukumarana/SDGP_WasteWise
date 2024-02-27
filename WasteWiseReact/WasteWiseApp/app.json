@@ -26,13 +26,17 @@
         "googleMaps": {
           "apiKey": "AIzaSyCieaIky7iUBoCwG0nlu41HGm_R4uvSrBs"
         }
-      }
+      },
+      "package": "com.charukamuthukumarana.WasteWiseApp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
-      "googleMapsApiKey": "AIzaSyCieaIky7iUBoCwG0nlu41HGm_R4uvSrBs"
+      "googleMapsApiKey": "AIzaSyCieaIky7iUBoCwG0nlu41HGm_R4uvSrBs",
+      "eas": {
+        "projectId": "b141f74a-2204-44ca-a950-2b8b452c5120"
+      }
     }
   }
 }
