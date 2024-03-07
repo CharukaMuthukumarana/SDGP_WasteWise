@@ -15,24 +15,39 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "googleServicesFile": "./google-services.json"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
+      "googleServicesFile": "./google-services.json",
+      "package": "com.charuka2002.WasteWiseApp",
+      "versionCode": 1,
+      "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"],
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyCieaIky7iUBoCwG0nlu41HGm_R4uvSrBs"
+          "apiKey": "AIzaSyBtde98wmoYJKfgcZaVz7QrFimVDbrFtFY"
         }
       }
     },
+    "scheme": "WasteWiseApp",
     "web": {
       "favicon": "./assets/favicon.png"
     },
+    "plugins": [
+      "expo-router"
+    ],
     "extra": {
-      "googleMapsApiKey": "AIzaSyCieaIky7iUBoCwG0nlu41HGm_R4uvSrBs"
+      "router": {
+        "origin": false,
+        "GOOGLE_MAPS_API_KEY": "AIzaSyBtde98wmoYJKfgcZaVz7QrFimVDbrFtFY"
+      },
+      "eas": {
+        "projectId": "80d93076-6919-4d9e-a019-f5d33fd764cf"
+      }
     }
   }
 }

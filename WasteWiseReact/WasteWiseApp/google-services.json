@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "169797835749",
+    "firebase_url": "https://test5-430c1-default-rtdb.firebaseio.com",
+    "project_id": "test5-430c1",
+    "storage_bucket": "test5-430c1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:169797835749:android:8ff54e93dc0fcaee5a6d0c",
+        "android_client_info": {
+          "package_name": "com.charuka2002.test5"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1JqB2AccvBmN-6hjYVqc-LSaFVdi8g5s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
