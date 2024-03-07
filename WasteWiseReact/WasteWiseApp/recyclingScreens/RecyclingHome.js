@@ -58,7 +58,7 @@ const RecyclingHome = ({navigation}) => (
     <CustomButton
       title="View Map"
       title2=""
-      onPress={() => navigation.navigate('CompanyLogin')}
+      onPress={() => navigation.navigate('RecyclingViewMap')}
       color1='#0E73F6'
     />
   </SafeAreaView>

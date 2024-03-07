@@ -22,6 +22,14 @@ import CompanyCollectionSchedule from './companyScreens/CompanyCollectionSchedul
 import RecyclingCollectionSchedule from './recyclingScreens/RecyclingCollectionSchedule';
 // import CompanyLogin from './loginScreens/CompanyLogin';
 
+
+import RecyclingViewMap from './recyclingScreens/RecyclingViewMap'
+import DriverViewMap from './driverScreens/DriverViewMap'
+
+import CompanyTrashCanDetails from './companyScreens/CompanyTrashCanDetails';
+
+
+
 import TestBackend from './testing/TestBackend';
 
 const Stack = createStackNavigator();
@@ -48,6 +56,12 @@ function App() {
 
         <Stack.Screen name="CompanyCollectionSchedule" component={CompanyCollectionSchedule} />
         <Stack.Screen name="RecyclingCollectionSchedule" component={RecyclingCollectionSchedule} />
+
+
+        <Stack.Screen name="RecyclingViewMap" component={RecyclingViewMap} />
+        <Stack.Screen name="DriverViewMap" component={DriverViewMap} />
+
+        <Stack.Screen name="CompanyTrashCanDetails" component={CompanyTrashCanDetails} />
 
         <Stack.Screen name="TestBackend" component={TestBackend} />
       </Stack.Navigator>
