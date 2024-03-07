@@ -9,7 +9,7 @@ import {
   ScrollView,
 } from 'react-native';
 
-const CompanyMonitorTrash = ({ navigation }) => {
+const CompanyCollectionSchedule = ({ navigation }) => {
   const [selectedType, setSelectedType] = useState('All'); // Initial selected type
   const Separator = () => <View style={styles.separator} />;
   
@@ -166,5 +166,5 @@ const styles = StyleSheet.create({
 });
 
 
-export default CompanyMonitorTrash;
+export default CompanyCollectionSchedule;
 

@@ -19,6 +19,7 @@ import RecyclingMonitorScreen from './recyclingScreens/RecyclingMonitorTrash';
 import DriverMonitorScreen from './driverScreens/DriverMonitorTrash';
 
 import CompanyCollectionSchedule from './companyScreens/CompanyCollectionSchedule';
+import RecyclingCollectionSchedule from './recyclingScreens/RecyclingCollectionSchedule';
 // import CompanyLogin from './loginScreens/CompanyLogin';
 
 import TestBackend from './testing/TestBackend';
@@ -45,7 +46,8 @@ function App() {
         <Stack.Screen name="RecyclingMonitorTrash" component={RecyclingMonitorScreen} />
         <Stack.Screen name="DriverMonitorTrash" component={DriverMonitorScreen} />
 
-        <Stack.Screen name="Company Collection Schedule" component={CompanyCollectionSchedule} />
+        <Stack.Screen name="CompanyCollectionSchedule" component={CompanyCollectionSchedule} />
+        <Stack.Screen name="RecyclingCollectionSchedule" component={RecyclingCollectionSchedule} />
 
         <Stack.Screen name="TestBackend" component={TestBackend} />
       </Stack.Navigator>
