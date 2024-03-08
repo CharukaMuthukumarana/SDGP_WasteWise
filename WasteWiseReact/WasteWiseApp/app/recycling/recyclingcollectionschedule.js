@@ -11,13 +11,11 @@ import {Picker} from '@react-native-picker/picker';
 import { Link, router } from 'expo-router'
 import { SimpleLineIcons } from '@expo/vector-icons';
 
-
-const recyclingcollectionschedule = () => {
-
+const RecyclingCollectionSchedule = () => {
     const [selectedType, setSelectedType] = useState('All'); // Initial selected type
     const Separator = () => <View style={styles.separator} />;
     
-    const CustomButton = ({ title, title2, onPress, color1, date, type, percentage }) => {
+    const CustomButton = ({ title, title2, onPress, color1, date, type, percentage, previousCollection, predictedCollection }) => {
         const barColor = percentage > 80 ? 'red' : 'orange';
         const borderColor = percentage > 80 ? 'red' : '#d3d3d3';
         const borderWidth = percentage > 80 ? 3 : 2;
@@ -35,9 +33,7 @@ const recyclingcollectionschedule = () => {
               <View style={styles.buttonContent}>
                 <Text style={styles.buttonText}>
                   {title}
-                  <Text style={styles.buttonText2}>{"\n"}{title2}{date}</Text>
                 </Text>
-    
                 <View style={[{borderColor: getColorForType(type), borderWidth:2, borderRadius:3}]}>
                   <Text style={[
                     { backgroundColor: getColorForType(type), borderColor: getColorForType(type),},
@@ -47,36 +43,21 @@ const recyclingcollectionschedule = () => {
                     {type}
                   </Text>
                 </View>
-                
               </View>
-              <View style={{ marginLeft: 10, flexDirection: 'row'}}>
+              <View style={styles.buttonContent}>
                 <Text style={styles.buttonText2}>
-                  {percentage}{"%"}
+                  Previous Collection:{"\n"} 
+                  <Text style={styles.buttonText3}>
+                    {previousCollection}
+                    </Text>
                 </Text>
-                <View>
-                  {percentage > 80 && (
-                    <TouchableOpacity style={styles.backButton} onPress={() => router.push("company/companymonitortrash")}>
-                    <View style={styles.icon}>
-                      <SimpleLineIcons name="exclamation" size={15} color="red" />
-                    </View>
-                  </TouchableOpacity>
-                  )}
-                </View>
-              </View>
-              <View style={[styles.barBorder,{borderColor: barColor, backgroundColor: opacityColor}]}>
-                <View style={[
-                  { backgroundColor: barColor },
-                  styles.progressBar,
-                  { width: `${percentage}%` },
-                ]}></View>
-              </View>
-              <View>
-                {percentage > 80 && (
-                  <TouchableOpacity style={styles.backButton} onPress={() => router.push("/company/companycollectionschedule")}>
-                  <Text style={styles.ButtonText}>Request to Collect !</Text>
-                </TouchableOpacity>
-                )}
-              </View>
+                <Text style={styles.buttonText2}>
+                  Predicted Collection:{"\n"} 
+                  <Text style={styles.buttonText4}>
+                    {predictedCollection}
+                    </Text>
+                </Text>
+              </View>  
             </TouchableOpacity>
           )
         );
@@ -96,13 +77,19 @@ const recyclingcollectionschedule = () => {
     };
 
     const data = [
-        { title: 'TrashCanID1', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'PAPER', percentage: 81 },
-        { title: 'TrashCanID2', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'PLASTIC', percentage: 60 },
-        { title: 'TrashCanID3', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 45 },
-        { title: 'TrashCanID3', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 50 },
-        { title: 'TrashCanID3', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 45 },
-        { title: 'TrashCanID3', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 90 },
-        { title: 'TrashCanID3', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 89 },
+      { title: 'TrashCanID_1', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'PAPER', percentage: 81, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
+      { title: 'TrashCanID_2', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'PLASTIC', percentage: 60, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
+      { title: 'TrashCanID_3', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 45, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
+      { title: 'TrashCanID_4', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'PAPER', percentage: 67, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
+      { title: 'TrashCanID_5', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'PLASTIC', percentage: 50, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
+      { title: 'TrashCanID_6', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 15, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
+      { title: 'TrashCanID_7', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'PAPER', percentage: 54, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
+      { title: 'TrashCanID_8', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'PLASTIC', percentage: 70, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
+      { title: 'TrashCanID_9', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'PAPER', percentage: 90, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
+      { title: 'TrashCanID_10', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 35, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
+      { title: 'TrashCanID_11', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'PAPER', percentage: 81, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
+      { title: 'TrashCanID_12', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'PLASTIC', percentage: 20, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
+      { title: 'TrashCanID_13', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 65, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
         // Add more data objects as needed
     ];
 
@@ -141,14 +128,16 @@ const recyclingcollectionschedule = () => {
                     onPress={() => router.push("logins/companylogin2")}
                     type={item.type}
                     percentage={item.percentage}
+                    previousCollection={item.previousCollection}
+                    predictedCollection={item.predictedCollection}
                     />
                 ))}
-        </SafeAreaView>
-    </ScrollView>    
+            </SafeAreaView>
+        </ScrollView>    
     )
 }
 
-export default recyclingcollectionschedule
+export default RecyclingCollectionSchedule;
 
 const styles = StyleSheet.create({
     container: {
@@ -204,7 +193,19 @@ const styles = StyleSheet.create({
       textAlign: 'left',
     },
     buttonText2: {
-      color: 'grey',
+      color: 'black',
+      fontWeight: 'bold',
+      fontSize: 15,
+      textAlign: 'left',
+    },
+    buttonText3: {
+      color: 'green',
+      fontWeight: 'bold',
+      fontSize: 15,
+      textAlign: 'left',
+    },
+    buttonText4: {
+      color: 'blue',
       fontWeight: 'bold',
       fontSize: 15,
       textAlign: 'left',
@@ -217,29 +218,5 @@ const styles = StyleSheet.create({
     boldText: {
       fontWeight: 'bold',
     },
-    ButtonText: {
-      color: 'red',
-      textAlign: 'center',
-      textDecorationLine: 'underline',
-      fontWeight: 'bold',
-      marginBottom: 5,
-    },
-    icon:{
-      marginLeft: 10,
-      marginTop:2
-    },
-    separator: {
-      marginTop: 8,
-      borderBottomColor: '#737373',
-      borderBottomWidth: StyleSheet.hairlineWidth,
-    },
-    picker: {
-        height: 30,
-        width: 160,
-        fontSize: 12,
-        fontWeight: '500',
-        backgroundColor: 'white',
-        color: '#344953',
-        paddingLeft: 20,
-    },
+
   });

@@ -70,13 +70,6 @@ const drivermonitortrash = () => {
                   { width: `${percentage}%` },
                 ]}></View>
               </View>
-              <View>
-                {percentage > 80 && (
-                  <TouchableOpacity style={styles.backButton} onPress={() => router.push("/company/companycollectionschedule")}>
-                  <Text style={styles.ButtonText}>Request to Collect !</Text>
-                </TouchableOpacity>
-                )}
-              </View>
             </TouchableOpacity>
           )
         );
@@ -96,13 +89,19 @@ const drivermonitortrash = () => {
     };
 
     const data = [
-        { title: 'TrashCanID1', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'PAPER', percentage: 81 },
-        { title: 'TrashCanID2', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'PLASTIC', percentage: 60 },
-        { title: 'TrashCanID3', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 45 },
-        { title: 'TrashCanID3', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 50 },
-        { title: 'TrashCanID3', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 45 },
-        { title: 'TrashCanID3', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 90 },
-        { title: 'TrashCanID3', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 89 },
+      { title: 'TrashCanID_1', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'PAPER', percentage: 81, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
+      { title: 'TrashCanID_2', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'PLASTIC', percentage: 60, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
+      { title: 'TrashCanID_3', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 45, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
+      { title: 'TrashCanID_4', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'PAPER', percentage: 67, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
+      { title: 'TrashCanID_5', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'PLASTIC', percentage: 50, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
+      { title: 'TrashCanID_6', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 15, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
+      { title: 'TrashCanID_7', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'PAPER', percentage: 54, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
+      { title: 'TrashCanID_8', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'PLASTIC', percentage: 70, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
+      { title: 'TrashCanID_9', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'PAPER', percentage: 90, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
+      { title: 'TrashCanID_10', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 35, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
+      { title: 'TrashCanID_11', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'PAPER', percentage: 81, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
+      { title: 'TrashCanID_12', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'PLASTIC', percentage: 20, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
+      { title: 'TrashCanID_13', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 65, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
         // Add more data objects as needed
     ];
 
@@ -138,7 +137,7 @@ const drivermonitortrash = () => {
                     title={item.title}
                     title2={item.title2}
                     date={item.date}
-                    onPress={() => router.push("logins/companylogin2")}
+                    onPress={() => router.push("logins/driverlogin2")}
                     type={item.type}
                     percentage={item.percentage}
                     />

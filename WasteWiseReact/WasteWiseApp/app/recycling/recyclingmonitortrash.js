@@ -70,13 +70,6 @@ const recyclingmonitortrash = () => {
                   { width: `${percentage}%` },
                 ]}></View>
               </View>
-              <View>
-                {percentage > 80 && (
-                  <TouchableOpacity style={styles.backButton} onPress={() => router.push("/company/companycollectionschedule")}>
-                  <Text style={styles.ButtonText}>Request to Collect !</Text>
-                </TouchableOpacity>
-                )}
-              </View>
             </TouchableOpacity>
           )
         );
