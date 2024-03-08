@@ -2,7 +2,7 @@ import { useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { Text, View } from 'react-native';
 
-const TrashCanDetails = () => {
+const driverTrashCanDetails = () => {
 
   const {trashCanId}= useLocalSearchParams();
   return (
@@ -13,4 +13,4 @@ const TrashCanDetails = () => {
   );
 };
 
-export default TrashCanDetails;
+export default driverTrashCanDetails;

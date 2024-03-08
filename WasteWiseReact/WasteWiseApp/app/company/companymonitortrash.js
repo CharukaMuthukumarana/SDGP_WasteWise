@@ -55,7 +55,13 @@ const companymonitortrash = () => {
                 </Text>
                 <View>
                   {percentage > 80 && (
-                    <TouchableOpacity style={styles.backButton} onPress={() => router.push("company/companymonitortrash")}>
+                    <TouchableOpacity style={styles.backButton}
+                     onPress={() => 
+                    router.push({
+                      pathname:"../company/[companytrashcandetails]",
+                      params:{trashCanId:`${title}`}
+                    })}
+                    >
                     <View style={styles.icon}>
                       <SimpleLineIcons name="exclamation" size={15} color="red" />
                     </View>
@@ -72,7 +78,13 @@ const companymonitortrash = () => {
               </View>
               <View>
                 {percentage > 80 && (
-                  <TouchableOpacity style={styles.backButton} onPress={() => router.push("/company/companycollectionschedule")}>
+                  <TouchableOpacity style={styles.backButton}
+                  onPress={() => 
+                    router.push({
+                      pathname:"../company/[companytrashcandetails]",
+                      params:{trashCanId:`${title}`}
+                    })}
+                  >
                   <Text style={styles.ButtonText}>Request to Collect !</Text>
                 </TouchableOpacity>
                 )}
@@ -138,7 +150,11 @@ const companymonitortrash = () => {
                     title={item.title}
                     title2={item.title2}
                     date={item.date}
-                    onPress={() => router.push("logins/companylogin2")}
+                    onPress={() => 
+                      router.push({
+                        pathname:"../company/[companytrashcandetails]",
+                        params:{trashCanId: `${item.title}`}
+                      })} 
                     type={item.type}
                     percentage={item.percentage}
                     />
