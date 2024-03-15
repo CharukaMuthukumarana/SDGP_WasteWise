@@ -23,15 +23,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "googleServicesFile": "./google-services.json",
-      "package": "com.charuka2002.WasteWiseApp",
-      "versionCode": 1,
-      "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"],
-      "config": {
-        "googleMaps": {
-          "apiKey": "AIzaSyBtde98wmoYJKfgcZaVz7QrFimVDbrFtFY"
-        }
-      }
+      "package": "com.charuka2002.WasteWiseApp"
     },
     "scheme": "WasteWiseApp",
     "web": {
@@ -39,15 +31,6 @@
     },
     "plugins": [
       "expo-router"
-    ],
-    "extra": {
-      "router": {
-        "origin": false,
-        "GOOGLE_MAPS_API_KEY": "AIzaSyBtde98wmoYJKfgcZaVz7QrFimVDbrFtFY"
-      },
-      "eas": {
-        "projectId": "80d93076-6919-4d9e-a019-f5d33fd764cf"
-      }
-    }
+    ]
   }
 }
