@@ -11,7 +11,6 @@ import {Picker} from '@react-native-picker/picker';
 import { Link, router } from 'expo-router'
 import { SimpleLineIcons } from '@expo/vector-icons';
 
-
 const recyclingmonitortrash = () => {
 
     const [selectedType, setSelectedType] = useState('All'); // Initial selected type
@@ -25,7 +24,6 @@ const recyclingmonitortrash = () => {
     
         // Check if the selected type is 'All' or matches the current type
         const isVisible = selectedType === 'All' || selectedType === type;
-    
         return (
           isVisible && (
             <TouchableOpacity
