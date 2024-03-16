@@ -41,7 +41,15 @@ const home = () => {
       title="Driver"
       onPress={()=>router.push("/logins/driverlogin")}
     />
+    <View style={[{marginVertical:30 },{justifyContent: 'center'},{ flexDirection: 'row' }]}>
+            <View>
+            <TouchableOpacity onPress={() =>router.push("/addtrashcan")}>
+                <Text style={styles.ButtonText}>Add Trash Cans</Text>
+            </TouchableOpacity>
+            </View>
+        </View>
   </SafeAreaView>
+
   )
 }
 
@@ -99,5 +107,12 @@ const styles = StyleSheet.create({
   },
   link: {
     textDecorationLine: 'none', // to remove underline from link
+  },
+  ButtonText: {
+    color: 'blue',
+    fontSize: 13,
+    marginLeft: 4,
+    textAlign: 'left',
+    textDecorationLine: 'underline',
   },
 });
