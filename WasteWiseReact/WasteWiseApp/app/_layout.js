@@ -14,6 +14,7 @@ export default function Layout(){
         }}>
         <Stack.Screen name="home"/>
         <Stack.Screen name="addtrashcan"/>
+        <Stack.Screen name="devicedata"/>
         <Stack.Screen name="logins/companylogin"/>
         <Stack.Screen name="logins/companylogin2"/>
         <Stack.Screen name="logins/recyclinglogin"/>

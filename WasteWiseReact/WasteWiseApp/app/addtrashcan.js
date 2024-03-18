@@ -1,10 +1,9 @@
 import { StyleSheet, Text, View, TextInput, ScrollView, TouchableOpacity } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import {Picker} from '@react-native-picker/picker';
-import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
+import MapView, { Marker } from 'react-native-maps';
 import { Alert } from 'react-native';
-import * as Permissions from 'expo-permissions';
 
 const addtrashcan = () => {
     const [trashCanId, setTrashCanId] = useState('');
@@ -17,55 +16,73 @@ const addtrashcan = () => {
     const [binLevel, setBinLevel] = useState(0);
     const [showMapView, setShowMapView] = useState(false);
     const [location, setLocation] = useState(null);
-
+    
     useEffect(() => {
       (async () => {
-          await getLocationAsync();
+          let { status } = await Location.requestForegroundPermissionsAsync();
+          if (status !== 'granted') {
+              setErrorMsg('Permission to access location was denied');
+              return;
+          }
+
+          let location = await Location.getCurrentPositionAsync({});
+          setLocation(location);
       })();
   }, []);
-
-  const getLocationAsync = async () => {
-      let { status } = await Permissions.askAsync(Permissions.LOCATION);
-      if (status !== 'granted') {
-          Alert.alert('Permission to access location was denied');
-          return;
-      }
-
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
-  };
 
   const openMapView = () => {
       setShowMapView(true);
   };
 
-  const handleMapPress = (coordinate) => {
-      setLatitude(String(coordinate.latitude));
-      setLongitude(String(coordinate.longitude));
+  const handleMapPress = (event) => {
+      setLatitude(String(event.nativeEvent.coordinate.latitude));
+      setLongitude(String(event.nativeEvent.coordinate.longitude));
       setShowMapView(false);
   };
 
+  const addTrashCan = async () => {
+    const trashCanData = {
+        trashCanId: trashCanId,
+        collectionDate: collectionDate,
+        collectionState: "Not Scheduled", // Assuming this is always "Collected" for new trash cans
+        companyName: companyName,
+        latitude: parseFloat(latitude),
+        longitude: parseFloat(longitude),
+        wasteType: type,
+        sensorData: [{
+            timestamp: new Date().toISOString(),
+            binlevel: binLevel
+        }]
+    };
 
-    const addTrashCan = ()=>{
-        set (ref(db, 'trashCans/'+trashCanId),{
-            trashCanId: trashCanId,
-            companyName: companyName,
-            longitude: longitude,
-            latitude: latitude,
-            type: type,
-            collectionType: collectionType,
-            collectionDate: collectionDate,
-            binLevel: binLevel
+    try {
+        const response = await fetch('https://waste-wise-api-sdgp.koyeb.app/api/devices', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(trashCanData)
         });
-        setTrashCanId('')
-        setCompanyName('')
-        setLatitude('0.0000')
-        setLongitude('0.0000')
-        setType('PAPER')
-        setCollectionType('')
-        setCollectionDate('')
-        setBinLevel(0)
+
+        if (response.ok) {
+            // If the response is successful, reset the form fields
+            setTrashCanId('');
+            setCompanyName('');
+            setLatitude('0.0000');
+            setLongitude('0.0000');
+            setType('PAPER');
+            setCollectionType('');
+            setCollectionDate('');
+            setBinLevel(0);
+            Alert.alert('Success', 'Trash can added successfully.');
+        } else {
+            throw new Error('Failed to add trash can');
+        }
+    } catch (error) {
+        console.error(error);
+        Alert.alert('Error', 'Failed to add trash can. Please try again later.');
     }
+};
     const CustomButton = ({ title, onPress }) => (
         <TouchableOpacity
         style={styles.button}
@@ -139,30 +156,29 @@ const addtrashcan = () => {
         </TouchableOpacity>
         </View>
         {showMapView && (
-                <View style={{ flex: 1 }}>
-                    {location && (
-                        <MapView
-                            style={{ flex: 1 }}
-                            initialRegion={{
-                                latitude: location.coords.latitude,
-                                longitude: location.coords.longitude,
-                                latitudeDelta: 0.0922,
-                                longitudeDelta: 0.0421,
-                            }}
-                            onPress={(e) => handleMapPress(e.nativeEvent.coordinate)}
-                        >
-                            {latitude !== '0.0000' && longitude !== '0.0000' && (
-                                <Marker
-                                    coordinate={{
-                                        latitude: parseFloat(latitude),
-                                        longitude: parseFloat(longitude),
-                                    }}
-                                />
-                            )}
-                        </MapView>
-                    )}
+                <View style={styles.mapContainer}>
+                    <MapView
+                        style={{ flex: 1 }}
+                        initialRegion={{
+                            latitude: location.coords.latitude,
+                            longitude: location.coords.longitude,
+                            latitudeDelta: 0.0922,
+                            longitudeDelta: 0.0421,
+                        }}
+                        showsUserLocation={true}
+                        onPress={handleMapPress}
+                    >
+                        {latitude !== '0.0000' && longitude !== '0.0000' && (
+                            <Marker
+                                coordinate={{
+                                    latitude: parseFloat(latitude),
+                                    longitude: parseFloat(longitude),
+                                }}
+                            />
+                        )}
+                    </MapView>
                     <TouchableOpacity
-                        style={[styles.button, { position: 'absolute', bottom: 20, left: 20 }]}
+                        style={styles.confirmButton}
                         onPress={() => setShowMapView(false)}
                     >
                         <Text style={styles.buttonText}>Confirm Location</Text>
@@ -181,6 +197,9 @@ const styles = StyleSheet.create({
       padding: 20,
       
     },
+    mapContainer: {
+      flex: 1,
+  },
     header: {
       marginTop: 20,
       justifyContent:'center',

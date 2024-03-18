@@ -3,7 +3,6 @@ import { StyleSheet, View, Text, Button, FlatList, Linking, Alert } from 'react-
 import * as Location from 'expo-location';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 
-
 const driverviewmap = () => {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
@@ -27,16 +26,23 @@ const driverviewmap = () => {
 
   useEffect(() => {
     if (location) {
-      const destinations = [
-        { id: '1', name: 'Colombo', latitude: 6.9271, longitude: 79.8613 },
-        { id: '2', name: 'Kandy', latitude: 7.2911, longitude: 80.6354 },
-        { id: '3', name: 'Galle', latitude: 6.0572, longitude: 80.2173 },
-        { id: '4', name: 'Anuradhapura', latitude: 8.4455, longitude: 80.3521 },
-        { id: '5', name: 'Nuwara Eliya', latitude: 6.9439, longitude: 80.7208 },
-      ];
-      setDestinations(destinations);
+      fetchData(); // Fetch destinations when location is available
     }
   }, [location]);
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch('https://waste-wise-api-sdgp.koyeb.app/api/devices');
+      if (!response.ok) {
+        throw new Error('Failed to fetch destinations');
+      }
+      const data = await response.json();
+      setDestinations(data); // Assuming data is an array of destinations with latitude and longitude
+    } catch (error) {
+      console.error('Error fetching destinations:', error);
+      setErrorMsg('Failed to fetch destinations');
+    }
+  };
 
   useEffect(() => {
     if (journeyStarted && currentDestination) {
@@ -74,18 +80,43 @@ const driverviewmap = () => {
     }
   };
 
-  const confirmDestination = () => {
+  const confirmDestination = async () => {
     if (currentDestination) {
-      const updatedDestinations = destinations.filter(
-        (destination) => destination !== currentDestination
-      );
-      setDestinations(updatedDestinations);
-      setCurrentDestination(null);
-      setRouteCoordinates([]);
-      if (updatedDestinations.length === 0) {
-        setJourneyStarted(false);
-      } else {
-        setCurrentDestination(updatedDestinations[0]);
+      try {
+        const trashCanId = currentDestination.trashCanId;
+        const updatedDestinations = destinations.filter(destination => destination.trashCanId !== trashCanId);
+        setDestinations(updatedDestinations);
+        setCurrentDestination(null);
+        setRouteCoordinates([]);
+        
+        // Call API to update collectionState to "Collected"
+        const apiUrl = `https://waste-wise-api-sdgp.koyeb.app/api/devices/${trashCanId}`;
+        const response = await fetch(apiUrl, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            collectionState: 'ABCDEF'
+          })
+        });
+  
+        if (!response.ok) {
+          throw new Error('Failed to update collection state');
+        }
+  
+        // Refresh destinations after updating
+        fetchData();
+        
+        // Check if there are no more destinations, stop journey
+        if (updatedDestinations.length === 0) {
+          setJourneyStarted(false);
+        } else {
+          setCurrentDestination(updatedDestinations[0]);
+        }
+      } catch (error) {
+        console.error('Error updating collection state:', error);
+        setErrorMsg('Failed to update collection state');
       }
     }
   };
@@ -161,7 +192,7 @@ const driverviewmap = () => {
           latitude: currentDestination.latitude,
           longitude: currentDestination.longitude,
         }}
-        title={currentDestination.name}
+        title={currentDestination.trashCanId}
         description="Your destination"
         pinColor="red"
       />
@@ -198,7 +229,7 @@ const driverviewmap = () => {
       )}
       {journeyStarted && (
         <View style={styles.journeyContainer}>
-          <Text>Current Destination: {currentDestination ? currentDestination.name : ''}</Text>
+          <Text>Current Destination: {currentDestination ? currentDestination.trashCanId : ''}</Text>
           <Button title="Confirm Destination" onPress={confirmDestination} />
         </View>
       )}
@@ -207,9 +238,9 @@ const driverviewmap = () => {
         {destinations.length > 0 && !journeyStarted && (
           <FlatList
             data={destinations}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item.trashCanId }
             renderItem={({ item }) => (
-              <Text style={styles.destinationText}>{item.name}</Text>
+              <Text style={styles.destinationText}>{item.trashCanId}</Text>
             )}
           />
         )}

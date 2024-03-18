@@ -7,7 +7,6 @@ const companylogin = () => {
     const [selectedCountry, setSelectedCountry] = useState("Select Country");
     const [mobileNumber, setMobileNumber] = useState('');
 
-
     const CustomButton = ({ title, onPress }) => (
         <TouchableOpacity
         style={styles.button}
@@ -41,7 +40,6 @@ const companylogin = () => {
             </TouchableOpacity>
             </View>
         </View>
-
         <Text style={styles.label}>Name</Text>
         <TextInput style={styles.input} placeholder="John Doe" />
         <Text style={styles.label}>Email</Text>

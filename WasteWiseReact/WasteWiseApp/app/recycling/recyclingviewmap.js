@@ -3,15 +3,14 @@ import { StyleSheet, View, Text, Button, FlatList, Linking, Alert } from 'react-
 import * as Location from 'expo-location';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 
-
-const RecyclingViewMap = () => {
+const recyclingviewmap = () => {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [destinations, setDestinations] = useState([]);
   const [currentDestination, setCurrentDestination] = useState(null);
   const [journeyStarted, setJourneyStarted] = useState(false);
   const [routeCoordinates, setRouteCoordinates] = useState([]);
-  
+  s
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -27,16 +26,23 @@ const RecyclingViewMap = () => {
 
   useEffect(() => {
     if (location) {
-      const destinations = [
-        { id: '1', name: 'Colombo', latitude: 6.9271, longitude: 79.8613 },
-        { id: '2', name: 'Kandy', latitude: 7.2911, longitude: 80.6354 },
-        { id: '3', name: 'Galle', latitude: 6.0572, longitude: 80.2173 },
-        { id: '4', name: 'Anuradhapura', latitude: 8.4455, longitude: 80.3521 },
-        { id: '5', name: 'Nuwara Eliya', latitude: 6.9439, longitude: 80.7208 },
-      ];
-      setDestinations(destinations);
+      fetchData(); // Fetch destinations when location is available
     }
   }, [location]);
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch('https://waste-wise-api-sdgp.koyeb.app/api/devices');
+      if (!response.ok) {
+        throw new Error('Failed to fetch destinations');
+      }
+      const data = await response.json();
+      setDestinations(data); // Assuming data is an array of destinations with latitude and longitude
+    } catch (error) {
+      console.error('Error fetching destinations:', error);
+      setErrorMsg('Failed to fetch destinations');
+    }
+  };
 
   useEffect(() => {
     if (journeyStarted && currentDestination) {
@@ -74,18 +80,43 @@ const RecyclingViewMap = () => {
     }
   };
 
-  const confirmDestination = () => {
+  const confirmDestination = async () => {
     if (currentDestination) {
-      const updatedDestinations = destinations.filter(
-        (destination) => destination !== currentDestination
-      );
-      setDestinations(updatedDestinations);
-      setCurrentDestination(null);
-      setRouteCoordinates([]);
-      if (updatedDestinations.length === 0) {
-        setJourneyStarted(false);
-      } else {
-        setCurrentDestination(updatedDestinations[0]);
+      try {
+        const trashCanId = currentDestination.trashCanId;
+        const updatedDestinations = destinations.filter(destination => destination.trashCanId !== trashCanId);
+        setDestinations(updatedDestinations);
+        setCurrentDestination(null);
+        setRouteCoordinates([]);
+        
+        // Call API to update collectionState to "Collected"
+        const apiUrl = `https://waste-wise-api-sdgp.koyeb.app/api/devices/${trashCanId}`;
+        const response = await fetch(apiUrl, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            collectionState: 'COLLECTED'
+          })
+        });
+  
+        if (!response.ok) {
+          throw new Error('Failed to update collection state');
+        }
+  
+        // Refresh destinations after updating
+        fetchData();
+        
+        // Check if there are no more destinations, stop journey
+        if (updatedDestinations.length === 0) {
+          setJourneyStarted(false);
+        } else {
+          setCurrentDestination(updatedDestinations[0]);
+        }
+      } catch (error) {
+        console.error('Error updating collection state:', error);
+        setErrorMsg('Failed to update collection state');
       }
     }
   };
@@ -161,7 +192,7 @@ const RecyclingViewMap = () => {
           latitude: currentDestination.latitude,
           longitude: currentDestination.longitude,
         }}
-        title={currentDestination.name}
+        title={currentDestination.trashCanId}
         description="Your destination"
         pinColor="red"
       />
@@ -198,7 +229,7 @@ const RecyclingViewMap = () => {
       )}
       {journeyStarted && (
         <View style={styles.journeyContainer}>
-          <Text>Current Destination: {currentDestination ? currentDestination.name : ''}</Text>
+          <Text>Current Destination: {currentDestination ? currentDestination.trashCanId : ''}</Text>
           <Button title="Confirm Destination" onPress={confirmDestination} />
         </View>
       )}
@@ -207,9 +238,9 @@ const RecyclingViewMap = () => {
         {destinations.length > 0 && !journeyStarted && (
           <FlatList
             data={destinations}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item.trashCanId }
             renderItem={({ item }) => (
-              <Text style={styles.destinationText}>{item.name}</Text>
+              <Text style={styles.destinationText}>{item.trashCanId}</Text>
             )}
           />
         )}
@@ -277,181 +308,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RecyclingViewMap;
-
-
-
-
-// import React, { useState, useEffect } from 'react';
-// import { StyleSheet, View, Text, Button, FlatList } from 'react-native';
-// import * as Location from 'expo-location';
-// import MapView, { Marker, Polyline } from 'react-native-maps';
-
-
-// const recyclingViewMap = () => {
-//   const [location, setLocation] = useState(null);
-//   const [errorMsg, setErrorMsg] = useState(null);
-//   const [destinations, setDestinations] = useState([]);
-//   const [currentDestination, setCurrentDestination] = useState(null);
-//   const [journeyStarted, setJourneyStarted] = useState(false);
-//   const [routeCoordinates, setRouteCoordinates] = useState([]);
-
-
-//   useEffect(() => {
-//     (async () => {
-//       let { status } = await Location.requestForegroundPermissionsAsync();
-//       if (status !== 'granted') {
-//         setErrorMsg('Permission to access location was denied');
-//         return;
-//       }
-
-//       let location = await Location.getCurrentPositionAsync({});
-//       setLocation(location);
-//     })();
-//   }, []);
-
-//   useEffect(() => {
-//     if (location) {
-//       const destinations = [
-//         { id: '1', name: 'Colombo', latitude: 6.9271, longitude: 79.8613 },
-//         { id: '2', name: 'Kandy', latitude: 7.2911, longitude: 80.6354 },
-//         { id: '3', name: 'Galle', latitude: 6.0572, longitude: 80.2173 },
-//         { id: '4', name: 'Anuradhapura', latitude: 8.4455, longitude: 80.3521 },
-//         { id: '5', name: 'Nuwara Eliya', latitude: 6.9439, longitude: 80.7208 },
-//       ];
-//       setDestinations(destinations);
-//     }
-//   }, [location]);
-
-//   const startJourney = () => {
-//     if (destinations.length > 0) {
-//       setCurrentDestination(destinations[0]);
-//       setJourneyStarted(true);
-//     }
-//   };
-
-//   const confirmDestination = () => {
-//     if (currentDestination) {
-//       const updatedDestinations = destinations.filter(
-//         (destination) => destination.id !== currentDestination.id
-//       );
-//       setDestinations(updatedDestinations);
-//       setCurrentDestination(null);
-//       setJourneyStarted(false);
-//     }
-//   };
-
-//   if (errorMsg) {
-//     return <Text style={styles.errorMsg}>{errorMsg}</Text>;
-//   }
-
-//   if (!location) {
-//     return <Text style={styles.loadingMsg}>Getting your location...</Text>;
-//   }
-
-//   let marker = null;
-//   if (location) {
-//     marker = (
-//       <Marker
-//         coordinate={{
-//           latitude: location.coords.latitude,
-//           longitude: location.coords.longitude,
-//         }}
-//         title="Your Location"
-//         description="You are here"
-//       />
-//     );
-//   }
-
-//   let destinationMarker = null;
-//   if (currentDestination) {
-//     destinationMarker = (
-//       <Marker
-//         coordinate={{
-//           latitude: currentDestination.latitude,
-//           longitude: currentDestination.longitude,
-//         }}
-//         title={currentDestination.name}
-//         description="Your destination"
-//       />
-//     );
-//   }
-
-//   return (
-//     <View style={styles.container}>
-//       <MapView
-//         style={styles.map}
-//         initialRegion={{
-//           latitude: location.coords.latitude,
-//           longitude: location.coords.longitude,
-//           latitudeDelta: 0.0922,
-//           longitudeDelta: 0.0421,
-//         }}
-//       >
-//         {marker}
-//         {destinationMarker}
-//       </MapView>
-//       {journeyStarted ? (
-//         <View style={styles.journeyContainer}>
-//           <Text style={styles.journeyText}>
-//             Your current destinationText: {currentDestination.name}
-//           </Text>
-//           <Button title="Confirm Destination" onPress={confirmDestination} />
-//         </View>
-//       ) : (
-//         <Button title="Start Journey" onPress={startJourney} />
-//       )}
-//       {destinations.length > 0 ? (
-//         <FlatList
-//           data={destinations}
-//           keyExtractor={(item) => item.id}
-//           renderItem={({ item }) => (
-//             <Text style={styles.destinationText}>{item.name}</Text>
-//           )}
-//         />
-//       ) : null}
-//     </View>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-//   map: {
-//     width: '100%',
-//     height: '100%',
-//   },
-//   errorMsg: {
-//     color: 'red',
-//     fontSize: 16,
-//   },
-//   loadingMsg: {
-//     color: 'blue',
-//     fontSize: 16,
-//   },
-//   journeyContainer: {
-//     position: 'absolute',
-//     bottom: 20,
-//     left: 20,
-//     right: 20,
-//     backgroundColor: '#fff',
-//     padding: 10,
-//     borderRadius: 5,
-//     borderWidth: 1,
-//     borderColor: '#ccc',
-//   },
-//   journeyText: {
-//     fontSize: 16,
-//     marginBottom: 10,
-//   },
-//   destinationText: {
-//     fontSize: 16,
-//     marginTop: 10,
-//   },
-// });
-
-// export default recyclingViewMap;
+export default recyclingviewmap;
