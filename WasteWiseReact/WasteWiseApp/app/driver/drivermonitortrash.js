@@ -1,5 +1,15 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react';
+import {
+  StyleSheet,
+  View,
+  SafeAreaView,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
+import {Picker} from '@react-native-picker/picker';
+import { Link, router } from 'expo-router'
+import { SimpleLineIcons } from '@expo/vector-icons';
 
 const DriverMonitorTrash = () => {
 

@@ -5,7 +5,6 @@ const TrashCanDetails = ({ trashCanId }) => {
   return (
     <View>
       <Text>Trash Can Details for ID: {trashCanId}</Text>
-      {/* Add your trash can details components here */}
     </View>
   );
 };

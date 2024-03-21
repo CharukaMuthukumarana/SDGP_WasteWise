@@ -22,10 +22,10 @@ const companymonitortrash = () => {
         const borderColor = percentage > 80 ? 'red' : '#d3d3d3';
         const borderWidth = percentage > 80 ? 3 : 2;
         const opacityColor = percentage > 80 ? '#ffb5b7' : '#fbd9b5';
-    
+
         // Check if the selected type is 'All' or matches the current type
         const isVisible = selectedType === 'All' || selectedType === type;
-    
+
         return (
           isVisible && (
             <TouchableOpacity

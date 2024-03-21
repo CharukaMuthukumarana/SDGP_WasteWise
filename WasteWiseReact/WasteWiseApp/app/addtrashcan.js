@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, TextInput, ScrollView, TouchableOpacity } from 
 import React, { useState, useEffect } from 'react'
 import {Picker} from '@react-native-picker/picker';
 import * as Location from 'expo-location';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, Polyline } from 'react-native-maps';
 import { Alert } from 'react-native';
 
 const addtrashcan = () => {
@@ -16,12 +16,14 @@ const addtrashcan = () => {
     const [binLevel, setBinLevel] = useState(0);
     const [showMapView, setShowMapView] = useState(false);
     const [location, setLocation] = useState(null);
-    
+  
+
+
     useEffect(() => {
       (async () => {
           let { status } = await Location.requestForegroundPermissionsAsync();
           if (status !== 'granted') {
-              setErrorMsg('Permission to access location was denied');
+              Alert.alert('Permission not granted');
               return;
           }
 
@@ -29,16 +31,6 @@ const addtrashcan = () => {
           setLocation(location);
       })();
   }, []);
-
-  const openMapView = () => {
-      setShowMapView(true);
-  };
-
-  const handleMapPress = (event) => {
-      setLatitude(String(event.nativeEvent.coordinate.latitude));
-      setLongitude(String(event.nativeEvent.coordinate.longitude));
-      setShowMapView(false);
-  };
 
   const addTrashCan = async () => {
     const trashCanData = {
@@ -92,70 +84,65 @@ const addtrashcan = () => {
         </TouchableOpacity>
     );
 
+    const handleMapPress = (event) => {
+      const { latitude, longitude } = event.nativeEvent.coordinate;
+      setLatitude(latitude.toString());
+      setLongitude(longitude.toString());
+  };
+  
     return (
-        <ScrollView>
-        <View style={styles.container}>
-        
-        <View style={styles.header}>
-            <Text style={styles.title1}>Waste Wise</Text>
-        </View>
-        <Text style={[styles.subtitle, styles.boldText]}>Add</Text>
-        <Text style={[styles.subtitle, styles.boldText]}>Trash Can</Text>
-
-        <Text style={styles.label}>Trash Can ID</Text>
-        <TextInput 
-        style={styles.input} 
-        placeholder="ABC_1" 
-        value={trashCanId}
-        onChangeText={(text)=> setTrashCanId(text)}
-        />
-        <Text style={styles.label}>Company Name</Text>
-        <TextInput 
-        style={styles.input} 
-        placeholder="ABC" 
-        value={companyName}
-        onChangeText={(text)=> setCompanyName(text)}
-        />
-        <Text style={styles.label}>Latitude of the Company</Text>
-        <View style={styles.phoneContainer}>
-        <TextInput
-            style={styles.input}
-            placeholder="Enter the Latitude"
-            keyboardType="numeric"
-            value={latitude}
-            onChangeText={(text) => setLatitude(String(text))}
-        />
-        </View>
-        <Text style={styles.label}>Latitude of the Company</Text>
-        <View style={styles.phoneContainer}>
-        <TextInput
-            style={styles.input}
-            placeholder="Enter the Longitude"
-            keyboardType="numeric"
-            value={longitude}
-            onChangeText={(text) => setLongitude(String(text))}
-        />
-        </View>
-
-        <Text style={styles.label}>Trash Type</Text>
-        <Picker
-            style={styles.picker}
-            selectedValue={type}
-            onValueChange={(itemValue, itemIndex) =>
-                setType(itemValue)
-            }>
-            <Picker.Item label="Select Type" value={null} />
-            <Picker.Item label="PAPER" value="PAPER" />
-            <Picker.Item label="GLASS/METAL" value="GLASS/METAL" />
-            <Picker.Item label="PLASTIC" value="PLASTIC" />
-        </Picker>
-
-        <CustomButton title="Add Trash Can" onPress={addTrashCan} />
-        <TouchableOpacity style={styles.button} onPress={openMapView}>
+      <View style={styles.container}>
+            <ScrollView>
+                <View style={styles.header}>
+                    <Text style={styles.title1}>Waste Wise</Text>
+                </View>
+                <Text style={[styles.subtitle, styles.boldText]}>Add</Text>
+                <Text style={[styles.subtitle, styles.boldText]}>Trash Can</Text>
+                <Text style={styles.label}>Trash Can ID</Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder="ABC_1"
+                    value={trashCanId}
+                    onChangeText={(text) => setTrashCanId(text)}
+                />
+                <Text style={styles.label}>Company Name</Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder="ABC"
+                    value={companyName}
+                    onChangeText={(text) => setCompanyName(text)}
+                />
+                <Text style={styles.label}>Latitude</Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Latitude"
+                    value={latitude}
+                    onChangeText={(text) => setLatitude(text)}
+                />
+                <Text style={styles.label}>Longitude</Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Longitude"
+                    value={longitude}
+                    onChangeText={(text) => setLongitude(text)}
+                />
+                <Text style={styles.label}>Trash Type</Text>
+                <Picker
+                    style={styles.picker}
+                    selectedValue={type}
+                    onValueChange={(itemValue, itemIndex) => setType(itemValue)}
+                >
+                    <Picker.Item label="Select Type" value={null} />
+                    <Picker.Item label="PAPER" value="PAPER" />
+                    <Picker.Item label="GLASS/METAL" value="GLASS/METAL" />
+                    <Picker.Item label="PLASTIC" value="PLASTIC" />
+                </Picker>
+                <CustomButton title="Add Trash Can" onPress={addTrashCan} />
+                <TouchableOpacity style={styles.button} onPress={() => setShowMapView(true)}>
                     <Text style={styles.buttonText}>Select Location</Text>
-        </TouchableOpacity>
-        </View>
-        {showMapView && (
+                </TouchableOpacity>
+            </ScrollView>
+            {showMapView && location && (
                 <View style={styles.mapContainer}>
                     <MapView
                         style={{ flex: 1 }}
@@ -165,104 +152,86 @@ const addtrashcan = () => {
                             latitudeDelta: 0.0922,
                             longitudeDelta: 0.0421,
                         }}
-                        showsUserLocation={true}
                         onPress={handleMapPress}
                     >
-                        {latitude !== '0.0000' && longitude !== '0.0000' && (
-                            <Marker
-                                coordinate={{
-                                    latitude: parseFloat(latitude),
-                                    longitude: parseFloat(longitude),
-                                }}
-                            />
-                        )}
+                        <Marker
+                            coordinate={{
+                                latitude: parseFloat(latitude),
+                                longitude: parseFloat(longitude),
+                            }}
+                        />
                     </MapView>
-                    <TouchableOpacity
-                        style={styles.confirmButton}
-                        onPress={() => setShowMapView(false)}
-                    >
-                        <Text style={styles.buttonText}>Confirm Location</Text>
+                    <TouchableOpacity style={styles.confirmButton} onPress={() => setShowMapView(false)}>
+                        <Text style={styles.buttonText}>Close Map</Text>
                     </TouchableOpacity>
                 </View>
             )}
-        </ScrollView>
+        </View>
   )
 }
 
 export default addtrashcan
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      padding: 20,
-      
-    },
-    mapContainer: {
+  container: {
       flex: 1,
   },
-    header: {
+  mapContainer: {
+      ...StyleSheet.absoluteFillObject,
+      zIndex: 1,
+  },
+  header: {
       marginTop: 20,
-      justifyContent:'center',
+      justifyContent: 'center',
       alignItems: 'center',
       marginBottom: 20,
-    },
-    title1: {
+  },
+  title1: {
       fontSize: 40,
       fontWeight: 'bold',
-    },
-    subtitle: {
+  },
+  subtitle: {
       color: 'purple',
       fontSize: 35,
-      textAlign: 'center'
-    },
-    boldText: {
-      fontWeight: 'bold',
-    },
-    smallText: {
-      fontSize: 13,
-      marginTop: 0,
       textAlign: 'center',
-    },
-    label: {
+  },
+  boldText: {
+      fontWeight: 'bold',
+  },
+  label: {
       marginTop: 15,
       fontSize: 16,
-    },
-    input: {
+  },
+  input: {
       borderWidth: 1,
       borderColor: 'black',
       borderRadius: 5,
       padding: 10,
       marginTop: 5,
-      flex:1,
-  
-    },
-    picker: {
       flex: 1,
-    },
-    countryContainer: {
-      marginTop: 15,
-    },
-    ButtonText: {
-      color: 'blue',
-      fontSize: 13,
-      marginLeft: 4,
-      textAlign: 'left',
-      textDecorationLine: 'underline',
-    },
-    phoneContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-    button:{
+  },
+  picker: {
+      flex: 1,
+  },
+  button: {
       backgroundColor: 'grey',
       padding: 12,
       borderRadius: 5,
       marginTop: 30,
-    },
-    buttonText: {
+  },
+  buttonText: {
       color: 'white',
       textAlign: 'center',
       fontWeight: 'bold',
       fontSize: 15,
-    },
-  });
+  },
+  confirmButton: {
+      position: 'absolute',
+      bottom: 20,
+      left: 20,
+      right: 20,
+      backgroundColor: 'grey',
+      padding: 12,
+      borderRadius: 5,
+  },
+});
