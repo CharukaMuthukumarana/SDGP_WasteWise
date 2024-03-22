@@ -117,6 +117,7 @@ const DriverCollectionSchedule = () => {
                 </View>
 
                 <Separator/>
+      <ScrollView style={[{marginBottom:20,}]} >
 
                 {data.map((item, index) => (
                     <CustomButton
@@ -131,10 +132,14 @@ const DriverCollectionSchedule = () => {
                     predictedCollection={item.predictedCollection}
                     />
                 ))}
-            </SafeAreaView>
-        </ScrollView>    
+            
+          </ScrollView>    
+        </SafeAreaView>
+      </ScrollView>
     )
+  
 }
+
 
 export default DriverCollectionSchedule;
 

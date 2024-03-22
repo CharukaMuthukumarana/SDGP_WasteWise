@@ -95,7 +95,7 @@ const CompanyMonitorTrash = ({ navigation }) => {
 
       <Separator/>
 
-      <ScrollView>
+      <ScrollView style={[{marginBottom:20,}]} >
         {data.map((item, index) => (
           <CustomButton
             key={index}

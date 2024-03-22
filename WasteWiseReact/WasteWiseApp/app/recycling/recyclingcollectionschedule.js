@@ -118,6 +118,7 @@ const RecyclingCollectionSchedule = () => {
                 </View>
 
                 <Separator/>
+      <ScrollView style={[{marginBottom:20,}]} >
 
                 {data.map((item, index) => (
                     <CustomButton
@@ -132,6 +133,7 @@ const RecyclingCollectionSchedule = () => {
                     predictedCollection={item.predictedCollection}
                     />
                 ))}
+                </ScrollView>
             </SafeAreaView>
         </ScrollView>    
     )
