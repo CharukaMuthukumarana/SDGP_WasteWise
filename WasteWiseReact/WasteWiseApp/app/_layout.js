@@ -61,6 +61,10 @@ export default function Layout(){
         options={{ headerTitle: "Waste Wise" }}
         />
         <Stack.Screen 
+        name="company/companytrashdetails"
+        options={{ headerTitle: "Waste Wise" }}
+        />
+        <Stack.Screen 
         name="company/companycollectionschedule"
         options={{ headerTitle: "Waste Wise" }}
         />
@@ -78,6 +82,10 @@ export default function Layout(){
         />
         <Stack.Screen 
         name="recycling/recyclingcollectionschedule"
+        options={{ headerTitle: "Waste Wise" }}
+        />
+        <Stack.Screen 
+        name="recycling/recyclingtrashdetails"
         options={{ headerTitle: "Waste Wise" }}
         />
         <Stack.Screen 

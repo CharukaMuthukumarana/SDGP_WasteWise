@@ -1,6 +1,6 @@
 //Company Collection Schedule
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -12,7 +12,22 @@ import {
 const CompanyMonitorTrash = ({ navigation }) => {
   const [selectedType, setSelectedType] = useState('All'); // Initial selected type
   const Separator = () => <View style={styles.separator} />;
-  
+  const [trashData, setTrashData] = useState([]);
+
+  useEffect(() => {
+    // Fetch data from the database
+    const fetchData = async () => {
+      try {
+        const response = await fetch('https://waste-wise-api-sdgp.koyeb.app/api/devices');
+        const data = await response.json();
+        setTrashData(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const CustomButton = ({ title, date, type, collectionType}) => {
 
@@ -71,21 +86,7 @@ const CompanyMonitorTrash = ({ navigation }) => {
     // Return the color based on  the type, default to a fallback color if not found
     return typeColors[collectionType] || 'grey';
   };
-  const data = [
-    { title: 'TrashCanID_1', date: 'DD/MM/YYYY', type: 'PAPER', collectionType:'Collected'},
-    { title: 'TrashCanID_2', date: 'DD/MM/YYYY', type: 'PLASTIC', collectionType:'Collected'},
-    { title: 'TrashCanID_3', date: 'DD/MM/YYYY', type: 'GLASS/METAL', collectionType:'Collected'},
-    { title: 'TrashCanID_4', date: 'DD/MM/YYYY', type: 'GLASS/METAL', collectionType:'Collected'},
-    { title: 'TrashCanID_5', date: 'DD/MM/YYYY', type: 'GLASS/METAL', collectionType:'Collected'},
-    { title: 'TrashCanID_6', date: 'DD/MM/YYYY', type: 'GLASS/METAL', collectionType:'Predicted'},
-    { title: 'TrashCanID_7', date: 'DD/MM/YYYY', type: 'GLASS/METAL', collectionType:'Predicted'},
-    { title: 'TrashCanID_8', date: 'DD/MM/YYYY', type: 'GLASS/METAL', collectionType:'Predicted'},
-    { title: 'TrashCanID_9', date: 'DD/MM/YYYY', type: 'GLASS/METAL', collectionType:'Collected'},
-    { title: 'TrashCanID_10', date: 'DD/MM/YYYY', type: 'GLASS/METAL', collectionType:'Collected'},
-    { title: 'TrashCanID_11', date: 'DD/MM/YYYY', type: 'GLASS/METAL', collectionType:'Predicted'},
-    { title: 'TrashCanID_12', date: 'DD/MM/YYYY', type: 'GLASS/METAL', collectionType:'Predicted'},
-    { title: 'TrashCanID_13', date: 'DD/MM/YYYY', type: 'GLASS/METAL', collectionType:'Predicted'},
-  ];
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -96,15 +97,21 @@ const CompanyMonitorTrash = ({ navigation }) => {
       <Separator/>
 
       <ScrollView style={[{marginBottom:20,}]} >
-        {data.map((item, index) => (
-          <CustomButton
-            key={index}
-            title={item.title}
-            date={item.date}
-            type={item.type}
-            collectionType={item.collectionType}
-          />
-        ))}
+      {trashData.map((item, index) => {
+          // Extracting date from collectionDate and formatting it
+          const collectionDate = new Date(item.collectionDate);
+          const formattedDate = `${collectionDate.getDate()}/${collectionDate.getMonth() + 1}/${collectionDate.getFullYear()}`;
+
+          return (
+            <CustomButton
+              key={index}
+              title={item.trashCanId}
+              date={formattedDate}
+              type={item.wasteType}
+              collectionType={item.collectionState}
+            />
+          );
+        })}
       </ScrollView>
     </SafeAreaView>
   );

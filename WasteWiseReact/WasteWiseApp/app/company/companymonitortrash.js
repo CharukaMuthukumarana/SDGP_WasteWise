@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -11,21 +11,38 @@ import {Picker} from '@react-native-picker/picker';
 import { Link, router } from 'expo-router'
 import { SimpleLineIcons } from '@expo/vector-icons';
 
-
 const companymonitortrash = () => {
 
     const [selectedType, setSelectedType] = useState('All'); // Initial selected type
     const Separator = () => <View style={styles.separator} />;
+    const [trashData, setTrashData] = useState([]);
+
+    useEffect(() => {
+      fetchData();
+    }, []);
+
+    const fetchData = async () => {
+      try {
+        const response = await fetch('https://waste-wise-api-sdgp.koyeb.app/api/devices');
+        if (!response.ok) {
+          throw new Error('Failed to fetch data');
+        }
+        const data = await response.json();
+        setTrashData(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
     
     const CustomButton = ({ title, title2, onPress, color1, date, type, percentage }) => {
         const barColor = percentage > 80 ? 'red' : 'orange';
         const borderColor = percentage > 80 ? 'red' : '#d3d3d3';
         const borderWidth = percentage > 80 ? 3 : 2;
         const opacityColor = percentage > 80 ? '#ffb5b7' : '#fbd9b5';
-
+    
         // Check if the selected type is 'All' or matches the current type
         const isVisible = selectedType === 'All' || selectedType === type;
-
         return (
           isVisible && (
             <TouchableOpacity
@@ -95,16 +112,16 @@ const companymonitortrash = () => {
         return typeColors[type] || 'grey';
     };
 
-    const data = [
-        { title: 'TrashCanID1', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'PAPER', percentage: 81 },
-        { title: 'TrashCanID2', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'PLASTIC', percentage: 60 },
-        { title: 'TrashCanID3', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 45 },
-        { title: 'TrashCanID3', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 50 },
-        { title: 'TrashCanID3', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 45 },
-        { title: 'TrashCanID3', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 90 },
-        { title: 'TrashCanID3', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 89 },
-        // Add more data objects as needed
-    ];
+    // const data = [
+    //     { title: 'TrashCanID1', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'PAPER', percentage: 81 },
+    //     { title: 'TrashCanID2', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'PLASTIC', percentage: 60 },
+    //     { title: 'TrashCanID3', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 45 },
+    //     { title: 'TrashCanID3', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 50 },
+    //     { title: 'TrashCanID3', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 45 },
+    //     { title: 'TrashCanID3', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 90 },
+    //     { title: 'TrashCanID3', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 89 },
+    //     // Add more data objects as needed
+    // ];
 
     return (
         <ScrollView>
@@ -132,17 +149,27 @@ const companymonitortrash = () => {
 
                 <Separator/>
 
-                {data.map((item, index) => (
+                {trashData.map((item, index) => {
+                  // Extracting date from collectionDate and formatting it
+                  const collectionDate = new Date(item.collectionDate);
+                  const formattedDate = `${collectionDate.getDate()}/${collectionDate.getMonth() + 1}/${collectionDate.getFullYear()}`;
+
+                  return (
                     <CustomButton
-                    key={index}
-                    title={item.title}
-                    title2={item.title2}
-                    date={item.date}
-                    onPress={() => router.push("logins/companylogin2")}
-                    type={item.type}
-                    percentage={item.percentage}
+                      key={index}
+                      title={item.trashCanId}
+                      title2={`Collection Date: ${formattedDate}`}
+                      onPress={() =>
+                        router.push({
+                          pathname: '../company/companytrashdetails', // Updated dynamic route pattern
+                          params: { trashCanId: item.trashCanId }
+                        })
+                      }
+                      type={item.wasteType}
+                      percentage={item.sensorData && item.sensorData[0] ? item.sensorData[0].binlevel : 0}
                     />
-                ))}
+                  );
+                })}
         </SafeAreaView>
     </ScrollView>    
     )

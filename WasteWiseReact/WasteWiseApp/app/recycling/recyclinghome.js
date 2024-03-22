@@ -9,9 +9,11 @@ import React from 'react'
 import { Link, router } from 'expo-router'
 import { AntDesign } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useLocalSearchParams } from 'expo-router';
 
 
 const recyclinghome = () => {
+  const {username} = useLocalSearchParams();
   const CustomButton = ({ title, title2 ,onPress, color1 }) => (
     <TouchableOpacity onPress={onPress}>
     <LinearGradient
@@ -33,8 +35,12 @@ return (
     <SafeAreaView style={styles.container}>
     <View style={styles.center}>
     <Text style={[styles.title2, styles.boldText]}>
-        Company_Name
+        Welcome
     </Text>
+    <Text style={[styles.title3, styles.boldText]}>
+        {username}
+    </Text>
+
 
     </View>
 
@@ -100,8 +106,13 @@ const styles = StyleSheet.create({
   title2: {
     fontSize: 20, // Adjust the font size as needed
     textAlign: 'center',
-    marginVertical: 30,
-
+    marginTop: 30,
+    marginBottom: 10,
+  },
+  title3: {
+    fontSize: 20, // Adjust the font size as needed
+    textAlign: 'center',
+    marginBottom: 25,
   },
   boldText: {
     fontWeight: 'bold',

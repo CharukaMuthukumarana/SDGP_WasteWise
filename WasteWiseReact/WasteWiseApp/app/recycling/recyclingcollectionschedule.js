@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -14,6 +14,23 @@ import { SimpleLineIcons } from '@expo/vector-icons';
 const RecyclingCollectionSchedule = () => {
     const [selectedType, setSelectedType] = useState('All'); // Initial selected type
     const Separator = () => <View style={styles.separator} />;
+    const [trashData, setTrashData] = useState([]);
+
+    useEffect(() => {
+      // Fetch data from the database
+      const fetchData = async () => {
+        try {
+          const response = await fetch('https://waste-wise-api-sdgp.koyeb.app/api/devices');
+          const data = await response.json();
+          setTrashData(data);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+
+      fetchData();
+    }, []);
+  
     
     const CustomButton = ({ title, title2, onPress, color1, date, type, percentage, previousCollection, predictedCollection }) => {
         const barColor = percentage > 80 ? 'red' : 'orange';
@@ -76,22 +93,22 @@ const RecyclingCollectionSchedule = () => {
         return typeColors[type] || 'grey';
     };
 
-    const data = [
-      { title: 'TrashCanID_1', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'PAPER', percentage: 81, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
-      { title: 'TrashCanID_2', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'PLASTIC', percentage: 60, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
-      { title: 'TrashCanID_3', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 45, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
-      { title: 'TrashCanID_4', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'PAPER', percentage: 67, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
-      { title: 'TrashCanID_5', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'PLASTIC', percentage: 50, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
-      { title: 'TrashCanID_6', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 15, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
-      { title: 'TrashCanID_7', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'PAPER', percentage: 54, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
-      { title: 'TrashCanID_8', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'PLASTIC', percentage: 70, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
-      { title: 'TrashCanID_9', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'PAPER', percentage: 90, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
-      { title: 'TrashCanID_10', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 35, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
-      { title: 'TrashCanID_11', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'PAPER', percentage: 81, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
-      { title: 'TrashCanID_12', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'PLASTIC', percentage: 20, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
-      { title: 'TrashCanID_13', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 65, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
-        // Add more data objects as needed
-    ];
+    // const data = [
+    //   { title: 'TrashCanID_1', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'PAPER', percentage: 81, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
+    //   { title: 'TrashCanID_2', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'PLASTIC', percentage: 60, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
+    //   { title: 'TrashCanID_3', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 45, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
+    //   { title: 'TrashCanID_4', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'PAPER', percentage: 67, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
+    //   { title: 'TrashCanID_5', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'PLASTIC', percentage: 50, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
+    //   { title: 'TrashCanID_6', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 15, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
+    //   { title: 'TrashCanID_7', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'PAPER', percentage: 54, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
+    //   { title: 'TrashCanID_8', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'PLASTIC', percentage: 70, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
+    //   { title: 'TrashCanID_9', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'PAPER', percentage: 90, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
+    //   { title: 'TrashCanID_10', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 35, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
+    //   { title: 'TrashCanID_11', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'PAPER', percentage: 81, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
+    //   { title: 'TrashCanID_12', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'PLASTIC', percentage: 20, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
+    //   { title: 'TrashCanID_13', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 65, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
+    //     // Add more data objects as needed
+    // ];
 
     return (
         <ScrollView>
@@ -118,22 +135,22 @@ const RecyclingCollectionSchedule = () => {
                 </View>
 
                 <Separator/>
-      <ScrollView style={[{marginBottom:20,}]} >
 
-                {data.map((item, index) => (
+                {trashData.map((item, index) => {
+                  // Extracting date from collectionDate and formatting it
+                  const collectionDate = new Date(item.collectionDate);
+                  const formattedDate = `${collectionDate.getDate()}/${collectionDate.getMonth() + 1}/${collectionDate.getFullYear()}`;
+
+                  return (
                     <CustomButton
-                    key={index}
-                    title={item.title}
-                    title2={item.title2}
-                    date={item.date}
-                    onPress={() => router.push("logins/companylogin2")}
-                    type={item.type}
-                    percentage={item.percentage}
-                    previousCollection={item.previousCollection}
-                    predictedCollection={item.predictedCollection}
+                      key={index}
+                      title={item.trashCanId}
+                      date={formattedDate}
+                      type={item.wasteType}
+                      collectionType={item.collectionState}
                     />
-                ))}
-                </ScrollView>
+                  );
+                })}
             </SafeAreaView>
         </ScrollView>    
     )

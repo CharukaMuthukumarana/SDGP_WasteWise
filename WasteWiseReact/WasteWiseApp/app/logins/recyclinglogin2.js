@@ -1,6 +1,7 @@
 import { StyleSheet, View, Text, TouchableOpacity, TextInput, ScrollView, Alert } from 'react-native';
 import React, {useState} from 'react'
 import { Link, router } from 'expo-router'
+import { useLocation } from 'expo-router';
 
 const recyclinglogin2 = () => {
 
@@ -23,12 +24,15 @@ const recyclinglogin2 = () => {
             throw new Error('Failed to fetch users');
           }
           const data = await response.json();
-          
+
           // Check if username and password match
           const user = data.find(user => user.recyclingUsername === username && user.password === password);
           if (user) {
             // Username and password match, navigate to the next screen
-            router.push('recycling/recyclinghome');
+            router.push({
+              pathname: '../recycling/recyclinghome',
+              params: {username:username}
+            })
             Alert.alert('Logging Successful');
           } else {
             // Username and password do not match, show an alert
