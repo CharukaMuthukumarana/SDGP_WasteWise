@@ -6,6 +6,10 @@ import {Picker} from '@react-native-picker/picker';
 const recyclinglogin = () => {
     const [selectedCountry, setSelectedCountry] = useState("Select Country");
     const [mobileNumber, setMobileNumber] = useState('');
+    const [recyclingUsername, setRecyclingUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
 
 
     const CustomButton = ({ title, onPress }) => (
@@ -17,12 +21,35 @@ const recyclinglogin = () => {
         </TouchableOpacity>
     );
 
-    const handleRegister = () => {
-        // Perform registration logic here
-        // For now, just show an alert
+    const handleRegister = async () => {
+      try {
+        const response = await fetch('https://waste-wise-api-sdgp.koyeb.app/api/recyclingUsers', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            recyclingUsername,
+            password,
+            mobileNumber,
+            email,
+          }),
+        });
+  
+        if (!response.ok) {
+          throw new Error('Failed to register user');
+        }
+  
         Alert.alert('User Registered');
-        router.push("logins/recyclinglogin2");
+        // Navigate to the login screen
+        router.push('logins/recyclinglogin2');
+      } catch (error) {
+        console.error('Error registering user:', error);
+        Alert.alert('Error', 'Failed to register user. Please try again later.');
+      }
     };
+  
+    
 
     return (
         <ScrollView>
@@ -42,13 +69,22 @@ const recyclinglogin = () => {
             </View>
         </View>
 
-        <Text style={styles.label}>Name</Text>
-        <TextInput style={styles.input} placeholder="John Doe" />
+        <Text style={styles.label}>Username</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter your username"
+          value={recyclingUsername}
+          onChangeText={setRecyclingUsername}
+        />
         <Text style={styles.label}>Email</Text>
-        <TextInput style={styles.input} placeholder="Johndoe@mail.com" />
-
+        <TextInput
+          style={styles.input}
+          placeholder="Johndoe@mail.com"
+          value={email}
+          onChangeText={setEmail}
+        />
         <Text style={styles.label}>Mobile Number</Text>
-        <Picker
+        {/* <Picker
             style={styles.picker}
             selectedValue={selectedCountry}
             onValueChange={(itemValue, itemIndex) =>
@@ -58,7 +94,7 @@ const recyclinglogin = () => {
             <Picker.Item label="USA (+1)" value="+1" />
             <Picker.Item label="UK (+44)" value="+44" />
             {/* Add more countries as needed */}
-        </Picker>
+        {/* </Picker>  */}
         <View style={styles.phoneContainer}>
             <TextInput
                 style={styles.input}
@@ -70,9 +106,22 @@ const recyclinglogin = () => {
         </View>
 
         <Text style={styles.label}>Password</Text>
-        <TextInput style={styles.input} placeholder="*********" />
+        <TextInput
+          style={styles.input}
+          placeholder="Enter your password"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry={true}
+        />
         <Text style={styles.label}>Confirm Password</Text>
-        <TextInput style={styles.input} placeholder="*********" />
+        <TextInput
+          style={styles.input}
+          placeholder="Enter your password"
+          value={confirmPassword}
+          onChangeText={setConfirmPassword}
+          secureTextEntry={true}
+        />
+        
         <CustomButton
             title="Register"
             onPress={handleRegister}

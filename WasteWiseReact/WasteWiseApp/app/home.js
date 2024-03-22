@@ -53,6 +53,9 @@ const home = () => {
             <TouchableOpacity onPress={() =>router.push("/devicedata")}>
                 <Text style={styles.ButtonText}>device data</Text>
             </TouchableOpacity>
+            <TouchableOpacity onPress={() =>router.push("/clerklogin")}>
+                <Text style={styles.ButtonText}>ClerkLogin</Text>
+            </TouchableOpacity>
             </View>
         </View>
   </SafeAreaView>

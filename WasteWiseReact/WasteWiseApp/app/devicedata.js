@@ -11,7 +11,7 @@ const devicedata = () => {
   }, [])
 
   const fetchData = () => {
-    fetch('https://api.thingspeak.com/channels/2421336/feeds.json?api_key=YMEB70W7TK016LEX')
+    fetch('https://waste-wise-api-sdgp.koyeb.app/api/devices')
       .then(response => response.json())
       .then(data => setData(data))
       .catch(error => console.error(error));
@@ -33,7 +33,7 @@ const devicedata = () => {
       return item;
     });
 
-    fetch('https://api.thingspeak.com/channels/2421336/feeds.json?api_key=YMEB70W7TK016LEX', {
+    fetch('https://waste-wise-api-sdgp.koyeb.app/api/devices', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
