@@ -6,6 +6,11 @@ import {Picker} from '@react-native-picker/picker';
 const companylogin = () => {
     const [selectedCountry, setSelectedCountry] = useState("Select Country");
     const [mobileNumber, setMobileNumber] = useState('');
+    const [companyUsername, setCompanyUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+
 
     const CustomButton = ({ title, onPress }) => (
         <TouchableOpacity
@@ -16,12 +21,35 @@ const companylogin = () => {
         </TouchableOpacity>
     );
 
-    const handleRegister = () => {
-        // Perform registration logic here
-        // For now, just show an alert
+    const handleRegister = async () => {
+      try {
+        const response = await fetch('https://waste-wise-api-sdgp.koyeb.app/api/companyUsers', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            companyUsername,
+            password,
+            mobileNumber,
+            email,
+          }),
+        });
+  
+        if (!response.ok) {
+          throw new Error('Failed to register user');
+        }
+  
         Alert.alert('User Registered');
-        router.push("logins/companylogin2");
+        // Navigate to the login screen
+        router.push('logins/companylogin2');
+      } catch (error) {
+        console.error('Error registering user:', error);
+        Alert.alert('Error', 'Failed to register user. Please try again later.');
+      }
     };
+  
+    
 
     return (
         <ScrollView>
@@ -40,13 +68,23 @@ const companylogin = () => {
             </TouchableOpacity>
             </View>
         </View>
-        <Text style={styles.label}>Name</Text>
-        <TextInput style={styles.input} placeholder="John Doe" />
-        <Text style={styles.label}>Email</Text>
-        <TextInput style={styles.input} placeholder="Johndoe@mail.com" />
 
+        <Text style={styles.label}>Username</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter your username"
+          value={companyUsername}
+          onChangeText={setCompanyUsername}
+        />
+        <Text style={styles.label}>Email</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Johndoe@mail.com"
+          value={email}
+          onChangeText={setEmail}
+        />
         <Text style={styles.label}>Mobile Number</Text>
-        <Picker
+        {/* <Picker
             style={styles.picker}
             selectedValue={selectedCountry}
             onValueChange={(itemValue, itemIndex) =>
@@ -56,7 +94,7 @@ const companylogin = () => {
             <Picker.Item label="USA (+1)" value="+1" />
             <Picker.Item label="UK (+44)" value="+44" />
             {/* Add more countries as needed */}
-        </Picker>
+        {/* </Picker>  */}
         <View style={styles.phoneContainer}>
             <TextInput
                 style={styles.input}
@@ -68,9 +106,22 @@ const companylogin = () => {
         </View>
 
         <Text style={styles.label}>Password</Text>
-        <TextInput style={styles.input} placeholder="*********" />
+        <TextInput
+          style={styles.input}
+          placeholder="Enter your password"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry={true}
+        />
         <Text style={styles.label}>Confirm Password</Text>
-        <TextInput style={styles.input} placeholder="*********" />
+        <TextInput
+          style={styles.input}
+          placeholder="Enter your password"
+          value={confirmPassword}
+          onChangeText={setConfirmPassword}
+          secureTextEntry={true}
+        />
+        
         <CustomButton
             title="Register"
             onPress={handleRegister}
