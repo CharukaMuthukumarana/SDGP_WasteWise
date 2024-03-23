@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -11,19 +11,31 @@ import {Picker} from '@react-native-picker/picker';
 import { Link, router } from 'expo-router'
 import { SimpleLineIcons } from '@expo/vector-icons';
 
-const DriverMonitorTrash = () => {
+const drivermonitortrash = () => {
 
     const [selectedType, setSelectedType] = useState('All'); // Initial selected type
-    const [data, setData] = useState([
-      { id: 1, title: 'TrashCanID_1', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'PAPER', percentage: 81, previousCollection: 'Previous date', predictedCollection: 'Predicted date', isChecked: false },
-      { id: 2, title: 'TrashCanID_2', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'PLASTIC', percentage: 60, previousCollection: 'Previous date', predictedCollection: 'Predicted date', isChecked: false },
-      { id: 3, title: 'TrashCanID_3', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 45, previousCollection: 'Previous date', predictedCollection: 'Predicted date', isChecked: false },
-      // Add more data objects as needed
-    ]);
-
     const Separator = () => <View style={styles.separator} />;
+    const [trashData, setTrashData] = useState([]);
+
+    useEffect(() => {
+      fetchData();
+    }, []);
+
+    const fetchData = async () => {
+      try {
+        const response = await fetch('https://waste-wise-api-sdgp.koyeb.app/api/devices');
+        if (!response.ok) {
+          throw new Error('Failed to fetch data');
+        }
+        const data = await response.json();
+        setTrashData(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
     
-    const CustomButton = ({ id, title, title2, onPress, date, type, percentage, isChecked, toggleCheckbox }) => {
+    const CustomButton = ({ title, title2, onPress, color1, date, type, percentage }) => {
         const barColor = percentage > 80 ? 'red' : 'orange';
         const borderColor = percentage > 80 ? 'red' : '#d3d3d3';
         const borderWidth = percentage > 80 ? 3 : 2;
@@ -31,7 +43,6 @@ const DriverMonitorTrash = () => {
     
         // Check if the selected type is 'All' or matches the current type
         const isVisible = selectedType === 'All' || selectedType === type;
-    
         return (
           isVisible && (
             <TouchableOpacity
@@ -39,19 +50,10 @@ const DriverMonitorTrash = () => {
               onPress={onPress}
             >
               <View style={styles.buttonContent}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <TouchableOpacity onPress={() => toggleCheckbox(id)}>
-                    {isChecked ? (
-                      <View style={styles.checkboxChecked} />
-                    ) : (
-                      <View style={styles.checkboxUnchecked} />
-                    )}
-                  </TouchableOpacity>
-                  <Text style={styles.buttonText}>
-                    {title}
-                    <Text style={styles.buttonText2}>{"\n"}{title2}{date}</Text>
-                  </Text>
-                </View>
+                <Text style={styles.buttonText}>
+                  {title}
+                  <Text style={styles.buttonText2}>{"\n"}{title2}{date}</Text>
+                </Text>
     
                 <View style={[{borderColor: getColorForType(type), borderWidth:2, borderRadius:3}]}>
                   <Text style={[
@@ -85,6 +87,13 @@ const DriverMonitorTrash = () => {
                   { width: `${percentage}%` },
                 ]}></View>
               </View>
+              <View>
+                {percentage > 80 && (
+                  <TouchableOpacity style={styles.backButton} onPress={() => router.push("/company/companycollectionschedule")}>
+                  <Text style={styles.ButtonText}>Request to Collect !</Text>
+                </TouchableOpacity>
+                )}
+              </View>
             </TouchableOpacity>
           )
         );
@@ -103,15 +112,16 @@ const DriverMonitorTrash = () => {
         return typeColors[type] || 'grey';
     };
 
-    const toggleCheckbox = (id) => {
-      const updatedData = data.map(item => {
-        if (item.id === id) {
-          return {...item, isChecked: !item.isChecked};
-        }
-        return item;
-      });
-      setData(updatedData);
-    };
+    // const data = [
+    //     { title: 'TrashCanID1', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'PAPER', percentage: 81 },
+    //     { title: 'TrashCanID2', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'PLASTIC', percentage: 60 },
+    //     { title: 'TrashCanID3', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 45 },
+    //     { title: 'TrashCanID3', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 50 },
+    //     { title: 'TrashCanID3', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 45 },
+    //     { title: 'TrashCanID3', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 90 },
+    //     { title: 'TrashCanID3', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 89 },
+    //     // Add more data objects as needed
+    // ];
 
     return (
         <ScrollView>
@@ -139,28 +149,33 @@ const DriverMonitorTrash = () => {
 
                 <Separator/>
 
-                {data.map((item, index) => (
+                {trashData.map((item, index) => {
+                  // Extracting date from collectionDate and formatting it
+                  const collectionDate = new Date(item.collectionDate);
+                  const formattedDate = `${collectionDate.getDate()}/${collectionDate.getMonth() + 1}/${collectionDate.getFullYear()}`;
+
+                  return (
                     <CustomButton
-                    key={index}
-                    id={item.id}
-                    title={item.title}
-                    title2={item.title2}
-                    date={item.date}
-                    onPress={() => router.push("logins/driverlogin2")}
-                    type={item.type}
-                    percentage={item.percentage}
-                    isChecked={item.isChecked}
-                    toggleCheckbox={toggleCheckbox}
+                      key={index}
+                      title={item.trashCanId}
+                      title2={`Collection Date: ${formattedDate}`}
+                      onPress={() =>
+                        router.push({
+                          pathname: '../recycling/recyclingtrashdetails', // Updated dynamic route pattern
+                          params: { trashCanId: item.trashCanId }
+                        })
+                      }
+                      type={item.wasteType}
+                      percentage={item.sensorData && item.sensorData[0] ? item.sensorData[0].binlevel : 0}
                     />
-                ))}
+                  );
+                })}
         </SafeAreaView>
     </ScrollView>    
     )
-
 }
 
-export default DriverMonitorTrash;
-
+export default drivermonitortrash
 
 const styles = StyleSheet.create({
     container: {
@@ -254,20 +269,4 @@ const styles = StyleSheet.create({
         color: '#344953',
         paddingLeft: 20,
     },
-    checkboxUnchecked: {
-      width: 20,
-      height: 20,
-      borderRadius: 5,
-      borderWidth: 2,
-      borderColor: '#000',
-      marginRight: 10,
-    },
-    checkboxChecked: {
-      width: 20,
-      height: 20,
-      borderRadius: 5,
-      backgroundColor: '#000',
-      marginRight: 10,
-    },
-});
-
+  });

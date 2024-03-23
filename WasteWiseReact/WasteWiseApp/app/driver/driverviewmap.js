@@ -42,8 +42,9 @@ const driverviewmap = () => {
       // and collectionDate is the current date
       const currentDate = new Date();
       const filteredDestinations = data.filter(destination =>
-        (destination.collectionState === "Scheduled" || destination.collectionState === "Requested") &&
-        isSameDate(new Date(destination.collectionDate), currentDate)
+        ((destination.collectionState === "Scheduled" || destination.collectionState === "Requested") &&
+        isSameDate(new Date(destination.collectionDate), currentDate)) ||
+        (destination.sensorData[0].binlevel > 80)
       );
   
       setDestinations(filteredDestinations);

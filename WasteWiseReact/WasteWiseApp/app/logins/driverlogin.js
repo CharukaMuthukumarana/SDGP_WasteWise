@@ -6,7 +6,7 @@ import {Picker} from '@react-native-picker/picker';
 const driverlogin = () => {
     const [selectedCountry, setSelectedCountry] = useState("Select Country");
     const [mobileNumber, setMobileNumber] = useState('');
-    const [recyclingUsername, setRecyclingUsername] = useState('');
+    const [driverUsername, setDriverUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -73,8 +73,8 @@ const driverlogin = () => {
         <TextInput
           style={styles.input}
           placeholder="Enter your username"
-          value={recyclingUsername}
-          onChangeText={setRecyclingUsername}
+          value={driverUsername}
+          onChangeText={setDriverUsername}
         />
         <Text style={styles.label}>Email</Text>
         <TextInput

@@ -43,8 +43,6 @@ const recyclingtrashdetails = () => {
     setSelectedDate(selectedDate);
   };
 
-  
-
   const saveChanges = async () => {
     try {
       const dateString = `${selectedDate.getFullYear()}-${(selectedDate.getMonth() + 1).toString().padStart(2, '0')}-${selectedDate.getDate().toString().padStart(2, '0')}T00:00:00.000Z`;

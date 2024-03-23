@@ -24,10 +24,6 @@ export default function Layout(){
         options={{ headerTitle: "Device Data" }}
         />
         <Stack.Screen 
-        name="clerklogin"
-        options={{ headerTitle: "Clerk Login" }}
-        />
-        <Stack.Screen 
         name="logins/companylogin"
         options={{ headerTitle: "Waste Wise" }}
         />

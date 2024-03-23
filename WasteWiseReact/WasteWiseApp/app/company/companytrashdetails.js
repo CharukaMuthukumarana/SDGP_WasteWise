@@ -3,8 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-
-
 const companytrashdetails = () => {
   const { trashCanId } = useLocalSearchParams();
   const [trashDetails, setTrashDetails] = useState(null);
@@ -37,7 +35,6 @@ const companytrashdetails = () => {
     const year = date.getFullYear();
     return `${day}/${month}/${year}`;
   };
-
 
   const handleDateChange = (event, selectedDate) => {
     setDatePicker(false);

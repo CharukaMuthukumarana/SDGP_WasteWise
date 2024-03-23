@@ -14,7 +14,7 @@ const CustomButton = ({ title, onPress }) => (
   </TouchableOpacity>
 );
 
-const home = () => {
+const Home = () => {
   return (
     <SafeAreaView style={styles.container}>
     <View style={styles.center}>
@@ -53,9 +53,6 @@ const home = () => {
             <TouchableOpacity onPress={() =>router.push("/devicedata")}>
                 <Text style={styles.ButtonText}>device data</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() =>router.push("/clerklogin")}>
-                <Text style={styles.ButtonText}>ClerkLogin</Text>
-            </TouchableOpacity>
             </View>
         </View>
   </SafeAreaView>
@@ -63,7 +60,7 @@ const home = () => {
   )
 }
 
-export default home
+export default Home
 
 
 const styles = StyleSheet.create({
