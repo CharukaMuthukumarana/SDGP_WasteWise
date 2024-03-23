@@ -1,8 +1,13 @@
 import { StyleSheet, View, Text, TouchableOpacity, TextInput, ScrollView, Alert } from 'react-native';
-import React from 'react'
+import React, {useState} from 'react'
 import { Link, router } from 'expo-router'
+import { useLocation } from 'expo-router';
 
 const companylogin2 = () => {
+
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
 
     const CustomButton = ({ title, onPress }) => (
         <TouchableOpacity
@@ -12,11 +17,31 @@ const companylogin2 = () => {
           <Text style={styles.buttonText}>{title}</Text>
         </TouchableOpacity>
       );
-      const handleRegister = () => {
-        // Perform registration logic here
-        // For now, just show an alert
-        router.push("company/companyhome")
-        Alert.alert('Logging Successful');
+      const handleLogin = async () => {
+        try {
+          const response = await fetch('https://waste-wise-api-sdgp.koyeb.app/api/companyUsers');
+          if (!response.ok) {
+            throw new Error('Failed to fetch users');
+          }
+          const data = await response.json();
+
+          // Check if username and password match
+          const user = data.find(user => user.companyUsername === username && user.password === password);
+          if (user) {
+            // Username and password match, navigate to the next screen
+            router.push({
+              pathname: '../company/companyhome',
+              params: {username:username}
+            })
+            Alert.alert('Logging Successful');
+          } else {
+            // Username and password do not match, show an alert
+            Alert.alert('Error', 'Invalid username or password');
+          }
+        } catch (error) {
+          console.error('Error logging in:', error);
+          Alert.alert('Error', 'Failed to log in. Please try again later.');
+        }
       };
     return (
         <ScrollView style={styles.ScrollView}>
@@ -37,15 +62,26 @@ const companylogin2 = () => {
             
 
             <Text style={styles.label}>Username</Text>
-            <TextInput style={styles.input} placeholder="John Doe" />
+            <TextInput
+              style={styles.input}
+              placeholder="Enter your username"
+              value={username}
+              onChangeText={setUsername}
+            />
             <Text style={styles.label}>Password</Text>
-            <TextInput style={styles.input} placeholder="*********" />
+            <TextInput
+              style={styles.input}
+              placeholder="Enter your password"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry={true}
+            />
             
         </View>
         <View style={[{padding:20, marginTop:180}]}>
             <CustomButton
             title="Log In"
-            onPress={handleRegister}
+            onPress={handleLogin}
             />
         </View>
         </ScrollView>
