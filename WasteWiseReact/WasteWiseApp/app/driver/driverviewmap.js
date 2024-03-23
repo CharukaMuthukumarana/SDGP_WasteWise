@@ -37,11 +37,27 @@ const driverviewmap = () => {
         throw new Error('Failed to fetch destinations');
       }
       const data = await response.json();
-      setDestinations(data); // Assuming data is an array of destinations with latitude and longitude
+  
+      // Filter destinations where collectionState is "Scheduled" or "Requested"
+      // and collectionDate is the current date
+      const currentDate = new Date();
+      const filteredDestinations = data.filter(destination =>
+        (destination.collectionState === "Scheduled" || destination.collectionState === "Requested") &&
+        isSameDate(new Date(destination.collectionDate), currentDate)
+      );
+  
+      setDestinations(filteredDestinations);
     } catch (error) {
       console.error('Error fetching destinations:', error);
       setErrorMsg('Failed to fetch destinations');
     }
+  };
+  
+  // Function to check if two dates have the same date component
+  const isSameDate = (date1, date2) => {
+    return date1.getFullYear() === date2.getFullYear() &&
+           date1.getMonth() === date2.getMonth() &&
+           date1.getDate() === date2.getDate();
   };
 
   useEffect(() => {
@@ -97,7 +113,7 @@ const driverviewmap = () => {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            collectionState: 'ABCDEF'
+            collectionState: 'Collected'
           })
         });
   
