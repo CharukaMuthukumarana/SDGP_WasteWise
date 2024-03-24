@@ -65,7 +65,7 @@ const addtrashcan = () => {
             setType('PAPER');
             setCollectionType('');
             setCollectionDate('');
-            setBinLevel(0);
+            setBinLevel();
             Alert.alert('Success', 'Trash can added successfully.');
         } else {
             throw new Error('Failed to add trash can');

@@ -8,11 +8,15 @@ import {
   Text,
   ScrollView,
 } from 'react-native';
+import {Picker} from '@react-native-picker/picker';
+import { useLocalSearchParams } from 'expo-router';
 
-const CompanyMonitorTrash = ({ navigation }) => {
+const CompanyMonitorTrash = () => {
+  const {username} = useLocalSearchParams();
   const [selectedType, setSelectedType] = useState('All'); // Initial selected type
   const Separator = () => <View style={styles.separator} />;
   const [trashData, setTrashData] = useState([]);
+  const [category, setcategory] = useState("Today");
 
   useEffect(() => {
     // Fetch data from the database
@@ -20,49 +24,57 @@ const CompanyMonitorTrash = ({ navigation }) => {
       try {
         const response = await fetch('https://waste-wise-api-sdgp.koyeb.app/api/devices');
         const data = await response.json();
-        setTrashData(data);
+        // Filter data based on the companyName equal to the username
+        const filteredData = data.filter(item => item.companyName === username);
+        // Filter data based on collectionState "Scheduled" or "Requested"
+        const scheduledRequestedData = filteredData.filter(item => item.collectionState === "Scheduled" || item.collectionState === "Requested");
+        // Set the filtered data
+        setTrashData(scheduledRequestedData);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
 
     fetchData();
-  }, []);
+  }, [username]);
 
-  const CustomButton = ({ title, date, type, collectionType}) => {
+  const filterTrashData = () => {
+    // Get today's date
+    const today = new Date();
+    // Filter data based on the selected category
+    if (category === 'Today') {
+      return trashData.filter(item => {
+        const collectionDate = new Date(item.collectionDate);
+        return collectionDate.toDateString() === today.toDateString() || collectionDate < today;
+      });
+    } else if (category === 'Upcoming') {
+      return trashData.filter(item => {
+        const collectionDate = new Date(item.collectionDate);
+        return collectionDate > today;
+      });
+    } else {
+      return trashData;
+    }
+  };
 
-    // Check if the selected type is 'All' or matches the current type
-    const isVisible = selectedType === 'All' || selectedType === type;
-
+  const CustomButton = ({ title, collectionDate1,date, type, collectionType }) => {
+    const currentDate = new Date();
+    const collectionDate = new Date(collectionDate1);
+    const backgroundColor = collectionDate.toDateString() === currentDate.toDateString() ? 'green' : 'red';
+  
     return (
-      isVisible && (
-        <View style={[{flexDirection: 'row', justifyContent:'space-between', marginVertical:10, marginHorizontal:10}]}>
-          <View>
-            <Text>
-              {date}
-            </Text>
+      <View style={[styles.buttonContainer, { backgroundColor }]}>
+        <Text style={styles.dateText}>{date}</Text>
+        <View style={[styles.buttonContent, { borderColor: collectionColor(collectionType), backgroundColor: collectionColor(collectionType) }]}>
+          <Text style={styles.buttonText}>{title}</Text>
+          <View style={[styles.typeIndicator, { backgroundColor: getColorForType(type), borderColor: getColorForType(type) }]}>
+            <Text style={styles.typeText}>{type}</Text>
           </View>
-          <View style={[{borderColor: 'black',  borderWidth:1, borderRadius:5, width: '70%', backgroundColor: collectionColor(collectionType)}]}>
-            <View style={styles.buttonContent}>
-              <Text style={styles.buttonText}>
-                {title}
-              </Text>
-
-              <View style={[{borderColor: getColorForType(type), borderWidth:2, borderRadius:3}]}>
-                <Text style={[
-                  { backgroundColor: getColorForType(type), borderColor: getColorForType(type),},
-                  styles.typeIndicator,
-                  {opacity: 0.6}
-                ]}>
-                  {type}
-                </Text>
-              </View>
-            </View>
-          </View>  
         </View>
-      )
+      </View>
     );
   };
+
 
   const getColorForType = (type) => {
     // Define colors for different types
@@ -81,24 +93,92 @@ const CompanyMonitorTrash = ({ navigation }) => {
     // Define colors for different types
     const typeColors = {
       Collected: '#AEEA6F',
-      Predicted: '#6FC5EA',
+      Scheduled: '#6FC5EA',
+      Requested: '#6FC5EA',
     };
     // Return the color based on  the type, default to a fallback color if not found
     return typeColors[collectionType] || 'grey';
   };
 
 
+  // const CustomButton = ({ title, date, type, collectionType}) => {
+
+  //   // Check if the selected type is 'All' or matches the current type
+  //   const isVisible = selectedType === 'All' || selectedType === type;
+
+  //   return (
+  //     isVisible && (
+  //       <View style={[{flexDirection: 'row', justifyContent:'space-between', marginVertical:10, marginHorizontal:10}]}>
+  //         <View>
+  //           <Text>
+  //             {date}
+  //           </Text>
+  //         </View>
+  //         <View style={[{borderColor: 'black',  borderWidth:1, borderRadius:5, width: '70%', backgroundColor: collectionColor(collectionType)}]}>
+  //           <View style={styles.buttonContent}>
+  //             <Text style={styles.buttonText}>
+  //               {title}
+  //             </Text>
+
+  //             <View style={[{borderColor: getColorForType(type), borderWidth:2, borderRadius:3}]}>
+  //               <Text style={[
+  //                 { backgroundColor: getColorForType(type), borderColor: getColorForType(type),},
+  //                 styles.typeIndicator,
+  //                 {opacity: 0.6}
+  //               ]}>
+  //                 {type}
+  //               </Text>
+  //             </View>
+  //           </View>
+  //         </View>  
+  //       </View>
+  //     )
+  //   );
+  // };
+
+  // const getColorForType = (type) => {
+  //   // Define colors for different types
+  //   const typeColors = {
+  //     PLASTIC: '#E87200',
+  //     PAPER: '#34A853',
+  //     'GLASS/METAL': '#4285F4',
+  //     // Add more types and corresponding colors as needed
+  //   };
+
+  //   // Return the color based on the type, default to a fallback color if not found
+  //   return typeColors[type] || 'grey';
+  // };
+  
+  // const collectionColor = (collectionType) => {
+  //   // Define colors for different types
+  //   const typeColors = {
+  //     Collected: '#AEEA6F',
+  //     Scheduled: '#6FC5EA',
+  //     Requested: '#6FC5EA',
+  //   };
+  //   // Return the color based on  the type, default to a fallback color if not found
+  //   return typeColors[collectionType] || 'grey';
+  // };
+
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.center}>
         <Text style={[styles.title, styles.boldText]}>Waste Wise</Text>
+        <Text style={styles.title}>{username}</Text>
       </View>
-
+      <Picker
+          style={styles.picker}
+          selectedValue={category}
+          onValueChange={(itemValue, itemIndex) =>
+              setcategory(itemValue)
+          }>
+          <Picker.Item label="Today" value="Today" />
+          <Picker.Item label="Upcoming" value="Upcoming" />
+      </Picker>
       <Separator/>
-
       <ScrollView style={[{marginBottom:20,}]} >
-      {trashData.map((item, index) => {
-          // Extracting date from collectionDate and formatting it
+      {filterTrashData().map((item, index) => {
           const collectionDate = new Date(item.collectionDate);
           const formattedDate = `${collectionDate.getDate()}/${collectionDate.getMonth() + 1}/${collectionDate.getFullYear()}`;
 
@@ -106,6 +186,7 @@ const CompanyMonitorTrash = ({ navigation }) => {
             <CustomButton
               key={index}
               title={item.trashCanId}
+              collectionDate1={collectionDate}
               date={formattedDate}
               type={item.wasteType}
               collectionType={item.collectionState}
@@ -117,29 +198,31 @@ const CompanyMonitorTrash = ({ navigation }) => {
   );
 };
 
-const CustomButton = ({ title, date, type, collectionType}) => {
+// const CustomButton = ({ title, date, type, collectionType}) => {
 
-  // Check if the selected type is 'All' or matches the current type
-  const isVisible = selectedType === 'All' || selectedType === type;
+//   // Check if the selected type is 'All' or matches the current type
+//   const isVisible = selectedType === 'All' || selectedType === type;
 
-  return (
-    isVisible && (
-      <View style={styles.buttonContainer}>
-        <Text style={styles.dateText}>{date}</Text>
-        <View style={[styles.buttonContent, {borderColor: collectionColor(collectionType), backgroundColor: collectionColor(collectionType)}]}>
-          <Text style={styles.buttonText}>{title}</Text>
-          <View style={[styles.typeIndicator, {backgroundColor: getColorForType(type), borderColor: getColorForType(type)}]}>
-            <Text style={styles.typeText}>{type}</Text>
-          </View>
-        </View>
-      </View>
-    )
-  );
-};
+//   return (
+//     isVisible && (
+//       <View style={styles.buttonContainer}>
+//         <Text style={styles.dateText}>{date}</Text>
+//         <View style={[styles.buttonContent, {borderColor: collectionColor(collectionType), backgroundColor: collectionColor(collectionType)}]}>
+//           <Text style={styles.buttonText}>{title}</Text>
+//           <View style={[styles.typeIndicator, {backgroundColor: getColorForType(type), borderColor: getColorForType(type)}]}>
+//             <Text style={styles.typeText}>{type}</Text>
+//           </View>
+//         </View>
+//       </View>
+//     )
+//   );
+// };
 
 const styles = StyleSheet.create({
   buttonContainer: {
     marginBottom: 10, // Adjust spacing between TrashCanIDs
+    backgroundColor: 'red', // Default background color for CustomButton
+
   },
   buttonContent: {
     flexDirection: 'row',

@@ -32,7 +32,7 @@ const RecyclingCollectionSchedule = () => {
     }, []);
   
     
-    const CustomButton = ({ title, title2, onPress, color1, date, type, percentage, previousCollection, predictedCollection }) => {
+    const CustomButton = ({ title, title2, onPress, color1, date, type, percentage, collectionType, predictedCollection }) => {
         const barColor = percentage > 80 ? 'red' : 'orange';
         const borderColor = percentage > 80 ? 'red' : '#d3d3d3';
         const borderWidth = percentage > 80 ? 3 : 2;
@@ -63,15 +63,15 @@ const RecyclingCollectionSchedule = () => {
               </View>
               <View style={styles.buttonContent}>
                 <Text style={styles.buttonText2}>
-                  Previous Collection:{"\n"} 
+                  Collection State:{"\n"} 
                   <Text style={styles.buttonText3}>
-                    {previousCollection}
+                    {collectionType}
                     </Text>
                 </Text>
                 <Text style={styles.buttonText2}>
-                  Predicted Collection:{"\n"} 
+                  Next Collection:{"\n"} 
                   <Text style={styles.buttonText4}>
-                    {predictedCollection}
+                    {date}
                     </Text>
                 </Text>
               </View>  

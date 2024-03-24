@@ -116,7 +116,7 @@ const recyclinglogin = () => {
         <Text style={styles.label}>Confirm Password</Text>
         <TextInput
           style={styles.input}
-          placeholder="Enter your password"
+          placeholder="Confirm password"
           value={confirmPassword}
           onChangeText={setConfirmPassword}
           secureTextEntry={true}
