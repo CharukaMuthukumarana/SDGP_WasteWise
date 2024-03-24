@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   smallText: {
-    fontSize: 15,
+    fontSize: 13,
     marginTop: 0,
     textAlign: 'center',
   },
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
   },
   ButtonText: {
     color: 'blue',
-    fontSize: 15,
+    fontSize: 13,
     marginLeft: 4,
     textAlign: 'left',
     textDecorationLine: 'underline',

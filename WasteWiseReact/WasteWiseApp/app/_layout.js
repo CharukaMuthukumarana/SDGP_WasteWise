@@ -20,10 +20,6 @@ export default function Layout(){
             options={{ headerTitle: "Add Trash Can" }}
         />
         <Stack.Screen 
-        name="devicedata"
-        options={{ headerTitle: "Device Data" }}
-        />
-        <Stack.Screen 
         name="logins/companylogin"
         options={{ headerTitle: "Waste Wise" }}
         />

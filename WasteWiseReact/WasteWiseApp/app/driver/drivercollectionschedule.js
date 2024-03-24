@@ -1,214 +1,198 @@
-import React, { useState , useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
   SafeAreaView,
   Text,
-  TouchableOpacity,
   ScrollView,
 } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
-import { Link, router } from 'expo-router'
-import { SimpleLineIcons } from '@expo/vector-icons';
+import { useLocalSearchParams } from 'expo-router';
 
-const DriverCollectionSchedule = () => {
-    const [selectedType, setSelectedType] = useState('All'); // Initial selected type
-    const Separator = () => <View style={styles.separator} />;
-    const [trashData, setTrashData] = useState([]);
+const DriverMonitorTrash = () => {
+  const { username } = useLocalSearchParams();
+  const [selectedType, setSelectedType] = useState('All'); // Initial selected type
+  const [trashData, setTrashData] = useState([]);
+  const [category, setCategory] = useState("Today");
 
-    useEffect(() => {
-      // Fetch data from the database
-      const fetchData = async () => {
-        try {
-          const response = await fetch('https://waste-wise-api-sdgp.koyeb.app/api/devices');
-          const data = await response.json();
-          setTrashData(data);
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        }
-      };
+  useEffect(() => {
+    // Fetch data from the database
+    const fetchData = async () => {
+      try {
+        const response = await fetch('https://waste-wise-api-sdgp.koyeb.app/api/devices');
+        const data = await response.json();
+        // Filter data based on the companyName equal to the username
+        const filteredData = data
+        // Filter data based on collectionState "Scheduled" or "Requested"
+        const scheduledRequestedData = filteredData.filter(item => item.collectionState === "Scheduled" || item.collectionState === "Requested");
+        // Set the filtered data
+        setTrashData(scheduledRequestedData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
 
-      fetchData();
-    }, []);
+    fetchData();
+  }, [username]);
+
+  const filterTrashData = () => {
+    // Get today's date
+    const today = new Date();
+    // Filter data based on the selected category
+    if (category === 'Today') {
+      return trashData.filter(item => {
+        const collectionDate = new Date(item.collectionDate);
+        return collectionDate.toDateString() === today.toDateString() || collectionDate < today;
+      });
+    } else if (category === 'Upcoming') {
+      return trashData.filter(item => {
+        const collectionDate = new Date(item.collectionDate);
+        return collectionDate > today;
+      });
+    } else {
+      return trashData;
+    }
+  };
+
+  const CustomButton = ({ title, collectionDate, date, type, collectionType }) => {
+    const currentDate = new Date();
+    const backgroundColor = collectionDate.toDateString() === currentDate.toDateString() ? 'green' : 'red';
   
-    
-    const CustomButton = ({ title, title2, onPress, color1, date, type, percentage, collectionType, predictedCollection }) => {
-        const barColor = percentage > 80 ? 'red' : 'orange';
-        const borderColor = percentage > 80 ? 'red' : '#d3d3d3';
-        const borderWidth = percentage > 80 ? 3 : 2;
-        const opacityColor = percentage > 80 ? '#ffb5b7' : '#fbd9b5';
-    
-        // Check if the selected type is 'All' or matches the current type
-        const isVisible = selectedType === 'All' || selectedType === type;
-    
-        return (
-          isVisible && (
-            <TouchableOpacity
-              style={[styles.button, { borderColor: borderColor, backgroundColor:'white',borderWidth:borderWidth}]}
-              onPress={onPress}
-            >
-              <View style={styles.buttonContent}>
-                <Text style={styles.buttonText}>
-                  {title}
-                </Text>
-                <View style={[{borderColor: getColorForType(type), borderWidth:2, borderRadius:3}]}>
-                  <Text style={[
-                    { backgroundColor: getColorForType(type), borderColor: getColorForType(type),},
-                    styles.typeIndicator,
-                    {opacity: 0.4}
-                  ]}>
-                    {type}
-                  </Text>
-                </View>
-              </View>
-              <View style={styles.buttonContent}>
-                <Text style={styles.buttonText2}>
-                  Collection State:{"\n"} 
-                  <Text style={styles.buttonText3}>
-                    {collectionType}
-                    </Text>
-                </Text>
-                <Text style={styles.buttonText2}>
-                  Next Collection:{"\n"} 
-                  <Text style={styles.buttonText4}>
-                    {date}
-                    </Text>
-                </Text>
-              </View>  
-            </TouchableOpacity>
-          )
-        );
-    };
-
-    const getColorForType = (type) => {
-        // Define colors for different types
-        const typeColors = {
-          PLASTIC: '#E87200',
-          PAPER: '#34A853',
-          'GLASS/METAL': '#4285F4',
-          // Add more types and corresponding colors as needed
-        };
-    
-        // Return the color based on the type, default to a fallback color if not found
-        return typeColors[type] || 'grey';
-    };
-
-
     return (
-        <ScrollView>
-            <SafeAreaView style={styles.container}>
-                <View style={styles.center}>
-                    <Text style={[styles.title, styles.boldText]}>Waste Wise</Text>
-                </View>
-                <View style={styles.buttonContent}>
-                    <Text style={[styles.title2, styles.boldText]}>Company_name</Text>
-                
-          
-                
-                </View>
+      <View style={[styles.buttonContainer, { backgroundColor }]}>
+        <Text style={styles.dateText}>{date}</Text>
+        <View style={[styles.buttonContent, { borderColor: collectionColor(collectionType), backgroundColor: collectionColor(collectionType) }]}>
+          <Text style={styles.buttonText}>{title}</Text>
+          <View style={[styles.typeIndicator, { backgroundColor: getColorForType(type), borderColor: getColorForType(type) }]}>
+            <Text style={styles.typeText}>{type}</Text>
+          </View>
+        </View>
+      </View>
+    );
+  };
 
-                <Separator/>
+  const getColorForType = (type) => {
+    // Define colors for different types
+    const typeColors = {
+      PLASTIC: '#E87200',
+      PAPER: '#34A853',
+      'GLASS/METAL': '#4285F4',
+      // Add more types and corresponding colors as needed
+    };
 
-                {trashData.map((item, index) => {
-                  // Extracting date from collectionDate and formatting it
-                  const collectionDate = new Date(item.collectionDate);
-                  const formattedDate = `${collectionDate.getDate()}/${collectionDate.getMonth() + 1}/${collectionDate.getFullYear()};`
+    // Return the color based on the type, default to a fallback color if not found
+    return typeColors[type] || 'grey';
+  };
+  
+  const collectionColor = (collectionType) => {
+    // Define colors for different types
+    const typeColors = {
+      Scheduled: '#AEEA6F',
+      Requested: '#6FC5EA',
+    };
+    // Return the color based on  the type, default to a fallback color if not found
+    return typeColors[collectionType] || 'grey';
+  };
 
-                  return (
-                    <CustomButton
-                      key={index}
-                      title={item.trashCanId}
-                      date={formattedDate}
-                      type={item.wasteType}
-                      collectionType={item.collectionState}
-                    />
-                  );
-                })}
-            </SafeAreaView>
-        </ScrollView>    
-    )
-}
 
-export default DriverCollectionSchedule;
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.center}>
+        <Text style={[styles.title, styles.boldText]}>Waste Wise</Text>
+        <Text style={styles.title}>{username}</Text>
+      </View>
+      <Picker
+          style={styles.picker}
+          selectedValue={category}
+          onValueChange={(itemValue, itemIndex) =>
+              setCategory(itemValue)
+          }>
+          <Picker.Item label="Today" value="Today" />
+          <Picker.Item label="Upcoming" value="Upcoming" />
+      </Picker>
+      <Separator/>
+      <ScrollView style={{ marginBottom: 20 }}>
+      {filterTrashData().map((item, index) => {
+          const collectionDate = new Date(item.collectionDate);
+          const formattedDate = `${collectionDate.getDate()}/${collectionDate.getMonth() + 1}/${collectionDate.getFullYear()}`;
+
+          return (
+            <CustomButton
+              key={index}
+              title={item.trashCanId}
+              collectionDate={collectionDate}
+              date={formattedDate}
+              type={item.wasteType}
+              collectionType={item.collectionState}
+            />
+          );
+        })}
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
+
+const Separator = () => <View style={styles.separator} />;
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      marginHorizontal: 16,
-    },
-    center: {
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginBottom: 40,
-    },
-    title: {
-      textAlign: 'center',
-      marginVertical: 8,
-      color: 'black',
-      fontWeight: 'bold',
-      fontSize: 25,
-    },
-    button: {
-      borderRadius: 5,
-      overflow: 'hidden',
-      marginTop: 40,
-      borderColor: 'black',
-      borderWidth: 1.6,
-    },
-    buttonContent: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      padding: 10,
-    },
-    progressBar: {
-      height: 7,
-      borderRadius: 5,
-    },
-    typeIndicator: {
-      padding: 5,
-      fontWeight: 'bold'
-    },
-    barBorder: {
-      borderWidth: 1.5,
-      borderRadius: 5,
-      marginHorizontal: 8,
-      marginBottom: 10,
-      marginTop: 5,
-      height: 10,
-      position: 'relative',
-    },
-    buttonText: {
-      color: 'black',
-      fontWeight: 'bold',
-      fontSize: 20,
-      textAlign: 'left',
-    },
-    buttonText2: {
-      color: 'black',
-      fontWeight: 'bold',
-      fontSize: 15,
-      textAlign: 'left',
-    },
-    buttonText3: {
-      color: 'green',
-      fontWeight: 'bold',
-      fontSize: 15,
-      textAlign: 'left',
-    },
-    buttonText4: {
-      color: 'blue',
-      fontWeight: 'bold',
-      fontSize: 15,
-      textAlign: 'left',
-    },
-    title2: {
-      fontSize: 20, // Adjust the font size as needed
-      textAlign: 'left',
-      marginBottom: 0,
-    },
-    boldText: {
-      fontWeight: 'bold',
-    },
+  container: {
+    flex: 1,
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+    backgroundColor: '#fff',
+  },
+  center: {
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  picker: {
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+  },
+  buttonContainer: {
+    marginBottom: 10,
+    padding: 10,
+    borderRadius: 5,
+  },
+  buttonContent: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderRadius: 5,
+  },
+  dateText: {
+    fontSize: 16,
+    marginBottom: 5,
+  },
+  buttonText: {
+    fontWeight: 'bold',
+    fontSize: 18,
+    textAlign: 'left',
+  },
+  typeIndicator: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 3,
+  },
+  typeText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 14,
+  },
+  separator: {
+    marginVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+  },
+});
 
-  });
+export default DriverMonitorTrash;

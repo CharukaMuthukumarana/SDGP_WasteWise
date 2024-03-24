@@ -100,19 +100,19 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'black',
     fontWeight: 'bold',
-    fontSize: 25,
+    fontSize: 20,
     textAlign: 'left',
   },
   title2: {
-    fontSize: 50, // Adjust the font size as needed
+    fontSize: 40, // Adjust the font size as needed
     textAlign: 'center',
-    marginTop: 60,
+    marginTop: 30,
     marginBottom: 30,
   },
   title3: {
     fontSize: 30, // Adjust the font size as needed
     textAlign: 'center',
-    marginBottom: 0.2,
+    marginBottom: 10,
   },
   boldText: {
     fontWeight: 'bold',

@@ -22,7 +22,7 @@ const Home = () => {
         Waste Wise
       </Text>
       <Text style={styles.title}>
-        Which of the following are you,
+        Which of the following are you
       </Text>
     </View>
     <Separator />
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    marginHorizontal: 25,
+    marginHorizontal: 16,
   },
   center: {
     justifyContent: 'center',
@@ -77,19 +77,19 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: 'white',
     padding: 17,
-    borderRadius: 10,
+    borderRadius: 5,
     borderColor: 'black',
-    borderWidth: 1.2,
+    borderWidth: 1,
     marginTop: 30,
   },
   buttonText: {
     color: 'black',
     textAlign: 'center',
     fontWeight: 'bold',
-    fontSize: 20,
+    fontSize: 15,
   },
   title2: {
-    fontSize: 50, // Adjust the font size as needed
+    fontSize: 60, // Adjust the font size as needed
     textAlign: 'center',
     marginVertical: 8,
   },
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   separator: {
-    marginVertical: 1,
+    marginVertical: 8,
     borderBottomColor: '#737373',
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
@@ -111,9 +111,9 @@ const styles = StyleSheet.create({
   ButtonText: {
     color: 'blue',
     fontSize: 13,
-    marginLeft: 12,
-    marginVertical: 20,
+    marginLeft: 4,
     textAlign: 'left',
     textDecorationLine: 'underline',
+    marginTop: 40,
   },
 });
