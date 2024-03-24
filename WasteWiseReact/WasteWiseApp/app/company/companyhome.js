@@ -46,7 +46,10 @@ return (
     <CustomButton
     title="Monitor"
     title2="Trash Cans"
-    onPress={() => router.push("company/companymonitortrash")}
+    onPress={() => router.push({
+      pathname: '../company/companymonitortrash',
+      params: {username:username}
+    })}
     color1='#E87200'
     />
 
@@ -105,12 +108,12 @@ const styles = StyleSheet.create({
     fontSize: 40, // Adjust the font size as needed
     textAlign: 'center',
     marginTop: 30,
-    marginBottom: 30,
+    marginBottom: 10,
   },
   title3: {
     fontSize: 30, // Adjust the font size as needed
     textAlign: 'center',
-    marginBottom: 10,
+    marginBottom: 25,
   },
   boldText: {
     fontWeight: 'bold',

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Button, FlatList, Linking, Alert } from 'react-native';
 import * as Location from 'expo-location';
@@ -43,7 +44,7 @@ const recyclingviewmap = () => {
       const currentDate = new Date();
       const filteredDestinations = data.filter(destination =>
         (destination.collectionState === "Scheduled" || destination.collectionState === "Requested") &&
-        isSameDate(new Date(destination.collectionDate), currentDate)
+        (isSameDate(new Date(destination.collectionDate), currentDate) || new Date(destination.collectionDate) < currentDate)
       );
   
       setDestinations(filteredDestinations);
@@ -256,7 +257,9 @@ const recyclingviewmap = () => {
             data={destinations}
             keyExtractor={(item) => item.trashCanId }
             renderItem={({ item }) => (
-              <Text style={styles.destinationText}>{item.trashCanId}</Text>
+              <Text style={[styles.destinationText,isSameDate(new Date(item.collectionDate), new Date())  ? styles.pendingDestination : null]}>
+                {item.trashCanId}
+              </Text>
             )}
           />
         )}
@@ -321,6 +324,10 @@ const styles = StyleSheet.create({
   loadingMsg: {
     fontSize: 16,
     fontStyle: 'italic',
+  },
+  pendingDestination: {
+    color: 'red',
+    fontWeight: 'bold',
   },
 });
 

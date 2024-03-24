@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
       marginVertical: 8,
       color: 'black',
       fontWeight: 'bold',
-      fontSize: 25,
+      fontSize: 40,
     },
     button: {
       borderRadius: 5,
