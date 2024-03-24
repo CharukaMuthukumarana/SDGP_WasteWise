@@ -81,7 +81,8 @@ const CompanyMonitorTrash = ({ navigation }) => {
     // Define colors for different types
     const typeColors = {
       Collected: '#AEEA6F',
-      Predicted: '#6FC5EA',
+      Requested: '#6FC5EA',
+      Sheduled: '#6FC5EA',
     };
     // Return the color based on  the type, default to a fallback color if not found
     return typeColors[collectionType] || 'grey';
