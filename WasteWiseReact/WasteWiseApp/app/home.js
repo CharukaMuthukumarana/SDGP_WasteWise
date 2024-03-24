@@ -48,13 +48,6 @@ const Home = () => {
             </TouchableOpacity>
             </View>
         </View>
-        <View style={[{marginVertical:30 },{justifyContent: 'center'},{ flexDirection: 'row' }]}>
-            <View>
-            <TouchableOpacity onPress={() =>router.push("/devicedata")}>
-                <Text style={styles.ButtonText}>device data</Text>
-            </TouchableOpacity>
-            </View>
-        </View>
   </SafeAreaView>
 
   )
@@ -67,7 +60,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    marginHorizontal: 16,
+    marginHorizontal: 25,
   },
   center: {
     justifyContent: 'center',
@@ -82,18 +75,18 @@ const styles = StyleSheet.create({
     fontSize: 17,
   },
   button: {
-    backgroundColor: '#E3E4FA',
+    backgroundColor: 'white',
     padding: 17,
-    borderRadius: 5,
+    borderRadius: 10,
     borderColor: 'black',
-    borderWidth: 1,
+    borderWidth: 1.2,
     marginTop: 30,
   },
   buttonText: {
     color: 'black',
     textAlign: 'center',
     fontWeight: 'bold',
-    fontSize: 25,
+    fontSize: 20,
   },
   title2: {
     fontSize: 60, // Adjust the font size as needed
@@ -108,7 +101,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   separator: {
-    marginVertical: 8,
+    marginVertical: 1,
     borderBottomColor: '#737373',
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
@@ -117,8 +110,9 @@ const styles = StyleSheet.create({
   },
   ButtonText: {
     color: 'blue',
-    fontSize: 18,
-    marginLeft: 4,
+    fontSize: 13,
+    marginLeft: 12,
+    marginVertical: 20,
     textAlign: 'left',
     textDecorationLine: 'underline',
   },
