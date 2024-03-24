@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   title2: {
-    fontSize: 60, // Adjust the font size as needed
+    fontSize: 50, // Adjust the font size as needed
     textAlign: 'center',
     marginVertical: 8,
   },
