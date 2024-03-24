@@ -71,18 +71,26 @@ const RecyclingTrashDetails = () => {
       <Text style={styles.heading}>Trash Can Details</Text>
       {trashDetails && (
         <View style={styles.detailsContainer}>
-          <Text style={styles.detailText}>Trash Can ID: {trashDetails.trashCanId}</Text>
-          <Text style={styles.detailText}>Collection Date: {trashDetails.collectionDate}</Text>
-          <Text style={styles.detailText}>Collection State: {trashDetails.collectionState}</Text>
-          <Text style={styles.detailText}>Company Name: {trashDetails.companyName}</Text>
-          <Text style={styles.detailText}>Bin Level: {trashDetails.sensorData[0].binlevel}</Text>
-          <Text style={styles.detailText}>Latitude: {trashDetails.latitude}</Text>
-          <Text style={styles.detailText}>Longitude: {trashDetails.longitude}</Text>
-          <Text style={styles.detailText}>Waste Type: {trashDetails.wasteType}</Text>
+          <Text style={styles.label}>Trash Can ID:</Text>
+          <Text style={styles.detail}>{trashDetails.trashCanId}</Text>
+          <Text style={styles.label}>Collection Date:</Text>
+          <Text style={styles.detail}>{trashDetails.collectionDate}</Text>
+          <Text style={styles.label}>Collection State:</Text>
+          <Text style={styles.detail}>{trashDetails.collectionState}</Text>
+          <Text style={styles.label}>Company Name:</Text>
+          <Text style={styles.detail}>{trashDetails.companyName}</Text>
+          <Text style={styles.label}>Bin Level:</Text>
+          <Text style={styles.detail}>{trashDetails.sensorData[0].binlevel}</Text>
+          <Text style={styles.label}>Latitude:</Text>
+          <Text style={styles.detail}>{trashDetails.latitude}</Text>
+          <Text style={styles.label}>Longitude:</Text>
+          <Text style={styles.detail}>{trashDetails.longitude}</Text>
+          <Text style={styles.label}>Waste Type:</Text>
+          <Text style={styles.detail}>{trashDetails.wasteType}</Text>
         </View>
       )}
       <Button title="Select Collection Date" onPress={() => setDatePicker(true)} />
-      {selectedDate && <Text style={styles.selectedDateText}>Selected Date: {formatDate(selectedDate)}</Text>}
+      {selectedDate && <Text style={styles.selectedDate}>Selected Date: {formatDate(selectedDate)}</Text>}
       {datePicker && (
         <DateTimePicker
           testID="dateTimePicker"
@@ -96,7 +104,7 @@ const RecyclingTrashDetails = () => {
       <View style={styles.buttonContainer}>
         <Button title="Save Changes" onPress={saveChanges} color="#2ecc71" />
       </View>
-      {dateString && <Text style={styles.dateStringText}>Date String: {dateString}</Text>}
+      {dateString && <Text style={styles.dateString}>Date String: {dateString}</Text>}
     </View>
   );
 };
@@ -117,19 +125,25 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   detailsContainer: {
-    marginBottom: 20,
     backgroundColor: '#fff',
-    padding: 10,
-    borderRadius: 5,
+    borderRadius: 10,
+    padding: 15,
+    marginBottom: 20,
     borderWidth: 1,
     borderColor: '#ddd',
   },
-  detailText: {
+  label: {
     fontSize: 16,
+    fontWeight: 'bold',
     marginBottom: 5,
+    color: '#333',
+  },
+  detail: {
+    fontSize: 16,
+    marginBottom: 10,
     color: '#555',
   },
-  selectedDateText: {
+  selectedDate: {
     fontSize: 16,
     marginTop: 10,
     marginBottom: 20,
@@ -138,7 +152,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     alignItems: 'center',
   },
-  dateStringText: {
+  dateString: {
     fontSize: 16,
     marginTop: 10,
     color: '#555',
