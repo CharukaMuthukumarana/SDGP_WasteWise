@@ -48,13 +48,6 @@ const Home = () => {
             </TouchableOpacity>
             </View>
         </View>
-        <View style={[{marginVertical:30 },{justifyContent: 'center'},{ flexDirection: 'row' }]}>
-            <View>
-            <TouchableOpacity onPress={() =>router.push("/devicedata")}>
-                <Text style={styles.ButtonText}>device data</Text>
-            </TouchableOpacity>
-            </View>
-        </View>
   </SafeAreaView>
 
   )
@@ -121,5 +114,6 @@ const styles = StyleSheet.create({
     marginLeft: 4,
     textAlign: 'left',
     textDecorationLine: 'underline',
+    marginTop: 40,
   },
 });

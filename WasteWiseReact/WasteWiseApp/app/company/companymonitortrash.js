@@ -155,6 +155,7 @@ const companymonitortrash = () => {
                   const formattedDate = `${collectionDate.getDate()}/${collectionDate.getMonth() + 1}/${collectionDate.getFullYear()}`;
 
                   return (
+                    
                     <CustomButton
                       key={index}
                       title={item.trashCanId}

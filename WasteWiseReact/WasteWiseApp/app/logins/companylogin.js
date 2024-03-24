@@ -1,7 +1,6 @@
 import { StyleSheet, View, Text, TouchableOpacity, TextInput, ScrollView, Alert } from 'react-native';
 import React, { useState} from 'react'
-import { Link, router } from 'expo-router'
-import {Picker} from '@react-native-picker/picker';
+import { router } from 'expo-router'
 
 const companylogin = () => {
     const [selectedCountry, setSelectedCountry] = useState("Select Country");
@@ -10,7 +9,6 @@ const companylogin = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-
 
     const CustomButton = ({ title, onPress }) => (
         <TouchableOpacity
@@ -49,8 +47,6 @@ const companylogin = () => {
       }
     };
   
-    
-
     return (
         <ScrollView>
         <View style={styles.container}>
@@ -84,17 +80,7 @@ const companylogin = () => {
           onChangeText={setEmail}
         />
         <Text style={styles.label}>Mobile Number</Text>
-        {/* <Picker
-            style={styles.picker}
-            selectedValue={selectedCountry}
-            onValueChange={(itemValue, itemIndex) =>
-                setSelectedCountry(itemValue)
-            }>
-            <Picker.Item label="Select Country" value="null" />
-            <Picker.Item label="USA (+1)" value="+1" />
-            <Picker.Item label="UK (+44)" value="+44" />
-            {/* Add more countries as needed */}
-        {/* </Picker>  */}
+
         <View style={styles.phoneContainer}>
             <TextInput
                 style={styles.input}
@@ -116,7 +102,7 @@ const companylogin = () => {
         <Text style={styles.label}>Confirm Password</Text>
         <TextInput
           style={styles.input}
-          placeholder="Enter your password"
+          placeholder="Confirm password"
           value={confirmPassword}
           onChangeText={setConfirmPassword}
           secureTextEntry={true}

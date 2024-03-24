@@ -104,15 +104,15 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   title2: {
-    fontSize: 20, // Adjust the font size as needed
+    fontSize: 40, // Adjust the font size as needed
     textAlign: 'center',
     marginTop: 30,
-    marginBottom: 10,
+    marginBottom: 30,
   },
   title3: {
-    fontSize: 20, // Adjust the font size as needed
+    fontSize: 30, // Adjust the font size as needed
     textAlign: 'center',
-    marginBottom: 25,
+    marginBottom: 10,
   },
   boldText: {
     fontWeight: 'bold',
