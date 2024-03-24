@@ -1,10 +1,9 @@
-import { StyleSheet, Text, View, Button, Platform, Alert } from 'react-native';
+import { StyleSheet, Text, View, Button, Alert } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-
-const recyclingtrashdetails = () => {
+const RecyclingTrashDetails = () => {
   const { trashCanId } = useLocalSearchParams();
   const [trashDetails, setTrashDetails] = useState(null);
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -37,7 +36,6 @@ const recyclingtrashdetails = () => {
     return `${day}/${month}/${year}`;
   };
 
-
   const handleDateChange = (event, selectedDate) => {
     setDatePicker(false);
     setSelectedDate(selectedDate);
@@ -65,33 +63,28 @@ const recyclingtrashdetails = () => {
     } catch (error) {
       console.error('Error updating collection state:', error);
       Alert.alert('Error', 'Something went wrong while saving the changes.');
-  
     }
   };
-  
 
   return (
-    
     <View style={styles.container}>
-      <Text style={styles.heading}>TRASH CAN DETAILS</Text>
+      <Text style={styles.heading}>Trash Can Details</Text>
       {trashDetails && (
-        
-        <View>
-          <Text>Trash Can ID: {trashDetails.trashCanId}</Text>
-          <Text>Collection Date: {trashDetails.collectionDate}</Text>
-          <Text>Collection State: {trashDetails.collectionState}</Text>
-          <Text>Company Name: {trashDetails.companyName}</Text>
-          <Text>Bin Level: {trashDetails.sensorData[0].binlevel}</Text>
-          <Text>Latitude: {trashDetails.latitude}</Text>
-          <Text>Longitude: {trashDetails.longitude}</Text>
-          <Text>Waste Type: {trashDetails.wasteType}</Text>
-
+        <View style={styles.detailsContainer}>
+          <Text style={styles.detailText}>Trash Can ID: {trashDetails.trashCanId}</Text>
+          <Text style={styles.detailText}>Collection Date: {trashDetails.collectionDate}</Text>
+          <Text style={styles.detailText}>Collection State: {trashDetails.collectionState}</Text>
+          <Text style={styles.detailText}>Company Name: {trashDetails.companyName}</Text>
+          <Text style={styles.detailText}>Bin Level: {trashDetails.sensorData[0].binlevel}</Text>
+          <Text style={styles.detailText}>Latitude: {trashDetails.latitude}</Text>
+          <Text style={styles.detailText}>Longitude: {trashDetails.longitude}</Text>
+          <Text style={styles.detailText}>Waste Type: {trashDetails.wasteType}</Text>
         </View>
       )}
       <Button title="Select Collection Date" onPress={() => setDatePicker(true)} />
-      {selectedDate && <Text>Selected Date: {formatDate(selectedDate)}</Text>}
-
-      {datePicker && (<DateTimePicker
+      {selectedDate && <Text style={styles.selectedDateText}>Selected Date: {formatDate(selectedDate)}</Text>}
+      {datePicker && (
+        <DateTimePicker
           testID="dateTimePicker"
           value={selectedDate}
           mode="date"
@@ -101,34 +94,53 @@ const recyclingtrashdetails = () => {
         />
       )}
       <View style={styles.buttonContainer}>
-        <Button title="Save Changes" onPress={saveChanges} />
+        <Button title="Save Changes" onPress={saveChanges} color="#2ecc71" />
       </View>
-      {dateString && (
-        <Text>Date String: {dateString}</Text>
-      )}
-      
+      {dateString && <Text style={styles.dateStringText}>Date String: {dateString}</Text>}
     </View>
   );
 };
 
-export default recyclingtrashdetails;
+export default RecyclingTrashDetails;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    backgroundColor: '#f5f5f5',
   },
   heading: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 20,
+    textAlign: 'center',
+    color: '#333',
   },
-  datePicker: {
+  detailsContainer: {
+    marginBottom: 20,
+    backgroundColor: '#fff',
+    padding: 10,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#ddd',
+  },
+  detailText: {
+    fontSize: 16,
+    marginBottom: 5,
+    color: '#555',
+  },
+  selectedDateText: {
+    fontSize: 16,
     marginTop: 10,
+    marginBottom: 20,
+    color: '#333',
   },
   buttonContainer: {
-    marginTop: 10,
     alignItems: 'center',
   },
+  dateStringText: {
+    fontSize: 16,
+    marginTop: 10,
+    color: '#555',
+  },
 });
-

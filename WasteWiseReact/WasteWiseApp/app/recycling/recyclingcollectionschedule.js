@@ -93,22 +93,6 @@ const RecyclingCollectionSchedule = () => {
         return typeColors[type] || 'grey';
     };
 
-    // const data = [
-    //   { title: 'TrashCanID_1', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'PAPER', percentage: 81, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
-    //   { title: 'TrashCanID_2', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'PLASTIC', percentage: 60, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
-    //   { title: 'TrashCanID_3', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 45, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
-    //   { title: 'TrashCanID_4', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'PAPER', percentage: 67, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
-    //   { title: 'TrashCanID_5', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'PLASTIC', percentage: 50, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
-    //   { title: 'TrashCanID_6', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 15, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
-    //   { title: 'TrashCanID_7', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'PAPER', percentage: 54, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
-    //   { title: 'TrashCanID_8', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'PLASTIC', percentage: 70, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
-    //   { title: 'TrashCanID_9', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'PAPER', percentage: 90, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
-    //   { title: 'TrashCanID_10', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 35, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
-    //   { title: 'TrashCanID_11', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'PAPER', percentage: 81, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
-    //   { title: 'TrashCanID_12', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'PLASTIC', percentage: 20, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
-    //   { title: 'TrashCanID_13', title2: 'Collection Date: ' + '',date: 'DD/MM/YYYY', type: 'GLASS/METAL', percentage: 65, previousCollection: 'Previous date', predictedCollection: 'Predicted date' },
-    //     // Add more data objects as needed
-    // ];
 
     return (
         <ScrollView>
@@ -119,18 +103,7 @@ const RecyclingCollectionSchedule = () => {
                 <View style={styles.buttonContent}>
                     <Text style={[styles.title2, styles.boldText]}>Company_name</Text>
                 
-                    <Picker
-                        style={styles.picker}
-                        selectedValue={selectedType}
-                        onValueChange={(itemValue, itemIndex) =>
-                            setSelectedType(itemValue)
-                        }>
-                        <Picker.Item label="All" value="All" />
-                        <Picker.Item label="PAPER" value="PAPER" />
-                        <Picker.Item label="PLASTIC" value="PLASTIC" />
-                        <Picker.Item label="GLASS/METAL" value="GLASS/METAL" />
-                        {/* Add more countries as needed */}
-                    </Picker>
+          
                 
                 </View>
 
@@ -139,7 +112,7 @@ const RecyclingCollectionSchedule = () => {
                 {trashData.map((item, index) => {
                   // Extracting date from collectionDate and formatting it
                   const collectionDate = new Date(item.collectionDate);
-                  const formattedDate = `${collectionDate.getDate()}/${collectionDate.getMonth() + 1}/${collectionDate.getFullYear()}`;
+                  const formattedDate = `${collectionDate.getDate()}/${collectionDate.getMonth() + 1}/${collectionDate.getFullYear()};`
 
                   return (
                     <CustomButton
@@ -236,6 +209,6 @@ const styles = StyleSheet.create({
     },
     boldText: {
       fontWeight: 'bold',
-    },
+    },
 
-  });
+  });

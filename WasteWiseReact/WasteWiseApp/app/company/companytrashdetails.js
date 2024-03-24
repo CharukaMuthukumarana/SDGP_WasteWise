@@ -1,3 +1,4 @@
+
 import { StyleSheet, Text, View, Button, Alert } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { useLocalSearchParams } from 'expo-router';
@@ -60,25 +61,6 @@ const CompanyTrashDetails = () => {
       // No need to parse response.json() since no data is expected
       setDatePicker(false);
       Alert.alert('Changes saved', 'The collection date has been updated.');
-    } catch (error) {
-      console.error('Error updating collection state:', error);
-      Alert.alert('Error', 'Something went wrong while saving the changes.');
-    }
-    try {
-      const response = await fetch(`https://waste-wise-api-sdgp.koyeb.app/api/devices/${trashCanId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          collectionState: "Requested",
-        }),
-      });
-      if (!response.ok) {
-        throw new Error('Failed to update collection state');
-      }
-      // No need to parse response.json() since no data is expected;
-      setDatePicker(false);
     } catch (error) {
       console.error('Error updating collection state:', error);
       Alert.alert('Error', 'Something went wrong while saving the changes.');
