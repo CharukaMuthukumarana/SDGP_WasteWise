@@ -146,14 +146,14 @@ const styles = StyleSheet.create({
     center: {
       justifyContent: 'center',
       alignItems: 'center',
-      marginBottom: 40,
+      marginBottom: 15,
     },
     title: {
       textAlign: 'center',
       marginTop: 8,
       color: 'black',
       fontWeight: 'bold',
-      fontSize: 25,
+      fontSize: 30,
     },
     button: {
       borderRadius: 5,

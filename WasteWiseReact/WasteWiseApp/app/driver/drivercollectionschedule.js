@@ -56,7 +56,7 @@ const DriverMonitorTrash = () => {
 
   const CustomButton = ({ title, collectionDate, date, type, collectionType }) => {
     const currentDate = new Date();
-    const backgroundColor = collectionDate.toDateString() === currentDate.toDateString() ? 'green' : 'red';
+    const backgroundColor = collectionDate.toDateString() === currentDate.toDateString() ? '#4CC417' : '#FF3131';
   
     return (
       <View style={[styles.buttonContainer, { backgroundColor }]}>
@@ -143,10 +143,10 @@ const styles = StyleSheet.create({
   },
   center: {
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 2,
   },
   title: {
-    fontSize: 24,
+    fontSize: 30,
     fontWeight: 'bold',
     marginBottom: 10,
   },

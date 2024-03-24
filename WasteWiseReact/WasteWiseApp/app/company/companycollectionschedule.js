@@ -57,7 +57,7 @@ const CompanyMonitorTrash = () => {
 
   const CustomButton = ({ title, collectionDate, date, type, collectionType }) => {
     const currentDate = new Date();
-    const backgroundColor = collectionDate.toDateString() === currentDate.toDateString() ? 'green' : 'red';
+    const backgroundColor = collectionDate.toDateString() === currentDate.toDateString() ? '#4CC417' : '#FF3131';
   
     return (
       <View style={[styles.buttonContainer, { backgroundColor }]}>
@@ -100,7 +100,7 @@ const CompanyMonitorTrash = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.center}>
         <Text style={[styles.title, styles.boldText]}>Waste Wise</Text>
-        <Text style={styles.title}>{username}</Text>
+        <Text style={styles.title2}>{username}</Text>
       </View>
       <Picker
           style={styles.picker}
@@ -147,10 +147,19 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   title: {
-    fontSize: 24,
+    textAlign: 'center',
+    marginVertical: 8,
+    color: 'black',
     fontWeight: 'bold',
-    marginBottom: 10,
+    fontSize: 30,
   },
+  title2: {
+    textAlign: 'center',
+    marginVertical: 8,
+    color: 'black',
+    fontWeight: 'bold',
+    fontSize: 20,
+  },
   picker: {
     marginBottom: 10,
     borderWidth: 1,
