@@ -161,12 +161,12 @@ const drivermonitortrash = () => {
                       title2={`Collection Date: ${formattedDate}`}
                       onPress={() =>
                         router.push({
-                          pathname: '../recycling/recyclingtrashdetails', // Updated dynamic route pattern
+                          pathname: '../driver/drivertrashdetails', // Updated dynamic route pattern
                           params: { trashCanId: item.trashCanId }
                         })
                       }
                       type={item.wasteType}
-                      percentage={item.sensorData && item.sensorData[0] ? item.sensorData[0].binlevel : 0}
+                      percentage={item.sensorData && item.sensorData.length > 0 ? item.sensorData[item.sensorData.length - 1].binlevel : 0}
                     />
                   );
                 })}
