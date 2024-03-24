@@ -64,6 +64,25 @@ const RecyclingTrashDetails = () => {
       console.error('Error updating collection state:', error);
       Alert.alert('Error', 'Something went wrong while saving the changes.');
     }
+    try {
+      const response = await fetch(`https://waste-wise-api-sdgp.koyeb.app/api/devices/${trashCanId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          collectionState: "Scheduled",
+        }),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to update collection state');
+      }
+      // No need to parse response.json() since no data is expected;
+      setDatePicker(false);
+    } catch (error) {
+      console.error('Error updating collection state:', error);
+      Alert.alert('Error', 'Something went wrong while saving the changes.');
+    }
   };
 
   return (
@@ -75,7 +94,7 @@ const RecyclingTrashDetails = () => {
           <Text style={styles.detailText}>Collection Date: {trashDetails.collectionDate}</Text>
           <Text style={styles.detailText}>Collection State: {trashDetails.collectionState}</Text>
           <Text style={styles.detailText}>Company Name: {trashDetails.companyName}</Text>
-          <Text style={styles.detailText}>Bin Level: {trashDetails.sensorData[0].binlevel}</Text>
+          <Text style={styles.detailText}>Bin Level: {trashDetails.sensorData[trashDetails.sensorData.length - 1].binlevel}</Text>
           <Text style={styles.detailText}>Latitude: {trashDetails.latitude}</Text>
           <Text style={styles.detailText}>Longitude: {trashDetails.longitude}</Text>
           <Text style={styles.detailText}>Waste Type: {trashDetails.wasteType}</Text>
