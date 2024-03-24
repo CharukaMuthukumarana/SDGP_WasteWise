@@ -10,11 +10,9 @@ import {
 import {Picker} from '@react-native-picker/picker';
 import { Link, router } from 'expo-router'
 import { SimpleLineIcons } from '@expo/vector-icons';
-import { useLocalSearchParams } from 'expo-router';
-
 
 const companymonitortrash = () => {
-    const { username } = useLocalSearchParams();
+
     const [selectedType, setSelectedType] = useState('All'); // Initial selected type
     const Separator = () => <View style={styles.separator} />;
     const [trashData, setTrashData] = useState([]);
@@ -30,9 +28,7 @@ const companymonitortrash = () => {
           throw new Error('Failed to fetch data');
         }
         const data = await response.json();
-        // Filter the data where companyName matches the username
-        const filteredData = data.filter(item => item.companyName === username);
-        setTrashData(filteredData);
+        setTrashData(data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -134,7 +130,7 @@ const companymonitortrash = () => {
                     <Text style={[styles.title, styles.boldText]}>Waste Wise</Text>
                 </View>
                 <View style={styles.buttonContent}>
-                    <Text style={[styles.title2, styles.boldText]}>{username}</Text>
+                    <Text style={[styles.title2, styles.boldText]}>Company_name</Text>
                 
                     <Picker
                         style={styles.picker}
@@ -171,8 +167,8 @@ const companymonitortrash = () => {
                         })
                       }
                       type={item.wasteType}
-                      percentage={item.sensorData && item.sensorData.length > 0 ? item.sensorData[item.sensorData.length - 1].binlevel : 0}
-                      />
+                      percentage={item.sensorData && item.sensorData[0] ? item.sensorData[0].binlevel : 0}
+                    />
                   );
                 })}
         </SafeAreaView>

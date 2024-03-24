@@ -32,65 +32,53 @@ const RecyclingCollectionSchedule = () => {
     }, []);
   
     
-    const CustomButton = ({ title, title2, onPress, color1, collectionDate1, date, type, percentage, collectionType, predictedCollection }) => {
-      const barColor = percentage > 80 ? 'red' : 'orange';
-      let borderColor = percentage > 80 ? 'red' : '#d3d3d3';
-      let backgroundColor = 'white';
-      let pendingText = 'Collection Date:';
-      let textColor = 'black';
-      const currentDate = new Date();
-      const collectionDate = new Date(collectionDate1);
-
-      // Check if the selected type is 'All' or matches the current type
-      const isVisible = selectedType === 'All' || selectedType === type;
-      
-      // Check if the collection is pending
-      if (collectionType === "Scheduled" || collectionType === "Requested") {
-        if (collectionDate < currentDate) {
-          borderColor = 'red';
-          pendingText = 'Pending Collection !';
-          textColor = 'red';
-        }
-      }
-  
-      return (
-        isVisible && (
-          <TouchableOpacity
-            style={[styles.button, { borderColor: borderColor, backgroundColor: backgroundColor }]}
-            onPress={onPress}
-          >
-            <View style={styles.buttonContent}>
-              <Text style={[styles.buttonText, { color: textColor }]}>
-                {title}
-              </Text>
-              <View style={[{borderColor: getColorForType(type), borderWidth:2, borderRadius:3}]}>
-                <Text style={[
-                  { backgroundColor: getColorForType(type), borderColor: getColorForType(type)},
-                  styles.typeIndicator,
-                  {opacity: 0.4}
-                ]}>
-                  {type}
+    const CustomButton = ({ title, title2, onPress, color1, date, type, percentage, collectionType, predictedCollection }) => {
+        const barColor = percentage > 80 ? 'red' : 'orange';
+        const borderColor = percentage > 80 ? 'red' : '#d3d3d3';
+        const borderWidth = percentage > 80 ? 3 : 2;
+        const opacityColor = percentage > 80 ? '#ffb5b7' : '#fbd9b5';
+    
+        // Check if the selected type is 'All' or matches the current type
+        const isVisible = selectedType === 'All' || selectedType === type;
+    
+        return (
+          isVisible && (
+            <TouchableOpacity
+              style={[styles.button, { borderColor: borderColor, backgroundColor:'white',borderWidth:borderWidth}]}
+              onPress={onPress}
+            >
+              <View style={styles.buttonContent}>
+                <Text style={styles.buttonText}>
+                  {title}
                 </Text>
-              </View>
-            </View>
-            <View style={styles.buttonContent}>
-              <Text style={[styles.buttonText2, { color: textColor }]}>
-                Collection State:{"\n"} 
-                <Text style={styles.buttonText3}>
-                  {collectionType}
-                </Text>
-              </Text>
-              <Text style={[styles.buttonText2, { color: textColor }]}>
-                {pendingText}{"\n"} 
-                <Text style={styles.buttonText4}>
-                  {date}
+                <View style={[{borderColor: getColorForType(type), borderWidth:2, borderRadius:3}]}>
+                  <Text style={[
+                    { backgroundColor: getColorForType(type), borderColor: getColorForType(type),},
+                    styles.typeIndicator,
+                    {opacity: 0.4}
+                  ]}>
+                    {type}
                   </Text>
-              </Text>
-            </View>  
-          </TouchableOpacity>
-        )
-      );
-  };
+                </View>
+              </View>
+              <View style={styles.buttonContent}>
+                <Text style={styles.buttonText2}>
+                  Collection State:{"\n"} 
+                  <Text style={styles.buttonText3}>
+                    {collectionType}
+                    </Text>
+                </Text>
+                <Text style={styles.buttonText2}>
+                  Next Collection:{"\n"} 
+                  <Text style={styles.buttonText4}>
+                    {date}
+                    </Text>
+                </Text>
+              </View>  
+            </TouchableOpacity>
+          )
+        );
+    };
 
     const getColorForType = (type) => {
         // Define colors for different types
@@ -112,18 +100,24 @@ const RecyclingCollectionSchedule = () => {
                 <View style={styles.center}>
                     <Text style={[styles.title, styles.boldText]}>Waste Wise</Text>
                 </View>
+                <View style={styles.buttonContent}>
+                    <Text style={[styles.title2, styles.boldText]}>Company_name</Text>
+                
+          
+                
+                </View>
 
+                <Separator/>
 
                 {trashData.map((item, index) => {
                   // Extracting date from collectionDate and formatting it
                   const collectionDate = new Date(item.collectionDate);
-                  const formattedDate = `${collectionDate.getDate()}/${collectionDate.getMonth() + 1}/${collectionDate.getFullYear()}`
+                  const formattedDate = `${collectionDate.getDate()}/${collectionDate.getMonth() + 1}/${collectionDate.getFullYear()};`
 
                   return (
                     <CustomButton
                       key={index}
                       title={item.trashCanId}
-                      collectionDate1={collectionDate}
                       date={formattedDate}
                       type={item.wasteType}
                       collectionType={item.collectionState}
@@ -141,7 +135,6 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       marginHorizontal: 16,
-      marginVertical: 16,
     },
     center: {
       justifyContent: 'center',
@@ -150,7 +143,7 @@ const styles = StyleSheet.create({
     },
     title: {
       textAlign: 'center',
-      marginTop: 8,
+      marginVertical: 8,
       color: 'black',
       fontWeight: 'bold',
       fontSize: 25,

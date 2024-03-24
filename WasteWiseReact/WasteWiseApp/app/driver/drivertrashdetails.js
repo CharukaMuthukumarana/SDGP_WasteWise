@@ -36,6 +36,10 @@ const DriverTrashDetails = () => {
     return `${day}/${month}/${year}`;
   };
 
+  const handleDateChange = (event, selectedDate) => {
+    setDatePicker(false);
+    setSelectedDate(selectedDate);
+  };
 
   const saveChanges = async () => {
     try {
@@ -60,25 +64,6 @@ const DriverTrashDetails = () => {
       console.error('Error updating collection state:', error);
       Alert.alert('Error', 'Something went wrong while saving the changes.');
     }
-    try {
-      const response = await fetch(`https://waste-wise-api-sdgp.koyeb.app/api/devices/${trashCanId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          collectionState: "Collected",
-        }),
-      });
-      if (!response.ok) {
-        throw new Error('Failed to update collection state');
-      }
-      // No need to parse response.json() since no data is expected;
-      setDatePicker(false);
-    } catch (error) {
-      console.error('Error updating collection state:', error);
-      Alert.alert('Error', 'Something went wrong while saving the changes.');
-    }
   };
 
   return (
@@ -96,9 +81,20 @@ const DriverTrashDetails = () => {
           <Text style={styles.detailText}>Waste Type: {trashDetails.wasteType}</Text>
         </View>
       )}
-
+      <Button title="Select Collection Date" onPress={() => setDatePicker(true)} />
+      {selectedDate && <Text style={styles.selectedDateText}>Selected Date: {formatDate(selectedDate)}</Text>}
+      {datePicker && (
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={selectedDate}
+          mode="date"
+          is24Hour={true}
+          display="default"
+          onChange={handleDateChange}
+        />
+      )}
       <View style={styles.buttonContainer}>
-        <Button title="Mark As Collected" onPress={saveChanges} color="#2ecc71" />
+        <Button title="Save Changes" onPress={saveChanges} color="#2ecc71" />
       </View>
       {dateString && <Text style={styles.dateStringText}>Date String: {dateString}</Text>}
     </View>

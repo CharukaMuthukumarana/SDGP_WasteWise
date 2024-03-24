@@ -1,3 +1,5 @@
+//Company Collection Schedule
+
 import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
@@ -10,10 +12,11 @@ import {Picker} from '@react-native-picker/picker';
 import { useLocalSearchParams } from 'expo-router';
 
 const CompanyMonitorTrash = () => {
-  const { username } = useLocalSearchParams();
+  const {username} = useLocalSearchParams();
   const [selectedType, setSelectedType] = useState('All'); // Initial selected type
+  const Separator = () => <View style={styles.separator} />;
   const [trashData, setTrashData] = useState([]);
-  const [category, setCategory] = useState("Today");
+  const [category, setcategory] = useState("Today");
 
   useEffect(() => {
     // Fetch data from the database
@@ -54,8 +57,9 @@ const CompanyMonitorTrash = () => {
     }
   };
 
-  const CustomButton = ({ title, collectionDate, date, type, collectionType }) => {
+  const CustomButton = ({ title, collectionDate1,date, type, collectionType }) => {
     const currentDate = new Date();
+    const collectionDate = new Date(collectionDate1);
     const backgroundColor = collectionDate.toDateString() === currentDate.toDateString() ? 'green' : 'red';
   
     return (
@@ -70,6 +74,7 @@ const CompanyMonitorTrash = () => {
       </View>
     );
   };
+
 
   const getColorForType = (type) => {
     // Define colors for different types
@@ -87,12 +92,73 @@ const CompanyMonitorTrash = () => {
   const collectionColor = (collectionType) => {
     // Define colors for different types
     const typeColors = {
-      Scheduled: '#AEEA6F',
+      Collected: '#AEEA6F',
+      Scheduled: '#6FC5EA',
       Requested: '#6FC5EA',
     };
     // Return the color based on  the type, default to a fallback color if not found
     return typeColors[collectionType] || 'grey';
   };
+
+
+  // const CustomButton = ({ title, date, type, collectionType}) => {
+
+  //   // Check if the selected type is 'All' or matches the current type
+  //   const isVisible = selectedType === 'All' || selectedType === type;
+
+  //   return (
+  //     isVisible && (
+  //       <View style={[{flexDirection: 'row', justifyContent:'space-between', marginVertical:10, marginHorizontal:10}]}>
+  //         <View>
+  //           <Text>
+  //             {date}
+  //           </Text>
+  //         </View>
+  //         <View style={[{borderColor: 'black',  borderWidth:1, borderRadius:5, width: '70%', backgroundColor: collectionColor(collectionType)}]}>
+  //           <View style={styles.buttonContent}>
+  //             <Text style={styles.buttonText}>
+  //               {title}
+  //             </Text>
+
+  //             <View style={[{borderColor: getColorForType(type), borderWidth:2, borderRadius:3}]}>
+  //               <Text style={[
+  //                 { backgroundColor: getColorForType(type), borderColor: getColorForType(type),},
+  //                 styles.typeIndicator,
+  //                 {opacity: 0.6}
+  //               ]}>
+  //                 {type}
+  //               </Text>
+  //             </View>
+  //           </View>
+  //         </View>  
+  //       </View>
+  //     )
+  //   );
+  // };
+
+  // const getColorForType = (type) => {
+  //   // Define colors for different types
+  //   const typeColors = {
+  //     PLASTIC: '#E87200',
+  //     PAPER: '#34A853',
+  //     'GLASS/METAL': '#4285F4',
+  //     // Add more types and corresponding colors as needed
+  //   };
+
+  //   // Return the color based on the type, default to a fallback color if not found
+  //   return typeColors[type] || 'grey';
+  // };
+  
+  // const collectionColor = (collectionType) => {
+  //   // Define colors for different types
+  //   const typeColors = {
+  //     Collected: '#AEEA6F',
+  //     Scheduled: '#6FC5EA',
+  //     Requested: '#6FC5EA',
+  //   };
+  //   // Return the color based on  the type, default to a fallback color if not found
+  //   return typeColors[collectionType] || 'grey';
+  // };
 
 
   return (
@@ -105,13 +171,13 @@ const CompanyMonitorTrash = () => {
           style={styles.picker}
           selectedValue={category}
           onValueChange={(itemValue, itemIndex) =>
-              setCategory(itemValue)
+              setcategory(itemValue)
           }>
           <Picker.Item label="Today" value="Today" />
           <Picker.Item label="Upcoming" value="Upcoming" />
       </Picker>
       <Separator/>
-      <ScrollView style={{ marginBottom: 20 }}>
+      <ScrollView style={[{marginBottom:20,}]} >
       {filterTrashData().map((item, index) => {
           const collectionDate = new Date(item.collectionDate);
           const formattedDate = `${collectionDate.getDate()}/${collectionDate.getMonth() + 1}/${collectionDate.getFullYear()}`;
@@ -120,7 +186,7 @@ const CompanyMonitorTrash = () => {
             <CustomButton
               key={index}
               title={item.trashCanId}
-              collectionDate={collectionDate}
+              collectionDate1={collectionDate}
               date={formattedDate}
               type={item.wasteType}
               collectionType={item.collectionState}
@@ -132,67 +198,63 @@ const CompanyMonitorTrash = () => {
   );
 };
 
-const Separator = () => <View style={styles.separator} />;
+// const CustomButton = ({ title, date, type, collectionType}) => {
+
+//   // Check if the selected type is 'All' or matches the current type
+//   const isVisible = selectedType === 'All' || selectedType === type;
+
+//   return (
+//     isVisible && (
+//       <View style={styles.buttonContainer}>
+//         <Text style={styles.dateText}>{date}</Text>
+//         <View style={[styles.buttonContent, {borderColor: collectionColor(collectionType), backgroundColor: collectionColor(collectionType)}]}>
+//           <Text style={styles.buttonText}>{title}</Text>
+//           <View style={[styles.typeIndicator, {backgroundColor: getColorForType(type), borderColor: getColorForType(type)}]}>
+//             <Text style={styles.typeText}>{type}</Text>
+//           </View>
+//         </View>
+//       </View>
+//     )
+//   );
+// };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 20,
-    paddingVertical: 20,
-    backgroundColor: '#fff',
-  },
-  center: {
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  picker: {
-    marginBottom: 10,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-  },
   buttonContainer: {
-    marginBottom: 10,
-    padding: 10,
-    borderRadius: 5,
+    marginBottom: 10, // Adjust spacing between TrashCanIDs
+    backgroundColor: 'red', // Default background color for CustomButton
+
   },
   buttonContent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    borderRadius: 5,
+    padding: 15,
   },
   dateText: {
     fontSize: 16,
-    marginBottom: 5,
   },
   buttonText: {
     fontWeight: 'bold',
-    fontSize: 18,
+    fontSize: 20,
     textAlign: 'left',
   },
   typeIndicator: {
-    paddingHorizontal: 8,
-    paddingVertical: 3,
+    paddingHorizontal: 2,
+    paddingVertical: 5,
     borderRadius: 3,
   },
   typeText: {
-    color: '#fff',
+    color: 'white',
     fontWeight: 'bold',
-    fontSize: 14,
   },
   separator: {
-    marginVertical: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    marginTop: 8,
+    borderBottomColor: '#737373',
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
+  // Add other styles as needed
 });
 
+
 export default CompanyMonitorTrash;
+

@@ -166,8 +166,8 @@ const recyclingmonitortrash = () => {
                         })
                       }
                       type={item.wasteType}
-                      percentage={item.sensorData && item.sensorData.length > 0 ? item.sensorData[item.sensorData.length - 1].binlevel : 0}
-                      />
+                      percentage={item.sensorData && item.sensorData[0] ? item.sensorData[0].binlevel : 0}
+                    />
                   );
                 })}
         </SafeAreaView>

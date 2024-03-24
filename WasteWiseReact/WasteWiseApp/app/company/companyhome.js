@@ -46,10 +46,7 @@ return (
     <CustomButton
     title="Monitor"
     title2="Trash Cans"
-    onPress={() => router.push({
-      pathname: '../company/companymonitortrash',
-      params: {username:username}
-    })}
+    onPress={() => router.push("company/companymonitortrash")}
     color1='#E87200'
     />
 

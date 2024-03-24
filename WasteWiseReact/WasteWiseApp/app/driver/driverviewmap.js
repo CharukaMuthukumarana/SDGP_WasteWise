@@ -42,8 +42,9 @@ const driverviewmap = () => {
       // and collectionDate is the current date
       const currentDate = new Date();
       const filteredDestinations = data.filter(destination =>
-        (destination.collectionState === "Scheduled" || destination.collectionState === "Requested") &&
-        (isSameDate(new Date(destination.collectionDate), currentDate) || new Date(destination.collectionDate) < currentDate)
+        ((destination.collectionState === "Scheduled" || destination.collectionState === "Requested") &&
+        isSameDate(new Date(destination.collectionDate), currentDate)) ||
+        (destination.sensorData[0].binlevel > 80)
       );
   
       setDestinations(filteredDestinations);
@@ -256,9 +257,7 @@ const driverviewmap = () => {
             data={destinations}
             keyExtractor={(item) => item.trashCanId }
             renderItem={({ item }) => (
-              <Text style={[styles.destinationText,isSameDate(new Date(item.collectionDate), new Date())  ? styles.pendingDestination : null]}>
-                {item.trashCanId}
-              </Text>
+              <Text style={styles.destinationText}>{item.trashCanId}</Text>
             )}
           />
         )}
@@ -323,10 +322,6 @@ const styles = StyleSheet.create({
   loadingMsg: {
     fontSize: 16,
     fontStyle: 'italic',
-  },
-  pendingDestination: {
-    color: 'red',
-    fontWeight: 'bold',
   },
 });
 
