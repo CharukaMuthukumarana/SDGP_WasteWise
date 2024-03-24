@@ -22,7 +22,7 @@ const Home = () => {
         Waste Wise
       </Text>
       <Text style={styles.title}>
-        Which of the following are you
+        Which of the following are you,
       </Text>
     </View>
     <Separator />
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
   },
   button: {
-    backgroundColor: 'white',
+    backgroundColor: '#E3E4FA',
     padding: 17,
     borderRadius: 5,
     borderColor: 'black',
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     color: 'black',
     textAlign: 'center',
     fontWeight: 'bold',
-    fontSize: 15,
+    fontSize: 25,
   },
   title2: {
     fontSize: 60, // Adjust the font size as needed
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
   },
   ButtonText: {
     color: 'blue',
-    fontSize: 13,
+    fontSize: 18,
     marginLeft: 4,
     textAlign: 'left',
     textDecorationLine: 'underline',
