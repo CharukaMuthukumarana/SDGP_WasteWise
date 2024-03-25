@@ -148,7 +148,7 @@ const CompanyTrashDetails = () => {
         />
       )}
       <View style={styles.buttonContainer}>
-        <Button title="Save Changes" onPress={saveChanges} color="#2ecc71" />
+        <Button title="Request Collection" onPress={saveChanges} color="#2ecc71" />
       </View>
       {dateString && <Text style={styles.dateStringText}>Date String: {dateString}</Text>}
     </View>

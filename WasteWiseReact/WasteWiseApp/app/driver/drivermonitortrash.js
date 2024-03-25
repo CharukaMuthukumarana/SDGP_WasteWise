@@ -33,7 +33,6 @@ const drivermonitortrash = () => {
         console.error('Error fetching data:', error);
       }
     };
-
     
     const CustomButton = ({ title, title2, onPress, color1, date, type, percentage }) => {
         const barColor = percentage > 80 ? 'red' : 'orange';
@@ -129,9 +128,8 @@ const drivermonitortrash = () => {
                 <View style={styles.center}>
                     <Text style={[styles.title, styles.boldText]}>Waste Wise</Text>
                 </View>
-                <View style={styles.buttonContent}>
-                    <Text style={[styles.title2, styles.boldText]}>Company_name</Text>
                 
+                <View style={styles.buttonContent}>
                     <Picker
                         style={styles.picker}
                         selectedValue={selectedType}

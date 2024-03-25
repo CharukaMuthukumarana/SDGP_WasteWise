@@ -23,31 +23,59 @@ const recyclinglogin = () => {
 
     const handleRegister = async () => {
       try {
-        const response = await fetch('https://waste-wise-api-sdgp.koyeb.app/api/recyclingUsers', {
+        // Perform validations
+        if (!companyUsername.trim()) {
+          Alert.alert('Error', 'Please enter a username');
+          return;
+        }
+    
+        if (!email.trim()) {
+          Alert.alert('Error', 'Please enter an email');
+          return;
+        }
+    
+        if (!mobileNumber.trim()) {
+          Alert.alert('Error', 'Please enter a mobile number');
+          return;
+        }
+    
+        if (!password.trim()) {
+          Alert.alert('Error', 'Please enter a password');
+          return;
+        }
+    
+        if (password !== confirmPassword) {
+          Alert.alert('Error', 'Passwords do not match');
+          return;
+        }
+    
+        // If all validations pass, proceed with registration
+        const response = await fetch('https://waste-wise-api-sdgp.koyeb.app/api/companyUsers', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            recyclingUsername,
+            companyUsername,
             password,
             mobileNumber,
             email,
           }),
         });
-  
+    
         if (!response.ok) {
           throw new Error('Failed to register user');
         }
-  
+    
         Alert.alert('User Registered');
         // Navigate to the login screen
-        router.push('logins/recyclinglogin2');
+        router.push('logins/companylogin2');
       } catch (error) {
         console.error('Error registering user:', error);
         Alert.alert('Error', 'Failed to register user. Please try again later.');
       }
     };
+    
   
     
 
