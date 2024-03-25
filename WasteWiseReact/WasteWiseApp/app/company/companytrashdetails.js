@@ -116,7 +116,8 @@ const CompanyTrashDetails = () => {
           <Separator />
           <View style={styles.detailItem}>
             <Text style={styles.detailLabel}>Bin Level:</Text>
-            <Text style={styles.detailValue}>{trashDetails.sensorData[trashDetails.sensorData.length - 1].binlevel}</Text>
+            <Text style={styles.detailValue}>{((trashDetails.sensorData[0].binlevel - trashDetails.sensorData[trashDetails.sensorData.length - 1].binlevel) / trashDetails.sensorData[0].binlevel) * 100}%</Text>
+                        
           </View>
           <Separator />
           <View style={styles.detailItem}>

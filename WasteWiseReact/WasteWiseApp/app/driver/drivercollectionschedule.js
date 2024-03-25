@@ -71,6 +71,7 @@ const DriverMonitorTrash = () => {
     );
   };
 
+
   const getColorForType = (type) => {
     // Define colors for different types
     const typeColors = {

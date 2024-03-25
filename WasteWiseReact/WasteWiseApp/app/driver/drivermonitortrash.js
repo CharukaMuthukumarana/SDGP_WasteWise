@@ -164,8 +164,10 @@ const drivermonitortrash = () => {
                         })
                       }
                       type={item.wasteType}
-                      percentage={item.sensorData && item.sensorData.length > 0 ? item.sensorData[item.sensorData.length - 1].binlevel : 0}
-                    />
+                      percentage={item.sensorData && item.sensorData.length > 1 ? 
+                        ((item.sensorData[0].binlevel - item.sensorData[item.sensorData.length - 1].binlevel) / item.sensorData[0].binlevel) * 100 : 
+                        0}
+                        />
                   );
                 })}
         </SafeAreaView>
