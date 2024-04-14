@@ -16,6 +16,8 @@ const recyclingmonitortrash = () => {
     const [selectedType, setSelectedType] = useState('All'); // Initial selected type
     const Separator = () => <View style={styles.separator} />;
     const [trashData, setTrashData] = useState([]);
+    const [trashData1, setTrashData1] = useState([]);
+
 
     useEffect(() => {
       fetchData();
@@ -29,6 +31,25 @@ const recyclingmonitortrash = () => {
         }
         const data = await response.json();
         setTrashData(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+
+    useEffect(() => {
+      fetchData1();
+    }, []);
+
+    const fetchData1 = async () => {
+      try {
+        const response = await fetch('https://api.thingspeak.com/channels/2421336/feeds.json?api_key=YMEB70W7TK016LEX');
+        if (!response.ok) {
+          throw new Error('Failed to fetch data');
+        }
+        const data = await response.json();
+        setTrashData1(data);
+
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -98,6 +119,69 @@ const recyclingmonitortrash = () => {
           )
         );
     };
+    const CustomButton1 = ({ title, title2, onPress, color1, date, type, percentage }) => {
+      const barColor = percentage > 80 ? 'red' : 'orange';
+      const borderColor = percentage > 80 ? 'red' : '#d3d3d3';
+      const borderWidth = percentage > 80 ? 3 : 2;
+      const opacityColor = percentage > 80 ? '#ffb5b7' : '#fbd9b5';
+  
+      // Check if the selected type is 'All' or matches the current type
+      const isVisible = selectedType === 'All' || selectedType === type;
+      return (
+        isVisible && (
+          <TouchableOpacity
+            style={[styles.button, { borderColor: borderColor, backgroundColor:'white',borderWidth:borderWidth}]}
+            onPress={onPress}
+          >
+            <View style={styles.buttonContent}>
+              <Text style={styles.buttonText}>
+                {title}
+                <Text style={styles.buttonText2}>{"\n"}{title2}{date}</Text>
+              </Text>
+  
+              <View style={[{borderColor: getColorForType(type), borderWidth:2, borderRadius:3}]}>
+                <Text style={[
+                  { backgroundColor: getColorForType(type), borderColor: getColorForType(type),},
+                  styles.typeIndicator,
+                  {opacity: 0.4}
+                ]}>
+                  {type}
+                </Text>
+              </View>
+              
+            </View>
+            <View style={{ marginLeft: 10, flexDirection: 'row'}}>
+              <Text style={styles.buttonText2}>
+                {percentage}{"%"}
+              </Text>
+              <View>
+                {percentage > 80 && (
+                  <TouchableOpacity style={styles.backButton} onPress={() => router.push("company/companymonitortrash")}>
+                  <View style={styles.icon}>
+                    <SimpleLineIcons name="exclamation" size={15} color="red" />
+                  </View>
+                </TouchableOpacity>
+                )}
+              </View>
+            </View>
+            <View style={[styles.barBorder,{borderColor: barColor, backgroundColor: opacityColor}]}>
+              <View style={[
+                { backgroundColor: barColor },
+                styles.progressBar,
+                { width: `${percentage}%` },
+              ]}></View>
+            </View>
+            <View>
+              {percentage > 80 && (
+                <TouchableOpacity style={styles.backButton} onPress={() => router.push("/company/companycollectionschedule")}>
+                <Text style={styles.ButtonText}>Request to Collect !</Text>
+              </TouchableOpacity>
+              )}
+            </View>
+          </TouchableOpacity>
+        )
+      );
+  };
 
     const getColorForType = (type) => {
         // Define colors for different types
@@ -111,7 +195,7 @@ const recyclingmonitortrash = () => {
         // Return the color based on the type, default to a fallback color if not found
         return typeColors[type] || 'grey';
     };
-
+    
     // const data = [
     //     { title: 'TrashCanID1', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'PAPER', percentage: 81 },
     //     { title: 'TrashCanID2', title2: 'Collection Date: ' + '', date: 'DD/MM/YYYY', type: 'PLASTIC', percentage: 60 },
@@ -149,6 +233,23 @@ const recyclingmonitortrash = () => {
 
                 <Separator/>
 
+                <CustomButton1
+                      
+                      title="Channel 2421336"
+                      title2={`Collection Date: "2024-03-04"`}
+                      onPress={() =>
+                        router.push({
+                          pathname: '../recycling/recyclingtrashdetails', // Updated dynamic route pattern
+                          params: { trashCanId: trashData1.channel.name }
+                        })
+                      }
+                      type="PLASTIC"
+                      percentage={trashData1.feeds && trashData1.feeds.length > 1 ? 
+                        ((trashData1.feeds[0].field1 - trashData1.feeds[trashData1.feeds.length - 1].field1) / trashData1.feeds[0].field1) * 100 : 
+                        0}
+                        /> 
+           
+                 <Separator/>
                 {trashData.map((item, index) => {
                   // Extracting date from collectionDate and formatting it
                   const collectionDate = new Date(item.collectionDate);
@@ -170,8 +271,11 @@ const recyclingmonitortrash = () => {
                         ((item.sensorData[0].binlevel - item.sensorData[item.sensorData.length - 1].binlevel) / item.sensorData[0].binlevel) * 100 : 
                         0}
                         />
+                        
                   );
+                  
                 })}
+                
         </SafeAreaView>
     </ScrollView>    
     )

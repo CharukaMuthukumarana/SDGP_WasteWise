@@ -7,7 +7,7 @@ const Separator = () => (
   <View style={styles.separator} />
 );
 
-const DriverTrashDetails = () => {
+const RecyclingTrashDetails = () => {
   const { trashCanId } = useLocalSearchParams();
   const [trashDetails, setTrashDetails] = useState(null);
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -40,10 +40,14 @@ const DriverTrashDetails = () => {
     return `${day}/${month}/${year}`;
   };
 
+  const handleDateChange = (event, selectedDate) => {
+    setDatePicker(false);
+    setSelectedDate(selectedDate);
+  };
 
   const saveChanges = async () => {
     try {
-      const dateString =`${selectedDate.getFullYear()}-${(selectedDate.getMonth() + 1).toString().padStart(2, '0')}-${selectedDate.getDate().toString().padStart(2, '0')}T00:00:00.000Z`;
+      const dateString = `${selectedDate.getFullYear()}-${(selectedDate.getMonth() + 1).toString().padStart(2, '0')}-${selectedDate.getDate().toString().padStart(2, '0')}T00:00:00.000Z`;
       setDateString(dateString); // Set the dateString
       const response = await fetch(`https://waste-wise-api-sdgp.koyeb.app/api/devices/${companyName}/${trashCanId}`, {
         method: 'PUT',
@@ -71,7 +75,7 @@ const DriverTrashDetails = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          collectionState: "Collected",
+          collectionState: "Scheduled",
         }),
       });
       if (!response.ok) {
@@ -113,6 +117,7 @@ const DriverTrashDetails = () => {
           <View style={styles.detailItem}>
             <Text style={styles.detailLabel}>Bin Level:</Text>
             <Text style={styles.detailValue}>{((trashDetails.sensorData[0].binlevel - trashDetails.sensorData[trashDetails.sensorData.length - 1].binlevel) / trashDetails.sensorData[0].binlevel) * 100}%</Text>
+                        
           </View>
           <Separator />
           <View style={styles.detailItem}>
@@ -131,16 +136,27 @@ const DriverTrashDetails = () => {
           </View>
         </View>
       )}
-      
+      <Button title="Select Collection Date" onPress={() => setDatePicker(true)} />
+      {selectedDate && <Text style={styles.selectedDateText}>Selected Date: {formatDate(selectedDate)}</Text>}
+      {datePicker && (
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={selectedDate}
+          mode="date"
+          is24Hour={true}
+          display="default"
+          onChange={handleDateChange}
+        />
+      )}
       <View style={styles.buttonContainer}>
-        <Button title="Mark As Collected" onPress={saveChanges} color="#2ecc71" />
+        <Button title="Schedule Collection" onPress={saveChanges} color="#2ecc71" />
       </View>
       {dateString && <Text style={styles.dateStringText}>Date String: {dateString}</Text>}
     </View>
   );
 };
 
-export default DriverTrashDetails;
+export default RecyclingTrashDetails;
 
 const styles = StyleSheet.create({
   container: {
